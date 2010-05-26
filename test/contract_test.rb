@@ -32,4 +32,8 @@ class ContractTest < Test::Unit::TestCase
     assert_equal '3066',     contract.plan_id
     assert_equal 'crappy',   contract.plan_name
   end
+
+  def test_load_returns_nil_if_contract_is_not_found
+    assert_nil Contract.load(2001, 'foo')
+  end
 end
