@@ -1,27 +1,29 @@
 require File.dirname(__FILE__) + '/test_helper'
 
 class ContractTest < Test::Unit::TestCase
-  def test_save
-    storage.expects(:set).with('contract/service_id:2001/user_key:foo/id', '8010')
-    storage.expects(:set).with('contract/service_id:2001/user_key:foo/state', 'live')
-    storage.expects(:set).with('contract/service_id:2001/user_key:foo/plan_id', '3001')
-    storage.expects(:set).with('contract/service_id:2001/user_key:foo/plan_name', 'awesome')
+  def setup
+    storage.flushdb
+  end
 
+  def test_save
     Contract.save(:service_id => '2001',
                   :user_key   => 'foo',
                   :id         => '8010',
                   :state      => :live,
                   :plan_id    => '3001',
                   :plan_name  => 'awesome')
+    
+    assert_equal '8010',    storage.get('contract/service_id:2001/user_key:foo/id')
+    assert_equal 'live',    storage.get('contract/service_id:2001/user_key:foo/state')
+    assert_equal '3001',    storage.get('contract/service_id:2001/user_key:foo/plan_id')
+    assert_equal 'awesome', storage.get('contract/service_id:2001/user_key:foo/plan_name')
   end
 
   def test_load
-    storage.stubs(:mget).
-      with('contract/service_id:2001/user_key:foo/id',
-           'contract/service_id:2001/user_key:foo/state',
-           'contract/service_id:2001/user_key:foo/plan_id',
-           'contract/service_id:2001/user_key:foo/plan_name').
-      returns(['8011', 'suspended', '3066', 'crappy'])
+    storage.set('contract/service_id:2001/user_key:foo/id', '8011')
+    storage.set('contract/service_id:2001/user_key:foo/state', 'suspended')
+    storage.set('contract/service_id:2001/user_key:foo/plan_id', '3066')
+    storage.set('contract/service_id:2001/user_key:foo/plan_name', 'crappy')
                              
     contract = Contract.load(2001, 'foo')
 

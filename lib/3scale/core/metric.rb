@@ -7,7 +7,14 @@ module ThreeScale
       attr_accessor :id
       attr_accessor :parent_id
       attr_accessor :name
-      
+
+      def self.load_all_ids(service_id)
+        storage.smembers(encode_key("metrics/service_id:#{service_id}/ids"))
+      end
+
+      def self.load_name(service_id, id)
+        storage.get(encode_key("metric/service_id:#{service_id}/id:#{id}/name"))
+      end
 
       def self.save(attributes)
         metrics = new(attributes)

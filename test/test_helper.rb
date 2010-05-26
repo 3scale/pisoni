@@ -3,13 +3,16 @@ $:.unshift(File.dirname(__FILE__) + '/../lib')
 require 'rubygems'
 require 'test/unit'
 require 'mocha'
+require 'redis'
 
 require '3scale/core'
 
-class TestStorage
+# Use the synchronous redis client here, for simplicity.
+module ThreeScale::Core
+  def self.storage
+    @storage ||= ::Redis.new(:db => 2)
+  end
 end
-
-ThreeScale::Core.storage = TestStorage.new
 
 class Test::Unit::TestCase
   include ThreeScale::Core
