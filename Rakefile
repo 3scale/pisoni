@@ -1,0 +1,27 @@
+# encoding: utf-8
+require 'rake/testtask'
+
+task :default => :test
+
+Rake::TestTask.new do |task|
+  task.test_files = FileList['test/**/*_test.rb']
+  task.verbose = true
+end
+
+begin
+  require 'jeweler'
+
+  Jeweler::Tasks.new do |gemspec|
+    gemspec.name     = '3scale_core'
+    gemspec.summary  = '3scale web service management system core libraries'
+    gemspec.description = 'This gem provides core libraries for 3scale systems.'
+
+    gemspec.email    = 'adam@3scale.net'
+    gemspec.homepage = 'http://www.3scale.net'
+    gemspec.authors  = ['Adam Cigánek']
+  end
+
+  Jeweler::GemcutterTasks.new
+rescue LoadError
+  puts "Jeweler not available. Install it with: gem install jeweler"
+end
