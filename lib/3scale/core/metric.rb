@@ -9,11 +9,25 @@ module ThreeScale
       attr_accessor :name
 
       def self.load_all_ids(service_id)
-        storage.smembers(encode_key("metrics/service_id:#{service_id}/ids"))
+        storage.smembers(id_set_key(service_id))
+      end
+
+      def self.load(service_id, id)
+        name, parent_id = storage.mget(key(service_id, id, :name),
+                                       key(service_id, id, :parent_id))
+
+        name && new(:id         => id.to_s,
+                    :service_id => service_id.to_s,
+                    :name       => name,
+                    :parent_id  => parent_id)  
       end
 
       def self.load_name(service_id, id)
-        storage.get(encode_key("metric/service_id:#{service_id}/id:#{id}/name"))
+        storage.get(key(service_id, id, :name))
+      end
+      
+      def self.load_id(service_id, name)
+        storage.get(id_key(service_id, name))
       end
 
       def self.save(attributes)
@@ -22,12 +36,22 @@ module ThreeScale
         metrics
       end
 
-      def save
-        storage.set(encode_key("metric/service_id:#{service_id}/name:#{name}/id"), id)
-        storage.set(encode_key("metric/service_id:#{service_id}/id:#{id}/name"), name)
-        storage.set(encode_key("metric/service_id:#{service_id}/id:#{id}/parent_id"), parent_id) if parent_id
+      def self.delete(service_id, id)
+        name = load_name(service_id, id)
+       
+        storage.del(key(service_id, id, :name))
+        storage.del(key(service_id, id, :parent_id))
 
-        storage.sadd(encode_key("metrics/service_id:#{service_id}/ids"), id)
+        storage.del(id_key(service_id, name))
+        storage.srem(id_set_key(service_id), id)
+      end
+
+      def save
+        storage.set(id_key(service_id, name), id)
+        storage.set(key(service_id, id, :name), name)
+        storage.set(key(service_id, id, :parent_id), parent_id) if parent_id
+
+        storage.sadd(id_set_key(service_id), id)
 
         save_children
       end
@@ -37,6 +61,23 @@ module ThreeScale
       end
 
       attr_writer :children
+
+      module KeyHelpers
+        def key(service_id, id, attribute)
+          encode_key("metric/service_id:#{service_id}/id:#{id}/#{attribute}")
+        end
+
+        def id_key(service_id, name)
+          encode_key("metric/service_id:#{service_id}/name:#{name}/id")
+        end
+        
+        def id_set_key(service_id)
+          encode_key("metrics/service_id:#{service_id}/ids")
+        end
+      end
+
+      include KeyHelpers
+      extend  KeyHelpers
 
       private
 

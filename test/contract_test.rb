@@ -36,4 +36,16 @@ class ContractTest < Test::Unit::TestCase
   def test_load_returns_nil_if_contract_is_not_found
     assert_nil Contract.load(2001, 'foo')
   end
+
+  def test_delete
+    Contract.save(:service_id => '2001',
+                  :user_key   => 'foo',
+                  :id         => '8011',
+                  :state      => :live,
+                  :plan_id    => '3001',
+                  :plan_name  => 'lame')
+
+    Contract.delete(2001, 'foo')
+    assert_nil Contract.load(2001, 'foo')
+  end
 end

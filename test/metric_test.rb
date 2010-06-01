@@ -31,6 +31,16 @@ class MetricTest < Test::Unit::TestCase
     
     assert_equal ['2001', '2002'], storage.smembers("metrics/service_id:1001/ids").sort
   end
+
+  def test_load
+    Metric.save(:service_id => 1001, :id => 2001, :name => 'foos')
+
+    metric = Metric.load(1001, 2001)
+    assert_not_nil metric
+    assert_equal '2001', metric.id
+    assert_equal '1001', metric.service_id
+    assert_equal 'foos', metric.name
+  end
   
   def test_load_all_ids
     Metric.save(:service_id => 1001, :id => 2001, :name => 'foos')
@@ -43,5 +53,19 @@ class MetricTest < Test::Unit::TestCase
   def test_load_name
     Metric.save(:service_id => 1001, :id => 2001, :name => 'bananas')
     assert_equal 'bananas', Metric.load_name(1001, 2001)
+  end
+
+  def test_load_id
+    Metric.save(:service_id => 1001, :id => 2002, :name => 'monkeys')
+    assert_equal '2002', Metric.load_id(1001, 'monkeys')
+  end
+
+  def test_delete
+    Metric.save(:service_id => 1001, :id => 2003, :name => 'donkeys')
+    Metric.delete(1001, 2003)
+
+    assert_nil Metric.load(1001, 2003)
+    assert_nil Metric.load_id(1001, 'donkeys')
+    assert !Metric.load_all_ids(1001).include?('2003')
   end
 end

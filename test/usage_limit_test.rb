@@ -48,6 +48,34 @@ class UsageLimitTest < Test::Unit::TestCase
     assert usage_limits.empty?, 'Expected usage_limits to be empty'
   end
 
+  def test_load_value
+    UsageLimit.save(:service_id => 2001,
+                    :plan_id    => 3001,
+                    :metric_id  => 4001,
+                    :hour       => 500)
+
+    assert_equal 500, UsageLimit.load_value(2001, 3001, 4001, :hour)
+  end
+
+  def test_load_value_return_nil_if_the_usage_limit_does_not_exist
+    assert_nil UsageLimit.load_value(2001, 3001, 4001, :hour)
+  end
+
+  def test_delete
+    Metric.save(:service_id => 2001, :id => 4001, :name => 'hits')
+    UsageLimit.save(:service_id => 2001,
+                    :plan_id    => 3001,
+                    :metric_id  => 4001,
+                    :minute     => 10)
+
+    UsageLimit.delete(2001, 3001, 4001, :minute)
+
+    assert_nil UsageLimit.load_value(2001, 3001, 4001, :minute)
+
+    usage_limits = UsageLimit.load_all(2001, 3001)
+    assert usage_limits.none? { |limit| limit.metric_id == '4001' && limit.period == :minute }
+  end
+
   def test_metric_name
     Metric.save(:service_id => 2001, :id => 4001, :name => 'hits')
     usage_limit = UsageLimit.new(:service_id => '2001',

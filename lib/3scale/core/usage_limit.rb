@@ -30,18 +30,32 @@ module ThreeScale
         end.compact
       end
 
+      def self.load_value(service_id, plan_id, metric_id, period)
+        raw_value = storage.get(key(service_id, plan_id, metric_id, period))
+        raw_value && raw_value.to_i
+      end
+
       def self.save(attributes)
-        key_prefix = "usage_limit/service_id:#{attributes[:service_id]}" +
-                     "/plan_id:#{attributes[:plan_id]}" +
-                     "/metric_id:#{attributes[:metric_id]}"
-        
         PERIODS.select { |period| attributes[period] }.each do |period|
-          storage.set(encode_key("#{key_prefix}/#{period}"), attributes[period])
+          storage.set(key(attributes[:service_id],
+                          attributes[:plan_id], 
+                          attributes[:metric_id],
+                          period), 
+                      attributes[period])
         end
+      end
+
+      def self.delete(service_id, plan_id, metric_id, period)
+        storage.del(key(service_id, plan_id, metric_id, period))
       end
 
       def metric_name
         Metric.load_name(service_id, metric_id)
+      end
+
+      def self.key(service_id, plan_id, metric_id, period)
+        encode_key("usage_limit/service_id:#{service_id}/plan_id:#{plan_id}" +
+                   "/metric_id:#{metric_id}/#{period}")
       end
 
       private

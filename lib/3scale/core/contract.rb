@@ -12,12 +12,10 @@ module ThreeScale
       attr_accessor :plan_name
 
       def self.load(service_id, user_key)
-        key_prefix = "contract/service_id:#{service_id}/user_key:#{user_key}"
-
-        values = storage.mget(encode_key("#{key_prefix}/id"),
-                              encode_key("#{key_prefix}/state"),
-                              encode_key("#{key_prefix}/plan_id"),
-                              encode_key("#{key_prefix}/plan_name"))
+        values = storage.mget(key(service_id, user_key, :id),
+                              key(service_id, user_key, :state),
+                              key(service_id, user_key, :plan_id),
+                              key(service_id, user_key, :plan_name))
         id, state, plan_id, plan_name = values
 
         id && new(:service_id => service_id,
@@ -28,18 +26,31 @@ module ThreeScale
                   :plan_name  => plan_name)
       end
 
+      def self.delete(service_id, user_key)
+        storage.del(key(service_id, user_key, :id))
+        storage.del(key(service_id, user_key, :state))
+        storage.del(key(service_id, user_key, :plan_id))
+        storage.del(key(service_id, user_key, :plan_name))
+      end
+
       def self.save(attributes)
         contract = new(attributes)
         contract.save
       end
 
       def save
-        key_prefix = "contract/service_id:#{service_id}/user_key:#{user_key}"
+        storage.set(key(service_id, user_key, :id), id)
+        storage.set(key(service_id, user_key, :state), state.to_s)    if state
+        storage.set(key(service_id, user_key, :plan_id), plan_id)     if plan_id
+        storage.set(key(service_id, user_key, :plan_name), plan_name) if plan_name
+      end
 
-        storage.set(encode_key("#{key_prefix}/id"), id)
-        storage.set(encode_key("#{key_prefix}/state"), state.to_s)    if state
-        storage.set(encode_key("#{key_prefix}/plan_id"), plan_id)     if plan_id
-        storage.set(encode_key("#{key_prefix}/plan_name"), plan_name) if plan_name
+      def self.key(service_id, user_key, attribute)
+        encode_key("contract/service_id:#{service_id}/user_key:#{user_key}/#{attribute}")
+      end
+
+      def key(service_id, user_key, attributes)
+        self.class.key(service_id, user_key, attributes)
       end
     end
   end
