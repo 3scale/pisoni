@@ -9,7 +9,7 @@ module ThreeScale
       attr_accessor :name
 
       def self.load_all_ids(service_id)
-        storage.smembers(id_set_key(service_id))
+        storage.smembers(id_set_key(service_id)) || []
       end
 
       def self.load(service_id, id)

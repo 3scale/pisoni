@@ -1,6 +1,6 @@
 module ThreeScale
   module Core
-    autoload :Contract,          '3scale/core/contract'
+    autoload :Application,       '3scale/core/application'
     autoload :Metric,            '3scale/core/metric'
     autoload :Service,           '3scale/core/service'
     autoload :Storable,          '3scale/core/storable'

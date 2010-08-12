@@ -50,6 +50,10 @@ class MetricTest < Test::Unit::TestCase
     assert_equal ['2001', '2002'], Metric.load_all_ids(1001)
   end
 
+  def test_load_all_ids_returns_empty_array_if_no_ids_found
+    assert_equal [], Metric.load_all_ids(1001)
+  end
+
   def test_load_name
     Metric.save(:service_id => 1001, :id => 2001, :name => 'bananas')
     assert_equal 'bananas', Metric.load_name(1001, 2001)
