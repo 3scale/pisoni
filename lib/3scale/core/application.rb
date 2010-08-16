@@ -15,11 +15,11 @@ module ThreeScale
                               key(service_id, id, :plan_name))
         state, plan_id, plan_name = values
 
-        state and plan_id and new(:service_id => service_id,
-                                  :id         => id,
-                                  :state      => state.to_sym,
-                                  :plan_id    => plan_id,
-                                  :plan_name  => plan_name)
+        state and new(:service_id => service_id,
+                      :id         => id,
+                      :state      => state.to_sym,
+                      :plan_id    => plan_id,
+                      :plan_name  => plan_name)
       end
 
       def self.delete(service_id, id)
@@ -34,8 +34,7 @@ module ThreeScale
       end
 
       def self.exists?(service_id, id)
-        storage.exists(key(service_id, id, :state)) &&
-        storage.exists(key(service_id, id, :plan_id))
+        storage.exists(key(service_id, id, :state))
       end
 
       def save

@@ -30,6 +30,17 @@ class ApplicationTest < Test::Unit::TestCase
     assert_equal 'crappy',   application.plan_name
   end
 
+  def test_load_works_even_for_application_without_plan
+    storage.set('application/service_id:2001/id:8011/state', 'suspended')
+                             
+    application = Application.load('2001', '8011')
+
+    assert_equal '8011',     application.id
+    assert_equal :suspended, application.state
+    assert_nil               application.plan_id
+    assert_nil               application.plan_name
+  end
+
   def test_load_returns_nil_if_application_is_not_found
     assert_nil Application.load(2001, 'boo')
   end
@@ -53,6 +64,14 @@ class ApplicationTest < Test::Unit::TestCase
                      :state      => :active,
                      :plan_id    => '3002',
                      :plan_name  => 'cool')
+    
+    assert Application.exists?('2001', '8012')
+  end
+
+  def test_exists_returns_true_even_for_application_without_plan
+    Application.save(:service_id => '2001',
+                     :id         => '8012',
+                     :state      => :active)
     
     assert Application.exists?('2001', '8012')
   end
