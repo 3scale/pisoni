@@ -44,4 +44,16 @@ class ApplicationTest < Test::Unit::TestCase
     Application.delete(2001, 8011)
     assert_nil Application.load(2001, 8011)
   end
+
+  def test_exists
+    assert !Application.exists?('2001', '8012')
+
+    Application.save(:service_id => '2001',
+                     :id         => '8012',
+                     :state      => :active,
+                     :plan_id    => '3002',
+                     :plan_name  => 'cool')
+    
+    assert Application.exists?('2001', '8012')
+  end
 end

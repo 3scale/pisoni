@@ -33,6 +33,11 @@ module ThreeScale
         application.save
       end
 
+      def self.exists?(service_id, id)
+        storage.exists(key(service_id, id, :state)) &&
+        storage.exists(key(service_id, id, :plan_id))
+      end
+
       def save
         storage.set(key(service_id, id, :state), state.to_s)    if state
         storage.set(key(service_id, id, :plan_id), plan_id)     if plan_id
