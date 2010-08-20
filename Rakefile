@@ -20,8 +20,10 @@ begin
     gemspec.homepage = 'http://www.3scale.net'
     gemspec.authors  = ['Adam Cigánek']
   end
-
-  Jeweler::GemcutterTasks.new
+  
+  # HAX: I want only git:release, nothing else.
+  Rake::Task['release'].clear_prerequisites
+  task :release => 'git:release'
 rescue LoadError
   puts "Jeweler not available. Install it with: gem install jeweler"
 end
