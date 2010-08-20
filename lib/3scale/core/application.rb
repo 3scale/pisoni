@@ -39,16 +39,16 @@ module ThreeScale
       end
 
       def save
-        storage.set(storage_key(service_id, id, :state), state.to_s)    if state
-        storage.set(storage_key(service_id, id, :plan_id), plan_id)     if plan_id
-        storage.set(storage_key(service_id, id, :plan_name), plan_name) if plan_name
+        storage.set(storage_key(:state), state.to_s)    if state
+        storage.set(storage_key(:plan_id), plan_id)     if plan_id
+        storage.set(storage_key(:plan_name), plan_name) if plan_name
       end
 
       def self.storage_key(service_id, id, attribute)
         encode_key("application/service_id:#{service_id}/id:#{id}/#{attribute}")
       end
 
-      def storage_key(service_id, id, attribute)
+      def storage_key(attribute)
         self.class.storage_key(service_id, id, attribute)
       end
     end
