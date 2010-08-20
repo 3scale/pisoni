@@ -17,6 +17,21 @@ class ApplicationTest < Test::Unit::TestCase
     assert_equal 'awesome', storage.get('application/service_id:2001/id:8010/plan_name')
   end
 
+  def test_save_returns_the_new_application
+    application = Application.save(:service_id => '2001',
+                                   :id         => '8010',
+                                   :state      => :active,
+                                   :plan_id    => '3001',
+                                   :plan_name  => 'awesome')
+    
+    assert_instance_of Application, application
+    assert_equal '2001',    application.service_id
+    assert_equal '8010',    application.id
+    assert_equal :active,   application.state
+    assert_equal '3001',    application.plan_id
+    assert_equal 'awesome', application.plan_name
+  end
+
   def test_load
     storage.set('application/service_id:2001/id:8011/state', 'suspended')
     storage.set('application/service_id:2001/id:8011/plan_id', '3066')
