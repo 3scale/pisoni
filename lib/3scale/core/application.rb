@@ -51,6 +51,24 @@ module ThreeScale
       def storage_key(attribute)
         self.class.storage_key(service_id, id, attribute)
       end
+
+      # XXX: Old API compatibility methods.
+
+      def self.save_id_by_user_key(service_id, user_key, id)
+        storage.set(id_by_user_key_storage_key(service_id, user_key), id)
+      end
+
+      def self.load_id_by_user_key(service_id, user_key)
+        storage.get(id_by_user_key_storage_key(service_id, user_key))
+      end
+
+      def self.delete_id_by_user_key(service_id, user_key)
+        storage.del(id_by_user_key_storage_key(service_id, user_key))
+      end
+
+      def self.id_by_user_key_storage_key(service_id, user_key)
+        encode_key("application/service_id:#{service_id}/user_key:#{user_key}/id")
+      end
     end
   end
 end
