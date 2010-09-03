@@ -91,20 +91,20 @@ class ApplicationTest < Test::Unit::TestCase
     assert Application.exists?('2001', '8012')
   end
 
-  def test_save_id_by_user_key
-    Application.save_id_by_user_key('2001', 'foobar', '8022')
-    assert_equal '8022', storage.get('application/service_id:2001/user_key:foobar/id')
+  def test_save_id_by_key
+    Application.save_id_by_key('2001', 'foobar', '8022')
+    assert_equal '8022', storage.get('application/service_id:2001/key:foobar/id')
   end
 
-  def test_load_id_by_user_key
-    storage.set('application/service_id:2001/user_key:foobar/id', '8077')
-    assert_equal '8077', Application.load_id_by_user_key('2001', 'foobar')
+  def test_load_id_by_key
+    storage.set('application/service_id:2001/key:foobar/id', '8077')
+    assert_equal '8077', Application.load_id_by_key('2001', 'foobar')
   end
 
-  def test_delete_id_by_user_key
-    storage.set('application/service_id:2001/user_key:foobar/id', '8077')
+  def test_delete_id_by_key
+    storage.set('application/service_id:2001/key:foobar/id', '8077')
 
-    Application.delete_id_by_user_key('2001', 'foobar')
-    assert_nil storage.get('application/service_id:2001/user_key:foobar/id')
+    Application.delete_id_by_key('2001', 'foobar')
+    assert_nil storage.get('application/service_id:2001/key:foobar/id')
   end
 end
