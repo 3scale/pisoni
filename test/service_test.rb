@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/test_helper'
+require File.expand_path(File.dirname(__FILE__) + '/test_helper')
 
 class ServiceTest < Test::Unit::TestCase
   def setup
@@ -6,8 +6,21 @@ class ServiceTest < Test::Unit::TestCase
   end
 
   def test_save
-    Service.save(:provider_key => 'foo', :id => 7001)
+    Service.save(:provider_key => 'foo', :id => 7001, :referrer_filters_required => true)
     assert_equal '7001', storage.get('service/provider_key:foo/id')
+    assert_equal '1',    storage.get('service/id:7001/referrer_filters_required')
+  end
+
+  def test_load
+    storage.set('service/provider_key:foo/id', '7001')
+    storage.set('service/id:7001/referrer_filters_required', '1')
+
+    service = Service.load('foo')
+
+    assert_not_nil service
+    assert_equal 'foo',  service.provider_key
+    assert_equal '7001', service.id
+    assert service.referrer_filters_required?
   end
 
   def test_load_id
@@ -16,10 +29,11 @@ class ServiceTest < Test::Unit::TestCase
   end
 
   def test_delete
-    Service.save(:provider_key => 'foo', :id => 7003)
+    Service.save(:provider_key => 'foo', :id => 7003, :referrer_filters_required => true)
     Service.delete('foo')
 
-    assert_nil Service.load_id('foo')
+    assert_nil storage.get('service/provider_key:foo/id')
+    assert_nil storage.get('service/id:7003/referrer_filters_required')
   end
 
   def test_exists?
