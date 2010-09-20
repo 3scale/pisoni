@@ -34,10 +34,6 @@ module ThreeScale
                end
       end
 
-      def self.load_id(provider_key)
-        storage.get(id_storage_key(provider_key))
-      end
-
       def self.delete(provider_key)
         storage.del(storage_key(load_id(provider_key), :referrer_filters_required))
         storage.del(id_storage_key(provider_key))
@@ -45,6 +41,18 @@ module ThreeScale
 
       def self.exists?(provider_key)
         storage.exists(id_storage_key(provider_key))
+      end
+      
+      def self.load_id(provider_key)
+        storage.get(id_storage_key(provider_key))
+      end
+
+      def self.save_id(provider_key, id)
+        storage.set(id_storage_key(provider_key), id)
+      end
+      
+      def self.delete_id(provider_key)
+        storage.del(id_storage_key(provider_key))
       end
 
       def self.storage_key(id, attribute)

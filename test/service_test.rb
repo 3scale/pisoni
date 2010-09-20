@@ -23,11 +23,6 @@ class ServiceTest < Test::Unit::TestCase
     assert service.referrer_filters_required?
   end
 
-  def test_load_id
-    Service.save(:provider_key => 'foo', :id => 7002)
-    assert_equal '7002', Service.load_id('foo')
-  end
-
   def test_delete
     Service.save(:provider_key => 'foo', :id => 7003, :referrer_filters_required => true)
     Service.delete('foo')
@@ -40,5 +35,22 @@ class ServiceTest < Test::Unit::TestCase
     assert !Service.exists?('foo')
     Service.save(:provider_key => 'foo', :id => 7004)
     assert  Service.exists?('foo')
+  end
+  
+  def test_load_id
+    storage.set('service/provider_key:foo/id', 7002)
+    assert_equal '7002', Service.load_id('foo')
+  end
+
+  def test_save_id
+    Service.save_id('foo', 7003)
+    assert_equal '7003', storage.get('service/provider_key:foo/id')
+  end
+
+  def test_delete_id
+    Service.save_id('foo', 7004)
+    Service.delete_id('foo')
+
+    assert_nil storage.get('service/provider_key:foo/id')
   end
 end
