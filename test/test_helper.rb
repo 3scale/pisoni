@@ -1,9 +1,12 @@
 $:.unshift(File.dirname(__FILE__) + '/../lib')
 
 require 'rubygems'
-require 'test/unit'
-require 'mocha'
-require 'redis'
+require 'bundler'
+Bundler.require(:default, :test)
+
+# require 'test/unit'
+# require 'mocha'
+# require 'redis'
 
 require '3scale/core'
 

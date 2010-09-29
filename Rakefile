@@ -1,13 +1,16 @@
 # encoding: utf-8
 require 'rake/testtask'
 
+
 task :default => :test
 
 Rake::TestTask.new do |task|
   task.test_files = FileList['test/**/*_test.rb']
+  task.libs = [ 'lib', File.expand_path('.') ]
   task.verbose = true
 end
 
+# TODO: replace by standard .gemspec tight with Bundler
 begin
   require 'jeweler'
 
