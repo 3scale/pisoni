@@ -23,7 +23,7 @@ module ThreeScale
       end
 
       def self.load_all_names(service_id, ids)
-        Hash[ids.zip(storage.mget(*ids.map{|id| puts id; key(service_id, id, :name)}))]
+        Hash[ids.zip(storage.mget(*ids.map{|id| key(service_id, id, :name)}))]
       end
 
       def self.load_name(service_id, id)
