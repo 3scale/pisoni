@@ -27,13 +27,13 @@ module ThreeScale
       def self.load(provider_key)
         id = storage.get(id_storage_key(provider_key))
         id and begin
-                 referrer_filters_required = storage.get(storage_key(id, :referrer_filters_required))
+                 referrer_filters_required, backend_version = storage.mget(storage_key(id, :referrer_filters_required), storage_key(id, :backend_version))
                  referrer_filters_required = referrer_filters_required.to_i > 0
 
                  new(:provider_key              => provider_key,
                      :id                        => id,
                      :referrer_filters_required => referrer_filters_required,
-                     :backend_version           => storage.get(storage_key(id, :backend_version)))
+                     :backend_version           => backend_version)
                end
       end
 
