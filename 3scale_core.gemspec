@@ -2,12 +2,12 @@
 
 Gem::Specification.new do |s|
   s.name = %q{3scale_core}
-  s.version = "0.2.8"
+  s.version = "0.2.9"
   s.date = %q{2010-09-28}
 
   s.platform = Gem::Platform::RUBY
-  s.authors = ["Adam Cig\303\241nek"]
-  s.email = %q{adam@3scale.net}
+  s.authors = ["Adam Cig\303\241nek", "Tiago Macedo"]
+  s.email = %q{adam@3scale.net tiago@3scale.net}
   s.homepage = %q{http://www.3scale.net}
   s.summary = %q{3scale web service management system core libraries}
   s.description = %q{This gem provides core libraries for 3scale systems.}
