@@ -5,6 +5,7 @@ module ThreeScale
       
       attr_accessor :provider_key
       attr_accessor :id
+      attr_accessor :backend_version
       attr_writer   :referrer_filters_required
 
       def referrer_filters_required?
@@ -20,6 +21,7 @@ module ThreeScale
       def save
         storage.set(id_storage_key, id)
         storage.set(storage_key(:referrer_filters_required), referrer_filters_required? ? 1 : 0)
+        storage.set(storage_key(:backend_version), @backend_version) if @backend_version
       end
       
       def self.load(provider_key)
@@ -30,12 +32,14 @@ module ThreeScale
 
                  new(:provider_key              => provider_key,
                      :id                        => id,
-                     :referrer_filters_required => referrer_filters_required)
+                     :referrer_filters_required => referrer_filters_required,
+                     :backend_version           => storage.get(storage_key(id, :backend_version)))
                end
       end
 
       def self.delete(provider_key)
         storage.del(storage_key(load_id(provider_key), :referrer_filters_required))
+        storage.del(storage_key(load_id(provider_key), :backend_version))
         storage.del(id_storage_key(provider_key))
       end
 

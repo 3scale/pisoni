@@ -9,6 +9,13 @@ class ServiceTest < Test::Unit::TestCase
     Service.save(:provider_key => 'foo', :id => 7001, :referrer_filters_required => true)
     assert_equal '7001', storage.get('service/provider_key:foo/id')
     assert_equal '1',    storage.get('service/id:7001/referrer_filters_required')
+    assert_nil           storage.get('service/id:7001/backend_version')
+  end
+
+  def test_save_with_backend_version
+    Service.save(:provider_key => 'foo', :id => 7001, :backend_version => 'oauth')
+    assert_equal '7001', storage.get('service/provider_key:foo/id')
+    assert_equal 'oauth',storage.get('service/id:7001/backend_version')
   end
 
   def test_load
@@ -21,14 +28,28 @@ class ServiceTest < Test::Unit::TestCase
     assert_equal 'foo',  service.provider_key
     assert_equal '7001', service.id
     assert service.referrer_filters_required?
+    assert_nil service.backend_version
+  end
+
+  def test_load_with_backend_version
+    storage.set('service/provider_key:foo/id', '7001')
+    storage.set('service/id:7001/backend_version', 'oauth')
+
+    service = Service.load('foo')
+
+    assert_not_nil service
+    assert_equal 'foo',  service.provider_key
+    assert_equal '7001', service.id
+    assert_equal 'oauth',service.backend_version
   end
 
   def test_delete
-    Service.save(:provider_key => 'foo', :id => 7003, :referrer_filters_required => true)
+    Service.save(:provider_key => 'foo', :id => 7003, :referrer_filters_required => true, :backend_version => 'oauth')
     Service.delete('foo')
 
     assert_nil storage.get('service/provider_key:foo/id')
     assert_nil storage.get('service/id:7003/referrer_filters_required')
+    assert_nil storage.get('service/id:7003/backend_version')
   end
 
   def test_exists?
