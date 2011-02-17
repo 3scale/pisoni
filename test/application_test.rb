@@ -10,11 +10,13 @@ class ApplicationTest < Test::Unit::TestCase
                      :id         => '8010',
                      :state      => :active,
                      :plan_id    => '3001',
-                     :plan_name  => 'awesome')
+                     :plan_name  => 'awesome',
+                     :redirect_url => 'bla')
     
     assert_equal 'active',  storage.get('application/service_id:2001/id:8010/state')
     assert_equal '3001',    storage.get('application/service_id:2001/id:8010/plan_id')
     assert_equal 'awesome', storage.get('application/service_id:2001/id:8010/plan_name')
+    assert_equal 'bla',     storage.get('application/service_id:2001/id:8010/redirect_url')
   end
 
   def test_save_returns_the_new_application
@@ -22,7 +24,8 @@ class ApplicationTest < Test::Unit::TestCase
                                    :id         => '8010',
                                    :state      => :active,
                                    :plan_id    => '3001',
-                                   :plan_name  => 'awesome')
+                                   :plan_name  => 'awesome',
+                                   :redirect_url => 'bla')
     
     assert_instance_of Application, application
     assert_equal '2001',    application.service_id
@@ -30,12 +33,14 @@ class ApplicationTest < Test::Unit::TestCase
     assert_equal :active,   application.state
     assert_equal '3001',    application.plan_id
     assert_equal 'awesome', application.plan_name
+    assert_equal 'bla',     application.redirect_url
   end
 
   def test_load
     storage.set('application/service_id:2001/id:8011/state', 'suspended')
     storage.set('application/service_id:2001/id:8011/plan_id', '3066')
     storage.set('application/service_id:2001/id:8011/plan_name', 'crappy')
+    storage.set('application/service_id:2001/id:8011/redirect_url', 'bla')
                              
     application = Application.load('2001', '8011')
 
@@ -43,6 +48,7 @@ class ApplicationTest < Test::Unit::TestCase
     assert_equal :suspended, application.state
     assert_equal '3066',     application.plan_id
     assert_equal 'crappy',   application.plan_name
+    assert_equal 'bla',      application.redirect_url
   end
 
   def test_load_works_even_for_application_without_plan
@@ -54,6 +60,7 @@ class ApplicationTest < Test::Unit::TestCase
     assert_equal :suspended, application.state
     assert_nil               application.plan_id
     assert_nil               application.plan_name
+    assert_nil               application.redirect_url
   end
 
   def test_load_returns_nil_if_application_is_not_found
