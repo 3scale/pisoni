@@ -6,29 +6,46 @@ module ThreeScale
       attr_accessor :service_id
       attr_accessor :id
       attr_accessor :state
+      ## plan should be an object, in the meantime this will do
       attr_accessor :plan_id
       attr_accessor :plan_name
       attr_accessor :redirect_url
+
+      ## added the :user_required to distinguish between types of application:
+      ## false is the default value, do not expect user_id or ignore it if it happends 
+      ## true, the user_id must be defined + the user of the service (service_id#user_id), 
+      ## user_id is typically the UUID of a cellphone, or the twitter account
+      attr_accessor :user_required
 
       def self.load(service_id, id)
         values = storage.mget(storage_key(service_id, id, :state),
                               storage_key(service_id, id, :plan_id),
                               storage_key(service_id, id, :plan_name),
+                              storage_key(service_id, id, :user_required),
                               storage_key(service_id, id, :redirect_url))
-        state, plan_id, plan_name, redirect_url = values
+        state, plan_id, plan_name, user_required, redirect_url = values
+
+        ## the default value is false
+        user_required = user_required.to_i > 0
 
         state and new(:service_id => service_id,
                       :id         => id,
                       :state      => state.to_sym,
                       :plan_id    => plan_id,
                       :plan_name  => plan_name,
+                      :user_required => user_required,
                       :redirect_url => redirect_url)
+      end
+
+      def user_required?
+        @user_required
       end
 
       def self.delete(service_id, id)
         storage.del(storage_key(service_id, id, :state))
         storage.del(storage_key(service_id, id, :plan_id))
         storage.del(storage_key(service_id, id, :plan_name))
+        storage.del(storage_key(service_id, id, :user_required))
         storage.del(storage_key(service_id, id, :redirect_url))
       end
 
@@ -46,6 +63,7 @@ module ThreeScale
         storage.set(storage_key(:state), state.to_s)    if state
         storage.set(storage_key(:plan_id), plan_id)     if plan_id
         storage.set(storage_key(:plan_name), plan_name) if plan_name
+        storage.set(storage_key(:user_required), user_required? ? 1 : 0)
         storage.set(storage_key(:redirect_url), redirect_url) if redirect_url
       end
 
