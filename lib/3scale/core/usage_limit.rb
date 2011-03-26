@@ -43,10 +43,12 @@ module ThreeScale
                           period), 
                       attributes[period])
         end
+        Service.incr_version(attributes[:service_id])
       end
 
       def self.delete(service_id, plan_id, metric_id, period)
         storage.del(key(service_id, plan_id, metric_id, period))
+        Service.incr_version(service_id)
       end
 
       def metric_name

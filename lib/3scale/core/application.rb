@@ -16,14 +16,16 @@ module ThreeScale
       ## true, the user_id must be defined + the user of the service (service_id#user_id), 
       ## user_id is typically the UUID of a cellphone, or the twitter account
       attr_accessor :user_required
+      attr_accessor :version
 
       def self.load(service_id, id)
         values = storage.mget(storage_key(service_id, id, :state),
                               storage_key(service_id, id, :plan_id),
                               storage_key(service_id, id, :plan_name),
                               storage_key(service_id, id, :user_required),
-                              storage_key(service_id, id, :redirect_url))
-        state, plan_id, plan_name, user_required, redirect_url = values
+                              storage_key(service_id, id, :redirect_url),
+                              storage_key(service_id, id, :version))
+        state, plan_id, plan_name, user_required, redirect_url, version = values
 
         ## the default value is false
         user_required = user_required.to_i > 0
@@ -34,7 +36,8 @@ module ThreeScale
                       :plan_id    => plan_id,
                       :plan_name  => plan_name,
                       :user_required => user_required,
-                      :redirect_url => redirect_url)
+                      :redirect_url => redirect_url,
+                      :version => version)
       end
 
       def user_required?
@@ -47,7 +50,17 @@ module ThreeScale
         storage.del(storage_key(service_id, id, :plan_name))
         storage.del(storage_key(service_id, id, :user_required))
         storage.del(storage_key(service_id, id, :redirect_url))
+        storage.del(storage_key(service_id, id, :version))
       end
+
+      def self.get_version(service_id, id)
+        storage.get(storage_key(service_id, id, :version))
+      end
+
+      def self.incr_version(service_id, id)
+        storage.incrby(storage_key(:version),1)
+      end
+
 
       def self.save(attributes)
         application = new(attributes)
@@ -65,6 +78,7 @@ module ThreeScale
         storage.set(storage_key(:plan_name), plan_name) if plan_name
         storage.set(storage_key(:user_required), user_required? ? 1 : 0)
         storage.set(storage_key(:redirect_url), redirect_url) if redirect_url
+        storage.incrby(storage_key(:version),1)
       end
 
       def self.storage_key(service_id, id, attribute)
