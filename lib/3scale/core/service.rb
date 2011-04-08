@@ -10,7 +10,7 @@ module ThreeScale
       attr_writer 	:user_registration_required
       attr_accessor :default_user_plan_id
       attr_accessor :default_user_plan_name
-      attr_accessor :version
+      attr_writer   :version
 
 
       def referrer_filters_required?
@@ -41,13 +41,18 @@ module ThreeScale
       def self.load_by_id(service_id)
         id = service_id
         id and begin
-                 referrer_filters_required, backend_version, user_registration_required, default_user_plan_id, default_user_plan_name, provider_key, version = storage.mget(storage_key(id, :referrer_filters_required), storage_key(id, :backend_version), storage_key(id, :user_registration_required), storage_key(id,:default_user_plan_id), storage_key(id,:default_user_plan_name),storage_key(id,:provider_key), storage_key(id,:version))
+                 values  = storage.mget(storage_key(id, :referrer_filters_required), storage_key(id, :backend_version), storage_key(id, :user_registration_required), storage_key(id,:default_user_plan_id), storage_key(id,:default_user_plan_name),storage_key(id,:provider_key), storage_key(id,:version))
+
+                referrer_filters_required, backend_version, user_registration_required, default_user_plan_id, default_user_plan_name, provider_key, vv = values
+
 
                  ## warning, not sure this is very elegant
                  return nil if provider_key.nil?
 
+
                  referrer_filters_required = referrer_filters_required.to_i > 0
                  user_registration_required = user_registration_required.to_i > 0
+                 self.incr_version(id) if vv.nil?
 
 
                  new(:provider_key              => provider_key,
@@ -57,7 +62,7 @@ module ThreeScale
                      :backend_version           => backend_version,
                      :default_user_plan_id      => default_user_plan_id,
                      :default_user_plan_name    => default_user_plan_name,
-                     :version                   => version)
+                     :version                   => self.get_version(id))
 
                end
       end
@@ -65,10 +70,13 @@ module ThreeScale
       def self.load(provider_key)
         id = storage.get(id_storage_key(provider_key))
         id and begin
-                 referrer_filters_required, backend_version, user_registration_required, default_user_plan_id, default_user_plan_name, version = storage.mget(storage_key(id, :referrer_filters_required), storage_key(id, :backend_version), storage_key(id, :user_registration_required), storage_key(id,:default_user_plan_id), storage_key(id,:default_user_plan_name),storage_key(id,:version))
+                 values = storage.mget(storage_key(id, :referrer_filters_required), storage_key(id, :backend_version), storage_key(id, :user_registration_required), storage_key(id,:default_user_plan_id), storage_key(id,:default_user_plan_name),storage_key(id,:version))
+                 referrer_filters_required, backend_version, user_registration_required, default_user_plan_id, default_user_plan_name, vv = values
 
                  referrer_filters_required = referrer_filters_required.to_i > 0
                  user_registration_required = user_registration_required.to_i > 0
+                 self.incr_version(id) if vv.nil?
+
 
                  new(:provider_key              => provider_key,
                      :id                        => id,
@@ -77,7 +85,7 @@ module ThreeScale
                      :backend_version           => backend_version,
                      :default_user_plan_id      => default_user_plan_id,
                      :default_user_plan_name    => default_user_plan_name,
-                     :version                   => version)
+                     :version                   => self.get_version(id))
 
                end
       end
@@ -90,6 +98,8 @@ module ThreeScale
         storage.del(storage_key(load_id(provider_key), :default_user_plan_id))
         storage.del(storage_key(load_id(provider_key), :provider_key))
         storage.del(storage_key(load_id(provider_key), :version))
+        storage.del(storage_key(load_id(provider_key), :user_set))
+
         storage.del(id_storage_key(provider_key))
       end
 
@@ -136,11 +146,11 @@ module ThreeScale
       ## ---- add the user dimension. Users are unique on the service scope			
       ## returns true if the user is new
       def user_add(username)
-        storage.sadd(storage_key(id,":user_set"),username)
+        isnew = storage.sadd(storage_key(id,":user_set"),username)
         self.class.incr_version(id)
+        return isnew
       end
 
-      ## returns true if the user was removed
       def user_delete(username)
         storage.srem(storage_key(id,":user_set"),username)
         self.class.incr_version(id)

@@ -10,6 +10,8 @@ class ServiceTest < Test::Unit::TestCase
     assert_equal '7001', storage.get('service/provider_key:foo/id')
     assert_equal '1',    storage.get('service/id:7001/referrer_filters_required')
     assert_nil           storage.get('service/id:7001/backend_version')
+    assert_equal '0',    storage.get('service/id:7001/user_registration_required')
+
   end
 
   def test_save_with_backend_version
@@ -17,6 +19,32 @@ class ServiceTest < Test::Unit::TestCase
     assert_equal '7001', storage.get('service/provider_key:foo/id')
     assert_equal 'oauth',storage.get('service/id:7001/backend_version')
   end
+
+  def test_save_with_user_registration_required
+    
+    Service.save(:provider_key => 'foo', :id => 7001)
+    assert_equal '7001',  storage.get('service/provider_key:foo/id')
+    assert_equal '0',     storage.get('service/id:7001/user_registration_required')
+
+    service = Service.load('foo')
+    assert_equal  false,  service.user_registration_required?
+    service.save
+    service = Service.load('foo')
+    assert_equal  false,  service.user_registration_required?
+
+    Service.delete('foo')
+    assert_nil            storage.get('service/id:7001/user_registration_required')
+    
+    Service.save(:provider_key => 'foo', :id => 7001, :user_registration_required => true)
+    assert_equal '7001',  storage.get('service/provider_key:foo/id')
+    assert_not_nil        storage.get('service/id:7001/user_registration_required')
+
+    service = Service.load('foo')
+    assert_equal  true,  service.user_registration_required?
+
+  end
+
+
 
   def test_load
     storage.set('service/provider_key:foo/id', '7001')
@@ -74,4 +102,29 @@ class ServiceTest < Test::Unit::TestCase
 
     assert_nil storage.get('service/provider_key:foo/id')
   end
+
+  def test_versions
+
+    assert !Service.exists?('foo')
+
+    service = Service.save(:provider_key => 'foo', :id => 2001)
+
+    assert_equal '1', Service.get_version('2001')
+    service.save
+    assert_equal '2', Service.get_version('2001')
+
+    application = Service.load('foo')
+    assert_equal '2', Service.get_version('2001')
+
+    Service.delete('foo')
+    assert_nil Service.get_version('2001') 
+
+  end
+
+  def test_
+
+
+  end
+
+
 end

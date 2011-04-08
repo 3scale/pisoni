@@ -98,7 +98,6 @@ module ThreeScale
          "service:#{service_id}/user:#{username}/#{attribute}"
       end
 
-
     end
   end
 end

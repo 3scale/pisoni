@@ -6,7 +6,6 @@ module ThreeScale
       attr_accessor :service_id
       attr_accessor :id
       attr_accessor :state
-      ## plan should be an object, in the meantime this will do
       attr_accessor :plan_id
       attr_accessor :plan_name
       attr_accessor :redirect_url
@@ -16,7 +15,7 @@ module ThreeScale
       ## true, the user_id must be defined + the user of the service (service_id#user_id), 
       ## user_id is typically the UUID of a cellphone, or the twitter account
       attr_accessor :user_required
-      attr_accessor :version
+      attr_writer :version
 
       def self.load(service_id, id)
         values = storage.mget(storage_key(service_id, id, :state),
@@ -25,10 +24,12 @@ module ThreeScale
                               storage_key(service_id, id, :user_required),
                               storage_key(service_id, id, :redirect_url),
                               storage_key(service_id, id, :version))
-        state, plan_id, plan_name, user_required, redirect_url, version = values
+        state, plan_id, plan_name, user_required, redirect_url, vv = values
 
+        
         ## the default value is false
         user_required = user_required.to_i > 0
+        self.incr_version(service_id,id) if vv.nil?
 
         state and new(:service_id => service_id,
                       :id         => id,
@@ -37,7 +38,7 @@ module ThreeScale
                       :plan_name  => plan_name,
                       :user_required => user_required,
                       :redirect_url => redirect_url,
-                      :version => version)
+                      :version => self.get_version(service_id,id))
       end
 
       def user_required?
@@ -58,7 +59,7 @@ module ThreeScale
       end
 
       def self.incr_version(service_id, id)
-        storage.incrby(storage_key(:version),1)
+        storage.incrby(storage_key(service_id, id, :version),1)
       end
 
 
