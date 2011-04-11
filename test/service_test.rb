@@ -10,7 +10,7 @@ class ServiceTest < Test::Unit::TestCase
     assert_equal '7001', storage.get('service/provider_key:foo/id')
     assert_equal '1',    storage.get('service/id:7001/referrer_filters_required')
     assert_nil           storage.get('service/id:7001/backend_version')
-    assert_equal '0',    storage.get('service/id:7001/user_registration_required')
+    assert_equal '1',    storage.get('service/id:7001/user_registration_required')
 
   end
 
@@ -24,24 +24,17 @@ class ServiceTest < Test::Unit::TestCase
     
     Service.save(:provider_key => 'foo', :id => 7001)
     assert_equal '7001',  storage.get('service/provider_key:foo/id')
-    assert_equal '0',     storage.get('service/id:7001/user_registration_required')
+    assert_equal '1',     storage.get('service/id:7001/user_registration_required')
 
     service = Service.load('foo')
-    assert_equal  false,  service.user_registration_required?
+    assert_equal  true,  service.user_registration_required?
     service.save
     service = Service.load('foo')
-    assert_equal  false,  service.user_registration_required?
+    assert_equal  true,  service.user_registration_required?
 
     Service.delete('foo')
     assert_nil            storage.get('service/id:7001/user_registration_required')
     
-    Service.save(:provider_key => 'foo', :id => 7001, :user_registration_required => true)
-    assert_equal '7001',  storage.get('service/provider_key:foo/id')
-    assert_not_nil        storage.get('service/id:7001/user_registration_required')
-
-    service = Service.load('foo')
-    assert_equal  true,  service.user_registration_required?
-
   end
 
 
@@ -121,9 +114,53 @@ class ServiceTest < Test::Unit::TestCase
 
   end
 
-  def test_
+  def test_load_by_id
+
+    Service.save(:provider_key => 'foo', :id => 7001)
+
+    service = Service.load_by_id("7001")
+    assert_equal  'foo', service.provider_key
+    assert_equal  true, service.user_registration_required?
+    assert_nil    service.default_user_plan_id
+    assert_nil    service.default_user_plan_name
+
+    #service = Service.load_by_id("99999")
+    service = Service.load("99999")
+    assert_nil  service
+
+    service = Service.load_by_id("99999")
+    assert_nil  service
+
+  end
+
+  def test_combinations_of_registration_required_and_default_plans
+
+    assert_raise RuntimeError do 
+      service = Service.save(:provider_key => 'foo', :id => 7001, :user_registration_required => false)
+    end
+        
+    service = Service.save(:provider_key => 'foo', :id => 7001, :user_registration_required => false, :default_user_plan_id => "1001", :default_user_plan_name => "user_plan_name")
+    service = Service.load('foo')
+    assert_equal  false, service.user_registration_required?
+    assert_equal  "1001", service.default_user_plan_id
+    assert_equal  "user_plan_name", service.default_user_plan_name
+    Service.delete('foo')
 
 
+    service = Service.save(:provider_key => 'foo', :id => 7001)
+    assert_equal  true, service.user_registration_required?
+    assert_nil    service.default_user_plan_id
+    assert_nil    service.default_user_plan_name
+
+    service.default_user_plan_id="1001"
+    service.default_user_plan_name="user_plan_name"
+    service.save
+
+    service = Service.load('foo')
+    assert_equal  true, service.user_registration_required?
+    assert_equal  "1001", service.default_user_plan_id
+    assert_equal  "user_plan_name", service.default_user_plan_name
+    
   end
 
 

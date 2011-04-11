@@ -22,12 +22,17 @@ module ThreeScale
       end
 			
       def self.save(attributes = {})
+        attributes[:user_registration_required]=true if attributes[:user_registration_required].nil?
         service = new(attributes)				
         service.save
         service
       end
       
       def save
+        if !user_registration_required? && (default_user_plan_id.nil? || default_user_plan_name.nil?) 
+          raise 'Services with users open loop for users requires a default plan for them'
+        end
+  
         storage.set(id_storage_key, id)
         storage.set(storage_key(:referrer_filters_required), referrer_filters_required? ? 1 : 0)
         storage.set(storage_key(:user_registration_required), user_registration_required? ? 1 : 0)
@@ -45,17 +50,21 @@ module ThreeScale
 
                 referrer_filters_required, backend_version, user_registration_required, default_user_plan_id, default_user_plan_name, provider_key, vv = values
 
-
                  ## warning, not sure this is very elegant
-                 return nil if provider_key.nil?
+                return nil if provider_key.nil?
+                referrer_filters_required = referrer_filters_required.to_i > 0
+
+                 ## the default is true, because it's more restrictive, nil.to_i == 0
+                if user_registration_required.nil?
+                  user_registration_required = true
+                else                           
+                  user_registration_required = user_registration_required.to_i > 0
+                end                
+
+                self.incr_version(id) if vv.nil?
 
 
-                 referrer_filters_required = referrer_filters_required.to_i > 0
-                 user_registration_required = user_registration_required.to_i > 0
-                 self.incr_version(id) if vv.nil?
-
-
-                 new(:provider_key              => provider_key,
+                  new(:provider_key              => provider_key,
                      :id                        => id,
                      :referrer_filters_required => referrer_filters_required,
                      :user_registration_required => user_registration_required,
@@ -64,7 +73,7 @@ module ThreeScale
                      :default_user_plan_name    => default_user_plan_name,
                      :version                   => self.get_version(id))
 
-               end
+                end
       end
 
       def self.load(provider_key)
@@ -99,7 +108,6 @@ module ThreeScale
         storage.del(storage_key(load_id(provider_key), :provider_key))
         storage.del(storage_key(load_id(provider_key), :version))
         storage.del(storage_key(load_id(provider_key), :user_set))
-
         storage.del(id_storage_key(provider_key))
       end
 
