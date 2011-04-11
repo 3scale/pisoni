@@ -25,7 +25,7 @@ module ThreeScale
           if service.user_registration_required?
             raise 'The service does not accept not registered users'
           else
-            raise 'The service does not have default user plans' if service.default_user_plan_id || service.default_user_plan_name
+            raise 'The service does not have default user plans' if service.default_user_plan_id.nil? || service.default_user_plan_name.nil?
             state = "active" if state.nil?
           end
           
@@ -36,7 +36,7 @@ module ThreeScale
                      :plan_name  => service.default_user_plan_name) 
           user.save
 
-          Service.incr_version(service.id)
+          
 
         else 
           user = new(:service_id => service.id,
@@ -65,12 +65,18 @@ module ThreeScale
       end
 
       def save  
+
+        service = Service.load_by_id(service_id)
+        raise 'User requires a valid service' if service.nil?
+        service.user_add(username)
+
         storage.hset(key,"state", state.to_s) if state
         storage.hset(key,"plan_id", plan_id)     if plan_id
         storage.hset(key,"plan_name", plan_name) if plan_name
         storage.hset(key,"username", username) if username
         storage.hset(key,"service_id", service_id) if service_id
         storage.hincrby(key,"version",1)
+
       end
 
       def self.get_version(service_id, username)
@@ -82,8 +88,10 @@ module ThreeScale
       end
 
       def self.delete(service_id, username)
-        storage.del(self.key(service_id, username))
-        Service.incr_version(service_id)
+        service = Service.load_by_id(service_id)
+        raise 'User requires a valid service' if service.nil?
+        service.user_delete(username)
+        storage.del(self.key(service_id, username))     
       end
       
       def active?

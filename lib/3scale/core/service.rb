@@ -154,22 +154,22 @@ module ThreeScale
       ## ---- add the user dimension. Users are unique on the service scope			
       ## returns true if the user is new
       def user_add(username)
-        isnew = storage.sadd(storage_key(id,":user_set"),username)
+        isnew = storage.sadd(storage_key(":user_set"),username)
         self.class.incr_version(id)
         return isnew
       end
 
       def user_delete(username)
-        storage.srem(storage_key(id,":user_set"),username)
+        storage.srem(storage_key(":user_set"),username)
         self.class.incr_version(id)
       end
 			
-      def user_exists?(user_id)
-        exists = storage.sismember(storage_key(id,":user_set"),username)
+      def user_exists?(username)
+        exists = storage.sismember(storage_key(":user_set"),username)
       end
 
-      def user_set_size
-        storage.scard(storage_key(id,":user_set"))
+      def user_size
+        storage.scard(storage_key(":user_set"))
       end
     end
   end
