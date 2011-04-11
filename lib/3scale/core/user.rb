@@ -106,13 +106,13 @@ module ThreeScale
          "service:#{service_id}/user:#{username}"
       end
 
-      #def storage_key(service_id, username, attribute)
-      #   self.class.storage_key(service_id, username, attribute)
-      #end
+      def storage_key(service_id, username, attribute)
+         self.class.storage_key(service_id, username, attribute)
+      end
 
-      #def self.storage_key(service_id, username, attribute)
-      #   "service:#{service_id}/user:#{username}/#{attribute}"
-      #end
+      def self.storage_key(service_id, username, attribute)
+         "service:#{service_id}/user:#{username}/#{attribute}"
+      end
 
     end
   end
