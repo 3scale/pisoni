@@ -116,7 +116,7 @@ module ThreeScale
       end
 
       def self.incr_version(id)
-        storage.incrby(storage_key(id,:version),1)
+        storage.incrby(storage_key(id,:version),1).to_s
       end
 
       def self.exists?(provider_key)

@@ -36,8 +36,6 @@ module ThreeScale
                      :plan_name  => service.default_user_plan_name) 
           user.save
 
-          
-
         else 
           user = new(:service_id => service.id,
                           :username   => username,
@@ -84,7 +82,7 @@ module ThreeScale
       end
 
       def self.incr_version(service_id, username)
-        storage.hincrby(self.key(service_id, username),"version")
+        storage.hincrby(self.key(service_id, username),"version",1).to_s
       end
 
       def self.delete(service_id, username)
