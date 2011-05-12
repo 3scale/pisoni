@@ -32,15 +32,17 @@ module ThreeScale
         if !user_registration_required? && (default_user_plan_id.nil? || default_user_plan_name.nil?) 
           raise 'Services with users open loop for users requires a default plan for them'
         end
-  
-        storage.set(id_storage_key, id)
-        storage.set(storage_key(:referrer_filters_required), referrer_filters_required? ? 1 : 0)
-        storage.set(storage_key(:user_registration_required), user_registration_required? ? 1 : 0)
-        storage.set(storage_key(:default_user_plan_id),default_user_plan_id) unless default_user_plan_id.nil?
-        storage.set(storage_key(:default_user_plan_name),default_user_plan_name) unless default_user_plan_name.nil?
-        storage.set(storage_key(:backend_version), @backend_version) if @backend_version
-        storage.set(storage_key(:provider_key), provider_key)
-        storage.incrby(storage_key(:version), 1)
+
+        storage.multi do
+          storage.set(id_storage_key, id)
+          storage.set(storage_key(:referrer_filters_required), referrer_filters_required? ? 1 : 0)
+          storage.set(storage_key(:user_registration_required), user_registration_required? ? 1 : 0)
+          storage.set(storage_key(:default_user_plan_id),default_user_plan_id) unless default_user_plan_id.nil?
+          storage.set(storage_key(:default_user_plan_name),default_user_plan_name) unless default_user_plan_name.nil?
+          storage.set(storage_key(:backend_version), @backend_version) if @backend_version
+          storage.set(storage_key(:provider_key), provider_key)
+          storage.incrby(storage_key(:version), 1)
+        end
       end
       
       def self.load_by_id(service_id)
@@ -100,15 +102,18 @@ module ThreeScale
       end
 
       def self.delete(provider_key)
-        storage.del(storage_key(load_id(provider_key), :referrer_filters_required))
-        storage.del(storage_key(load_id(provider_key), :user_registration_required))
-        storage.del(storage_key(load_id(provider_key), :backend_version))
-        storage.del(storage_key(load_id(provider_key), :default_user_plan_name))
-        storage.del(storage_key(load_id(provider_key), :default_user_plan_id))
-        storage.del(storage_key(load_id(provider_key), :provider_key))
-        storage.del(storage_key(load_id(provider_key), :version))
-        storage.del(storage_key(load_id(provider_key), :user_set))
-        storage.del(id_storage_key(provider_key))
+        service_id = load_id(provider_key)
+        storage.multi do
+          storage.del(storage_key(service_id, :referrer_filters_required))
+          storage.del(storage_key(service_id, :user_registration_required))
+          storage.del(storage_key(service_id, :backend_version))
+          storage.del(storage_key(service_id, :default_user_plan_name))
+          storage.del(storage_key(service_id, :default_user_plan_id))
+          storage.del(storage_key(service_id, :provider_key))
+          storage.del(storage_key(service_id, :version))
+          storage.del(storage_key(service_id, :user_set))
+          storage.del(id_storage_key(provider_key))
+        end
       end
 
       def self.get_version(id)
