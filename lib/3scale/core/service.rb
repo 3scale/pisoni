@@ -11,7 +11,11 @@ module ThreeScale
       attr_accessor :default_user_plan_id
       attr_accessor :default_user_plan_name
       attr_writer   :version
+      attr_writer   :default_service
 
+      def default_service?
+        @default_service
+      end
 
       def referrer_filters_required?
         @referrer_filters_required
@@ -27,13 +31,19 @@ module ThreeScale
         service.save
         service
       end
-      
+
+      ## only save as default if it's the first one (load_id returns null)       
       def save
         if !user_registration_required? && (default_user_plan_id.nil? || default_user_plan_name.nil?) 
           raise 'Services with users open loop for users requires a default plan for them'
         end
-  
-        storage.set(id_storage_key, id)
+
+        default_service_id = self.class.load_id(provider_key)
+        @default_service = default_service_id.nil? || default_service_id==id
+
+        storage.set(id_storage_key, id) if default_service?
+       
+        storage.sadd(id_storage_key_set,id)
         storage.set(storage_key(:referrer_filters_required), referrer_filters_required? ? 1 : 0)
         storage.set(storage_key(:user_registration_required), user_registration_required? ? 1 : 0)
         storage.set(storage_key(:default_user_plan_id),default_user_plan_id) unless default_user_plan_id.nil?
@@ -42,9 +52,22 @@ module ThreeScale
         storage.set(storage_key(:provider_key), provider_key)
         storage.incrby(storage_key(:version), 1)
       end
+
+      ## returns the old default service id
+      def make_default_service
+        if !default_service?
+          default_service_id = self.class.load_id(provider_key)
+          storage.set(id_storage_key, id)
+          self.class.incr_version(default_service_id)
+          self.class.incr_version(id)
+          return default_service_id
+        else
+          return id
+        end
+      end
       
       def self.load_by_id(service_id)
-        id = service_id
+        id = service_id.to_s unless service_id.nil?
         id and begin
                  values  = storage.mget(storage_key(id, :referrer_filters_required), storage_key(id, :backend_version), storage_key(id, :user_registration_required), storage_key(id,:default_user_plan_id), storage_key(id,:default_user_plan_name),storage_key(id,:provider_key), storage_key(id,:version))
 
@@ -62,16 +85,17 @@ module ThreeScale
                 end                
 
                 self.incr_version(id) if vv.nil?
+                default_service_id = self.load_id(provider_key)
 
-
-                  new(:provider_key              => provider_key,
-                     :id                        => id,
-                     :referrer_filters_required => referrer_filters_required,
-                     :user_registration_required => user_registration_required,
-                     :backend_version           => backend_version,
-                     :default_user_plan_id      => default_user_plan_id,
-                     :default_user_plan_name    => default_user_plan_name,
-                     :version                   => self.get_version(id))
+                new(:provider_key              => provider_key,
+                    :id                        => id,
+                    :referrer_filters_required => referrer_filters_required,
+                    :user_registration_required => user_registration_required,
+                    :backend_version           => backend_version,
+                    :default_user_plan_id      => default_user_plan_id,
+                    :default_user_plan_name    => default_user_plan_name,
+                    :default_service           => default_service_id == id,                    
+                    :version                   => self.get_version(id))
 
                 end
       end
@@ -94,21 +118,49 @@ module ThreeScale
                      :backend_version           => backend_version,
                      :default_user_plan_id      => default_user_plan_id,
                      :default_user_plan_name    => default_user_plan_name,
+                     :default_service           => true,
                      :version                   => self.get_version(id))
 
                end
       end
 
-      def self.delete(provider_key)
-        storage.del(storage_key(load_id(provider_key), :referrer_filters_required))
-        storage.del(storage_key(load_id(provider_key), :user_registration_required))
-        storage.del(storage_key(load_id(provider_key), :backend_version))
-        storage.del(storage_key(load_id(provider_key), :default_user_plan_name))
-        storage.del(storage_key(load_id(provider_key), :default_user_plan_id))
-        storage.del(storage_key(load_id(provider_key), :provider_key))
-        storage.del(storage_key(load_id(provider_key), :version))
-        storage.del(storage_key(load_id(provider_key), :user_set))
-        storage.del(id_storage_key(provider_key))
+      ## this is forbidden, you remove the default
+      #def self.delete(provider_key)
+      #  storage.del(storage_key(load_id(provider_key), :referrer_filters_required))
+      #  storage.del(storage_key(load_id(provider_key), :user_registration_required))
+      #  storage.del(storage_key(load_id(provider_key), :backend_version))
+      #  storage.del(storage_key(load_id(provider_key), :default_user_plan_name))
+      #  storage.del(storage_key(load_id(provider_key), :default_user_plan_id))
+      #  storage.del(storage_key(load_id(provider_key), :provider_key))
+      #  storage.del(storage_key(load_id(provider_key), :version))
+      #  storage.del(storage_key(load_id(provider_key), :user_set))
+      #  storage.del(id_storage_key(provider_key))
+      #end
+
+      def self.delete_by_id(service_id, options = {})
+        service_id = service_id.to_s
+        provider_key = storage.get(storage_key(service_id, :provider_key))
+        default_service_id = self.load_id(provider_key)
+        options[:force]=false unless options[:force]==true
+
+        raise 'Denied: trying to remove the default service' if service_id==default_service_id && !options[:force]
+
+        storage.del(storage_key(service_id, :referrer_filters_required))
+        storage.del(storage_key(service_id, :user_registration_required))
+        storage.del(storage_key(service_id, :backend_version))
+        storage.del(storage_key(service_id, :default_user_plan_name))
+        storage.del(storage_key(service_id, :default_user_plan_id))
+        storage.del(storage_key(service_id, :provider_key))
+        storage.del(storage_key(service_id, :version))
+        storage.del(storage_key(service_id, :user_set))
+        storage.srem(id_storage_key_set(provider_key),service_id)
+
+        storage.del(id_storage_key(provider_key)) if service_id==default_service_id
+    
+      end
+
+      def self.list(provider_key)
+        storage.smembers(id_storage_key_set(provider_key)) || []
       end
 
       def self.get_version(id)
@@ -127,6 +179,7 @@ module ThreeScale
         storage.get(id_storage_key(provider_key))
       end
 
+      ## these two are extremely dangerous
       def self.save_id(provider_key, id)
         storage.set(id_storage_key(provider_key), id)
       end
@@ -134,6 +187,7 @@ module ThreeScale
       def self.delete_id(provider_key)
         storage.del(id_storage_key(provider_key))
       end
+      ## -----------
 
       def self.storage_key(id, attribute)
         encode_key("service/id:#{id}/#{attribute}")
@@ -149,6 +203,14 @@ module ThreeScale
 
       def id_storage_key
         self.class.id_storage_key(provider_key)
+      end
+
+      def self.id_storage_key_set(provider_key)
+        encode_key("service/provider_key:#{provider_key}/ids")
+      end
+
+      def id_storage_key_set
+        self.class.id_storage_key_set(provider_key)
       end
 
       ## ---- add the user dimension. Users are unique on the service scope			
