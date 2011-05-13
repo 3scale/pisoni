@@ -46,12 +46,14 @@ module ThreeScale
       end
 
       def self.delete(service_id, id)
-        storage.del(storage_key(service_id, id, :state))
-        storage.del(storage_key(service_id, id, :plan_id))
-        storage.del(storage_key(service_id, id, :plan_name))
-        storage.del(storage_key(service_id, id, :user_required))
-        storage.del(storage_key(service_id, id, :redirect_url))
-        storage.del(storage_key(service_id, id, :version))
+        storage.multi do
+          storage.del(storage_key(service_id, id, :state))
+          storage.del(storage_key(service_id, id, :plan_id))
+          storage.del(storage_key(service_id, id, :plan_name))
+          storage.del(storage_key(service_id, id, :user_required))
+          storage.del(storage_key(service_id, id, :redirect_url))
+          storage.del(storage_key(service_id, id, :version))
+        end
       end
 
       def self.get_version(service_id, id)
@@ -74,12 +76,14 @@ module ThreeScale
       end
 
       def save
-        storage.set(storage_key(:state), state.to_s)    if state
-        storage.set(storage_key(:plan_id), plan_id)     if plan_id
-        storage.set(storage_key(:plan_name), plan_name) if plan_name
-        storage.set(storage_key(:user_required), user_required? ? 1 : 0)
-        storage.set(storage_key(:redirect_url), redirect_url) if redirect_url
-        storage.incrby(storage_key(:version),1)
+        storage.multi do
+          storage.set(storage_key(:state), state.to_s)    if state
+          storage.set(storage_key(:plan_id), plan_id)     if plan_id
+          storage.set(storage_key(:plan_name), plan_name) if plan_name
+          storage.set(storage_key(:user_required), user_required? ? 1 : 0)
+          storage.set(storage_key(:redirect_url), redirect_url) if redirect_url
+          storage.incrby(storage_key(:version),1)
+        end
       end
 
       def self.storage_key(service_id, id, attribute)

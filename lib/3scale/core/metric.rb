@@ -42,23 +42,26 @@ module ThreeScale
 
       def self.delete(service_id, id)
         name = load_name(service_id, id)
-       
-        storage.del(key(service_id, id, :name))
-        storage.del(key(service_id, id, :parent_id))
+        
+        storage.multi do
+          storage.del(key(service_id, id, :name))
+          storage.del(key(service_id, id, :parent_id))
+          storage.del(id_key(service_id, name))
+          storage.srem(id_set_key(service_id), id)
 
-        storage.del(id_key(service_id, name))
-        storage.srem(id_set_key(service_id), id)
-
-        Service.incr_version(service_id)
+          Service.incr_version(service_id)
+        end
       end
 
       def save
-        storage.set(id_key(service_id, name), id)
-        storage.set(key(service_id, id, :name), name)
-        storage.set(key(service_id, id, :parent_id), parent_id) if parent_id
-        storage.sadd(id_set_key(service_id), id)        
-        save_children
-        Service.incr_version(service_id)
+        storage.multi do
+          storage.set(id_key(service_id, name), id)
+          storage.set(key(service_id, id, :name), name)
+          storage.set(key(service_id, id, :parent_id), parent_id) if parent_id
+          storage.sadd(id_set_key(service_id), id)
+       end
+       save_children
+       Service.incr_version(service_id)
       end
 
       def children
