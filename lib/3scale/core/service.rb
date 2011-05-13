@@ -35,7 +35,7 @@ module ThreeScale
       ## only save as default if it's the first one (load_id returns null)       
       def save
         if !user_registration_required? && (default_user_plan_id.nil? || default_user_plan_name.nil?) 
-          raise 'Services with users open loop for users requires a default plan for them'
+          raise ServiceRequiresDefaultUserPlan
         end
 
         default_service_id = self.class.load_id(provider_key)
@@ -132,7 +132,7 @@ module ThreeScale
         default_service_id = self.load_id(provider_key)
         options[:force]=false unless options[:force]==true
 
-        raise 'Denied: trying to remove the default service' if service_id==default_service_id && !options[:force]
+        raise ServiceIsDefaultService, service_id if service_id==default_service_id && !options[:force]
 
         storage.multi do        
 

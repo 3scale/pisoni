@@ -134,7 +134,7 @@ class ServiceTest < Test::Unit::TestCase
 
   def test_combinations_of_registration_required_and_default_plans
 
-    assert_raise RuntimeError do 
+    assert_raise ServiceRequiresDefaultUserPlan do 
       service = Service.save(:provider_key => 'foo', :id => 7001, :user_registration_required => false)
     end
         
@@ -195,7 +195,7 @@ class ServiceTest < Test::Unit::TestCase
     assert_equal true, service1.default_service?
     assert_equal true, service2.default_service?
 
-    assert_raise RuntimeError do 
+    assert_raise ServiceIsDefaultService do 
       Service.delete_by_id(7001)
     end
 
@@ -233,7 +233,7 @@ class ServiceTest < Test::Unit::TestCase
     assert_equal true, service1.default_service?
     assert_equal false, service2.default_service?
 
-    assert_raise RuntimeError do
+    assert_raise ServiceIsDefaultService do
       Service.delete_by_id(7001)
     end
 
@@ -259,7 +259,7 @@ class ServiceTest < Test::Unit::TestCase
     assert_equal v1_0.to_i+1 , v1_1.to_i
     assert_equal v2_0.to_i+1 , v2_1.to_i
 
-    assert_raise RuntimeError do 
+    assert_raise ServiceIsDefaultService do 
       Service.delete_by_id(7002)
     end
     Service.delete_by_id(7001)

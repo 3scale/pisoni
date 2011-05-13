@@ -23,9 +23,10 @@ module ThreeScale
           ## the user does not exist yet, we need to create it for the case of the open loop
 
           if service.user_registration_required?
-            raise 'The service does not accept not registered users'
+            raise ServiceRequiresRegisteredUser, service.id
+            
           else
-            raise 'The service does not have default user plans' if service.default_user_plan_id.nil? || service.default_user_plan_name.nil?
+            raise ServiceRequiresDefaultUserPlan, service.id if service.default_user_plan_id.nil? || service.default_user_plan_name.nil?
             state = "active" if state.nil?
           end
           
@@ -49,13 +50,13 @@ module ThreeScale
       end
 
       def self.save(attributes)
-        raise 'User requires a username' if attributes[:username].nil?        
-        raise 'User requires a service id' if attributes[:service_id].nil?
+        raise UserRequiresUsername if attributes[:username].nil?        
+        raise UserRequiresServiceId if attributes[:service_id].nil?
         service = Service.load_by_id(attributes[:service_id])
-        raise 'User requires a valid service' if service.nil?
+        raise UserRequiresValidService if service.nil?
         attributes[:plan_id] ||= service.default_user_plan_id
         attributes[:plan_name] ||= service.default_user_plan_name
-        raise 'User requires defined plan' if attributes[:plan_id].nil? || attributes[:plan_name].nil?
+        raise UserRequiresDefinedPlan if attributes[:plan_id].nil? || attributes[:plan_name].nil?
         attributes[:state] = "active" if attributes[:state].nil? 
         user = new(attributes)
         user.save
@@ -65,7 +66,7 @@ module ThreeScale
       def save  
 
         service = Service.load_by_id(service_id)
-        raise 'User requires a valid service' if service.nil?
+        raise UserRequiresValidService if service.nil?
         service.user_add(username)
 
         storage.multi do
@@ -89,7 +90,7 @@ module ThreeScale
 
       def self.delete(service_id, username)
         service = Service.load_by_id(service_id)
-        raise 'User requires a valid service' if service.nil?
+        raise UserRequiresValidService if service.nil?
         service.user_delete(username)
         storage.del(self.key(service_id, username))     
       end
