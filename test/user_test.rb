@@ -8,7 +8,7 @@ class UserTest < Test::Unit::TestCase
 
   def test_create_user_errors
 
-    service = Service.save(:provider_key => 'foo', :id => 7001)
+    service = Service.save!(:provider_key => 'foo', :id => 7001)
 
     assert_raise ServiceRequiresRegisteredUser do
       ## failure because the service needs registered users
@@ -33,7 +33,7 @@ class UserTest < Test::Unit::TestCase
 
   def test_create_user_successful_service_require_registered_users
 
-    service = Service.save(:provider_key => 'foo', :id => '7001')
+    service = Service.save!(:provider_key => 'foo', :id => '7001')
     User.save(:username => 'username', :service_id => '7001', :plan_id => '1001', :plan_name => 'planname')
   
     user = User.load(service, 'username')
@@ -55,7 +55,7 @@ class UserTest < Test::Unit::TestCase
 
   def test_create_user_successful_service_not_require_registered_users
 
-    service = Service.save(:provider_key => 'foo', :id => '7001', :user_registration_required => false, :default_user_plan_name => 'planname', :default_user_plan_id => '1001')
+    service = Service.save!(:provider_key => 'foo', :id => '7001', :user_registration_required => false, :default_user_plan_name => 'planname', :default_user_plan_id => '1001')
 
     v = ['username0','username1','username2','username3','username4','username5']
 
@@ -88,7 +88,7 @@ class UserTest < Test::Unit::TestCase
 
   def test_create_repeated_users
 
-    service = Service.save(:provider_key => 'foo', :id => '7001', :user_registration_required => false, :default_user_plan_name => 'planname', :default_user_plan_id => '1001')
+    service = Service.save!(:provider_key => 'foo', :id => '7001', :user_registration_required => false, :default_user_plan_name => 'planname', :default_user_plan_id => '1001')
 
     user = User.load(service,'username')
 
@@ -107,7 +107,7 @@ class UserTest < Test::Unit::TestCase
 
   def test_create_delete_users
 
-    service = Service.save(:provider_key => 'foo', :id => '7001', :user_registration_required => false, :default_user_plan_name => 'planname', :default_user_plan_id => '1001')
+    service = Service.save!(:provider_key => 'foo', :id => '7001', :user_registration_required => false, :default_user_plan_name => 'planname', :default_user_plan_id => '1001')
 
     user = User.load(service,'username')
     user = User.load(service,'username_repeated')
@@ -128,7 +128,7 @@ class UserTest < Test::Unit::TestCase
   
   def test_versions
 
-    service = Service.save(:provider_key => 'foo', :id => '7001', :user_registration_required => false, :default_user_plan_name => 'planname', :default_user_plan_id => '1001')
+    service = Service.save!(:provider_key => 'foo', :id => '7001', :user_registration_required => false, :default_user_plan_name => 'planname', :default_user_plan_id => '1001')
 
     user = User.load(service,'username')
     assert_equal '1', User.get_version(service.id,'username')

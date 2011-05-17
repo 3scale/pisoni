@@ -70,6 +70,23 @@ module ThreeScale
         super %(User requires a defined plan)
       end
     end
- 
+
+    class InvalidProviderKeys < Error
+      def initialize
+        super %(Provider keys are not valid, must be not nil and different)
+      end
+    end
+
+    class ProviderKeyExists < Error
+      def initialize(key)
+        super %(Provider key="#{key}" already exists)
+      end
+    end
+  
+    class ProviderKeyNotFound < Error 
+      def initialize(key)
+        super %(Provider key="#{key}" does not exist)
+      end
+    end
   end
 end
