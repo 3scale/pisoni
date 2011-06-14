@@ -1,3 +1,13 @@
 = 3scale API Management System Core Libraries
 
 Core libraries for 3scale systems.
+
+== Install
+
+$ rvm use ruby-1.9.2-p0
+
+$ gem build 3scale_core.gemspec
+
+$ gem install 3scale_core-x.y.z.gem
+
+where x.y.z is the version you aim for
