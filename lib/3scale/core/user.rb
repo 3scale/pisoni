@@ -11,20 +11,33 @@ module ThreeScale
       attr_writer   :version
       
       def self.load(service, username)
-        
         key = self.key(service.id, username)
 
         values = storage.hmget(key,"state","plan_id","plan_name","version")
         state, plan_id, plan_name, vv = values
 
-        user = nil
+	      user = nil
+        if not state.nil?
+          user = new(:service_id => service.id,
+                          :username   => username,
+                          :state      => state.to_sym,
+                          :plan_id    => plan_id,
+                          :plan_name  => plan_name)
+          self.incr_version(service.id, username) if vv.nil?
+        end
+
+        return user
+      end
+
+      def self.load_or_create!(service, username)
         
-        if state.nil? 
+        user = self.load(service, username)
+        
+        if user.nil? 
           ## the user does not exist yet, we need to create it for the case of the open loop
 
           if service.user_registration_required?
             raise ServiceRequiresRegisteredUser, service.id
-            
           else
             raise ServiceRequiresDefaultUserPlan, service.id if service.default_user_plan_id.nil? || service.default_user_plan_name.nil?
             state = "active" if state.nil?
@@ -37,19 +50,12 @@ module ThreeScale
                      :plan_name  => service.default_user_plan_name) 
           user.save
 
-        else 
-          user = new(:service_id => service.id,
-                          :username   => username,
-                          :state      => state.to_sym,
-                          :plan_id    => plan_id,
-                          :plan_name  => plan_name)
-          self.incr_version(service.id, username) if vv.nil?
         end
 
         return user
       end
 
-      def self.save(attributes)
+      def self.save!(attributes)
         raise UserRequiresUsername if attributes[:username].nil?        
         raise UserRequiresServiceId if attributes[:service_id].nil?
         service = Service.load_by_id(attributes[:service_id])
@@ -66,7 +72,6 @@ module ThreeScale
       def save  
 
         service = Service.load_by_id(service_id)
-        raise UserRequiresValidService if service.nil?
         service.user_add(username)
 
         storage.multi do
@@ -88,7 +93,7 @@ module ThreeScale
         storage.hincrby(self.key(service_id, username),"version",1).to_s
       end
 
-      def self.delete(service_id, username)
+      def self.delete!(service_id, username)
         service = Service.load_by_id(service_id)
         raise UserRequiresValidService if service.nil?
         service.user_delete(username)

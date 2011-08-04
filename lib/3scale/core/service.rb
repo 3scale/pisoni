@@ -25,15 +25,15 @@ module ThreeScale
         @user_registration_required
       end
 			
-      def self.save(attributes = {})
+      def self.save!(attributes = {})
         attributes[:user_registration_required]=true if attributes[:user_registration_required].nil?
         service = new(attributes)				
-        service.save
+        service.save!
         service
       end
 
       ## only save as default if it's the first one (load_id returns null)       
-      def save
+      def save!
         if !user_registration_required? && (default_user_plan_id.nil? || default_user_plan_name.nil?) 
           raise ServiceRequiresDefaultUserPlan
         end
@@ -126,7 +126,7 @@ module ThreeScale
                 end
       end
 
-      def self.delete_by_id(service_id, options = {})
+      def self.delete_by_id!(service_id, options = {})
         service_id = service_id.to_s
         provider_key = storage.get(storage_key(service_id, :provider_key))
         default_service_id = self.load_id(provider_key)
@@ -152,21 +152,21 @@ module ThreeScale
       end
 
       ## this should be removed << extremely dangerous
-      def self.delete(provider_key)
-        service_id = load_id(provider_key)
-        storage.multi do
-          storage.del(storage_key(service_id, :referrer_filters_required))
-          storage.del(storage_key(service_id, :user_registration_required))
-          storage.del(storage_key(service_id, :backend_version))
-          storage.del(storage_key(service_id, :default_user_plan_name))
-          storage.del(storage_key(service_id, :default_user_plan_id))
-          storage.del(storage_key(service_id, :provider_key))
-          storage.del(storage_key(service_id, :version))
-          storage.del(storage_key(service_id, :user_set))
-		      storage.srem(id_storage_key_set(provider_key),service_id)
-          storage.del(id_storage_key(provider_key))
-        end
-      end
+      #def self.delete(provider_key)
+      #  service_id = load_id(provider_key)
+      #  storage.multi do
+      #    storage.del(storage_key(service_id, :referrer_filters_required))
+      #    storage.del(storage_key(service_id, :user_registration_required))
+      #    storage.del(storage_key(service_id, :backend_version))
+      #    storage.del(storage_key(service_id, :default_user_plan_name))
+      #    storage.del(storage_key(service_id, :default_user_plan_id))
+      #    storage.del(storage_key(service_id, :provider_key))
+      #    storage.del(storage_key(service_id, :version))
+      #    storage.del(storage_key(service_id, :user_set))
+		  #    storage.srem(id_storage_key_set(provider_key),service_id)
+      #    storage.del(id_storage_key(provider_key))
+      #  end
+      #end
 
       def self.list(provider_key)
         storage.smembers(id_storage_key_set(provider_key)) || []
@@ -188,14 +188,14 @@ module ThreeScale
         storage.get(id_storage_key(provider_key))
       end
 
-      ## these two are extremely dangerous
-      def self.save_id(provider_key, id)
-        storage.set(id_storage_key(provider_key), id)
-      end
+      ## these two are extremely dangerous, they should be REMOVED
+      #def self.save_id(provider_key, id)
+      #  storage.set(id_storage_key(provider_key), id)
+      #end
       
-      def self.delete_id(provider_key)
-        storage.del(id_storage_key(provider_key))
-      end
+      #def self.delete_id(provider_key)
+      #  storage.del(id_storage_key(provider_key))
+      #end
       ## -----------
 
       def self.storage_key(id, attribute)
@@ -242,6 +242,37 @@ module ThreeScale
       def user_size
         storage.scard(storage_key(":user_set"))
       end
+
+      ## method to change the provider key for a costumer,
+      def self.change_provider_key!(old_provider_key, new_provider_key)
+        
+        raise InvalidProviderKeys if old_provider_key.nil? || new_provider_key.nil? || old_provider_key==new_provider_key
+        raise ProviderKeyExists, new_provider_key unless Service.list(new_provider_key).size==0
+
+        services_list_id = Service.list(old_provider_key)
+        raise ProviderKeyNotFound, old_provider_key if services_list_id.nil? or services_list_id.size==0
+
+        default_service_id = Service.load_id(old_provider_key)        
+        services_list_id.delete(default_service_id)
+
+        storage.multi do 
+          services_list_id.each do |service_id|
+            storage.sadd(id_storage_key_set(new_provider_key),service_id)
+            storage.set(storage_key(service_id, :provider_key),new_provider_key)
+            storage.incrby(storage_key(service_id,:version),1).to_s
+          end
+
+          storage.set(id_storage_key(new_provider_key), default_service_id)
+          storage.sadd(id_storage_key_set(new_provider_key), default_service_id)
+          storage.set(storage_key(default_service_id, :provider_key),new_provider_key)
+          storage.del(id_storage_key(old_provider_key))
+          storage.del(id_storage_key_set(old_provider_key))
+          storage.incrby(storage_key(default_service_id,:version),1).to_s
+            
+        end        
+        
+      end
+
     end
   end
 end
