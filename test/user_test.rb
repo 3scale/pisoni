@@ -12,20 +12,20 @@ class UserTest < Test::Unit::TestCase
 
     assert_raise ServiceRequiresRegisteredUser do
       ## failure because the service needs registered users
-      User.load(service,'username1')
+      User.load_or_create!(service,'username1')
     end
   
     assert_raise UserRequiresDefinedPlan do
       ## failure because user requires a defined plan
-      User.save(:username => 'username', :service_id => '7001')
+      User.save!(:username => 'username', :service_id => '7001')
     end
 
     assert_raise UserRequiresUsername do
-      User.save(:service_id => '7001')
+      User.save!(:service_id => '7001')
     end
 
     assert_raise UserRequiresValidService do
-      User.save(:username => 'username', :service_id => '7001000')
+      User.save!(:username => 'username', :service_id => '7001000')
     end
 
   end
@@ -34,7 +34,7 @@ class UserTest < Test::Unit::TestCase
   def test_create_user_successful_service_require_registered_users
 
     service = Service.save!(:provider_key => 'foo', :id => '7001')
-    User.save(:username => 'username', :service_id => '7001', :plan_id => '1001', :plan_name => 'planname')
+    User.save!(:username => 'username', :service_id => '7001', :plan_id => '1001', :plan_name => 'planname')
   
     user = User.load(service, 'username')
 
@@ -44,11 +44,11 @@ class UserTest < Test::Unit::TestCase
     assert_equal  '1001', user.plan_id
     assert_equal  '7001', user.service_id
 
-    User.delete(service.id,user.username)
+    User.delete!(service.id,user.username)
 
     assert_raise ServiceRequiresRegisteredUser do
       ## failure trying to load a user who does not exist and the service does not support open loop
-      user = User.load(service,'username')
+      user = User.load_or_create!(service,'username')
     end
  
   end
@@ -66,7 +66,7 @@ class UserTest < Test::Unit::TestCase
     v.each do |username|
       assert_equal  false, service.user_exists?(username)
 
-      user = User.load(service,username)
+      user = User.load_or_create!(service,username)
 
       assert_equal  true, user.active?
       assert_equal  username, user.username
@@ -90,7 +90,7 @@ class UserTest < Test::Unit::TestCase
 
     service = Service.save!(:provider_key => 'foo', :id => '7001', :user_registration_required => false, :default_user_plan_name => 'planname', :default_user_plan_id => '1001')
 
-    user = User.load(service,'username')
+    user = User.load_or_create!(service,'username')
 
     val = Service.get_version(service.id)
 
@@ -109,16 +109,16 @@ class UserTest < Test::Unit::TestCase
 
     service = Service.save!(:provider_key => 'foo', :id => '7001', :user_registration_required => false, :default_user_plan_name => 'planname', :default_user_plan_id => '1001')
 
-    user = User.load(service,'username')
-    user = User.load(service,'username_repeated')
-    user = User.load(service,'username_repeated')
+    user = User.load_or_create!(service,'username')
+    user = User.load_or_create!(service,'username_repeated')
+    user = User.load_or_create!(service,'username_repeated')
 
     version = Service.get_version(service.id)
 
     assert_equal  2, service.user_size 
-    User.delete(service.id,'username')
+    User.delete!(service.id,'username')
     assert_equal  1, service.user_size
-    User.delete(service.id,'username_repeated')   
+    User.delete!(service.id,'username_repeated')   
     assert_equal  0, service.user_size
 
     assert_equal  (version.to_i + 2).to_s, Service.get_version(service.id)     
@@ -126,11 +126,17 @@ class UserTest < Test::Unit::TestCase
 
   end
   
+
+
   def test_versions
 
     service = Service.save!(:provider_key => 'foo', :id => '7001', :user_registration_required => false, :default_user_plan_name => 'planname', :default_user_plan_id => '1001')
 
     user = User.load(service,'username')
+    assert_nil user
+
+    user = User.load_or_create!(service,'username')
+    assert_not_nil user
     assert_equal '1', User.get_version(service.id,'username')
 
     user.plan_id = '1002'
