@@ -7,7 +7,7 @@ module ThreeScale
       attr_accessor :id
       attr_accessor :backend_version
       attr_writer   :referrer_filters_required
-      attr_writer 	:user_registration_required
+      attr_writer   :user_registration_required
       attr_accessor :default_user_plan_id
       attr_accessor :default_user_plan_name
       attr_writer   :version
@@ -41,7 +41,7 @@ module ThreeScale
         default_service_id = self.class.load_id(provider_key)
         @default_service = default_service_id.nil? || default_service_id==id
 
-		    storage.multi do 
+        storage.multi do 
           storage.set(id_storage_key, id) if default_service?
           storage.sadd(id_storage_key_set,id)
           storage.set(storage_key(:referrer_filters_required), referrer_filters_required? ? 1 : 0)
@@ -163,7 +163,7 @@ module ThreeScale
       #    storage.del(storage_key(service_id, :provider_key))
       #    storage.del(storage_key(service_id, :version))
       #    storage.del(storage_key(service_id, :user_set))
-		  #    storage.srem(id_storage_key_set(provider_key),service_id)
+      #    storage.srem(id_storage_key_set(provider_key),service_id)
       #    storage.del(id_storage_key(provider_key))
       #  end
       #end
