@@ -3,7 +3,7 @@ module ThreeScale
     class UsageLimit
       include Storable
 
-      PERIODS = [:year, :month, :week, :day, :hour, :minute].freeze
+      PERIODS = [:eternity, :year, :month, :week, :day, :hour, :minute].freeze
 
       attr_accessor :service_id
       attr_accessor :plan_id

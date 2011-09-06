@@ -95,4 +95,42 @@ class UsageLimitTest < Test::Unit::TestCase
 
     assert_equal 1000000, usage_limit.value
   end
+
+  def test_save_with_eternity
+    UsageLimit.save(:service_id => '2001',
+                    :plan_id    => '3001',
+                    :metric_id  => '4001',
+                    :month      => 1000000,
+                    :eternity   => 300000,
+                   )
+    
+    assert_equal '1000000',
+                 storage.get('usage_limit/service_id:2001/plan_id:3001/metric_id:4001/month')
+
+    assert_equal '300000',
+                 storage.get('usage_limit/service_id:2001/plan_id:3001/metric_id:4001/eternity')
+
+  end
+
+  def test_delete_with_eternity
+    Metric.save(:service_id => 2001, :id => 4001, :name => 'hits')
+    UsageLimit.save(:service_id => 2001,
+                    :plan_id    => 3001,
+                    :metric_id  => 4001,
+                    :minute     => 10,
+                    :eternity   => 1000)
+
+    UsageLimit.delete(2001, 3001, 4001, :eternity)
+
+    assert_nil UsageLimit.load_value(2001, 3001, 4001, :eternity)
+
+    usage_limits = UsageLimit.load_all(2001, 3001)
+    assert usage_limits.none? { |limit| limit.metric_id == '4001' && limit.period == :eternity }
+
+    assert_equal usage_limits.first.period, :minute
+
+  end
+
+
+
 end
