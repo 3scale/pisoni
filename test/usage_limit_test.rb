@@ -101,8 +101,7 @@ class UsageLimitTest < Test::Unit::TestCase
                     :plan_id    => '3001',
                     :metric_id  => '4001',
                     :month      => 1000000,
-                    :eternity   => 300000,
-                   )
+                    :eternity   => 300000)
     
     assert_equal '1000000',
                  storage.get('usage_limit/service_id:2001/plan_id:3001/metric_id:4001/month')
