@@ -26,7 +26,15 @@ module ThreeScale
       end
 			
       def self.save!(attributes = {})
-        attributes[:user_registration_required]=true if attributes[:user_registration_required].nil?
+        if attributes[:user_registration_required].nil?
+          val = storage.get(storage_key(attributes[:id], :user_registration_required))
+          if !val.nil? || val==0 
+            ## the attribute already existed and was set to false
+            attributes[:user_registration_required]=false
+          else 
+            attributes[:user_registration_required]=true
+          end
+        end
         service = new(attributes)				
         service.save!
         service

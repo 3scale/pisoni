@@ -2,8 +2,8 @@
 
 Gem::Specification.new do |s|
   s.name = %q{3scale_core}
-  s.version = "0.4.2"
-  s.date = %q{2011-08-08}
+  s.version = "0.4.3"
+  s.date = %q{2011-09-27}
 
   s.platform = Gem::Platform::RUBY
   s.authors = ["Adam Cig\303\241nek", "Tiago Macedo", "Josep M. Pujol"]

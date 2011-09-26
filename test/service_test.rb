@@ -161,6 +161,32 @@ class ServiceTest < Test::Unit::TestCase
     
   end
 
+  def test_user_registration_required_is_maintained
+
+
+    Service.save!(:provider_key => 'foo', :id => 7001, :user_registration_required => false, :default_user_plan_id => 1000, :default_user_plan_name => "user_plan_name")
+    service = Service.load('foo')
+    assert_equal  false, service.user_registration_required?
+    assert_equal  "1000", service.default_user_plan_id
+
+    Service.save!(:provider_key => 'foo', :id => 7001, :user_registration_required => true ,:default_user_plan_id => 1003, :default_user_plan_name => "user_plan_name3")
+    service = Service.load('foo')
+    assert_equal  true, service.user_registration_required?
+    assert_equal  "1003", service.default_user_plan_id
+
+    Service.save!(:provider_key => 'foo', :id => 7001, :user_registration_required => false ,:default_user_plan_id => 1006, :default_user_plan_name => "user_plan_name3")
+    service = Service.load('foo')
+    assert_equal  false, service.user_registration_required?
+    assert_equal  "1006", service.default_user_plan_id
+
+    Service.save!(:provider_key => 'foo', :id => 7001,:default_user_plan_id => 1009, :default_user_plan_name => "user_plan_name3")
+    service = Service.load('foo')
+    assert_equal  false, service.user_registration_required?
+    assert_equal  "1009", service.default_user_plan_id
+
+
+ end
+
   def test_multiple_services
 
     assert_equal [], Service.list('foo')
@@ -295,6 +321,8 @@ class ServiceTest < Test::Unit::TestCase
     end
 
   end
+
+
 
   def test_change_provider_key_errors
 
