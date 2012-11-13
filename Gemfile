@@ -6,4 +6,5 @@ group :test do
   gem 'shoulda'
   gem 'mocha'
   gem 'turn'  
+  gem 'minitest'
 end
