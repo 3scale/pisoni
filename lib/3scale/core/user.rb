@@ -90,7 +90,7 @@ module ThreeScale
       end
 
       def self.incr_version(service_id, username)
-        storage.hincrby(self.key(service_id, username),"version",1).to_s
+        storage.hincrby(self.key(service_id, username),"version",1)
       end
 
       def self.delete!(service_id, username)

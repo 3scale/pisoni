@@ -61,7 +61,7 @@ module ThreeScale
       end
 
       def self.incr_version(service_id, id)
-        storage.incrby(storage_key(service_id, id, :version),1).to_s
+        storage.incrby(storage_key(service_id, id, :version),1)
       end
 
 

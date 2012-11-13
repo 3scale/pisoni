@@ -147,10 +147,10 @@ class UserTest < Test::Unit::TestCase
     assert_equal '1002', user.plan_id
     assert_equal '2', User.get_version(service.id,'username')
 
-    assert_equal '3', User.incr_version(service.id,'username')
+    assert_equal 3, User.incr_version(service.id,'username')
 
-    assert_equal '1', User.incr_version('foo','bla')
-    assert_equal '1', User.incr_version(service.id,'bla')
+    assert_equal 1, User.incr_version('foo','bla')
+    assert_equal 1, User.incr_version(service.id,'bla')
 
   end
 

@@ -187,7 +187,7 @@ module ThreeScale
       end
 
       def self.incr_version(id)
-        storage.incrby(storage_key(id,:version),1).to_s
+        storage.incrby(storage_key(id,:version),1)
       end
 
       def self.exists?(provider_key)
@@ -269,7 +269,7 @@ module ThreeScale
           services_list_id.each do |service_id|
             storage.sadd(id_storage_key_set(new_provider_key),service_id)
             storage.set(storage_key(service_id, :provider_key),new_provider_key)
-            storage.incrby(storage_key(service_id,:version),1).to_s
+            storage.incrby(storage_key(service_id,:version),1)
           end
 
           storage.set(id_storage_key(new_provider_key), default_service_id)
@@ -277,7 +277,7 @@ module ThreeScale
           storage.set(storage_key(default_service_id, :provider_key),new_provider_key)
           storage.del(id_storage_key(old_provider_key))
           storage.del(id_storage_key_set(old_provider_key))
-          storage.incrby(storage_key(default_service_id,:version),1).to_s
+          storage.incrby(storage_key(default_service_id,:version),1)
             
         end        
         
