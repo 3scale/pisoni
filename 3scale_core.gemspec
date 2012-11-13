@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{3scale_core}
-  s.version = "0.4.5"
+  s.version = "0.5.0"
   s.date = %q{2011-09-27}
 
   s.platform = Gem::Platform::RUBY
@@ -15,6 +15,9 @@ Gem::Specification.new do |s|
   # s.required_rubygems_version = ">= 1.3.6"
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.rubygems_version = %q{1.3.7}
+
+  s.add_dependency 'hiredis',                 '0.4.5'
+  s.add_dependency 'redis',                   '3.0.2'
 
   s.files = Dir.glob("**/*")
   # s.require_path = "lib"
