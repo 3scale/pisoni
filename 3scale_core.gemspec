@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{3scale_core}
-  s.version = "0.5.0"
+  s.version = "0.5.1"
   s.date = %q{2011-09-27}
 
   s.platform = Gem::Platform::RUBY
