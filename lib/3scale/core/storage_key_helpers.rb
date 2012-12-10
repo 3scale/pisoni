@@ -2,11 +2,11 @@ module ThreeScale
   module Core
     module StorageKeyHelpers
       def encode_key(key)
-        key.to_s.gsub(/\s/, '+')
+        key.to_s.tr(' ', '+')
       end
 
       def decode_key(key)
-        key.gsub('+', ' ')
+        key.tr('+', ' ')
       end
     end
   end
