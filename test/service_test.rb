@@ -348,6 +348,10 @@ class ServiceTest < Test::Unit::TestCase
     end
 
     assert_raise InvalidProviderKeys do
+      Service.change_provider_key!('foo','')
+    end
+
+    assert_raise InvalidProviderKeys do
       Service.change_provider_key!('foo','foo')
     end
 

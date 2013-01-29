@@ -256,7 +256,7 @@ module ThreeScale
       ## method to change the provider key for a costumer,
       def self.change_provider_key!(old_provider_key, new_provider_key)
         
-        raise InvalidProviderKeys if old_provider_key.nil? || new_provider_key.nil? || old_provider_key==new_provider_key
+        raise InvalidProviderKeys if old_provider_key.nil? || new_provider_key.nil? || new_provider_key == "" || old_provider_key==new_provider_key
         raise ProviderKeyExists, new_provider_key unless Service.list(new_provider_key).size==0
 
         services_list_id = Service.list(old_provider_key)

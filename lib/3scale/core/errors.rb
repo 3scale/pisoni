@@ -28,7 +28,13 @@ module ThreeScale
 
     NotFound = Class.new(Error)
     Invalid  = Class.new(Error)
-
+    
+    class ApplicationHasInconsistentData < Error
+      def initialize(id, user_key)
+        super %(Application id="#{id}" with user_key="#{user_key}" has inconsistent data and could not be saved)
+      end
+    end
+    
     class ServiceRequiresDefaultUserPlan < Error
       def initialize
         super %(Services without the need for registered users require a default user plan)

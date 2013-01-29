@@ -97,6 +97,7 @@ module ThreeScale
       # XXX: Old API compatibility methods.
 
       def self.save_id_by_key(service_id, key, id)
+        raise ApplicationHasInconsistentData.new(id, key) if (service_id.nil? || id.nil? || key.nil? || service_id=="" || id=="" || key=="")
         storage.set(id_by_key_storage_key(service_id, key), id)
       end
 

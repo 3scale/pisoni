@@ -122,6 +122,29 @@ class ApplicationTest < Test::Unit::TestCase
     
     assert Application.exists?('2001', '8012')
   end
+  
+  def test_failure_when_user_or_app_id_is_blank
+    Application.save(:service_id => '2001',
+                      :id         => '8012',
+                      :state      => :active)
+
+    assert Application.exists?('2001', '8012')
+     
+    assert_raise ApplicationHasInconsistentData do
+      Application.save_id_by_key('2001', '', '8012')
+    end
+
+    assert_raise ApplicationHasInconsistentData do
+      Application.save_id_by_key('2001', nil, '8012')
+    end
+    
+    assert_raise ApplicationHasInconsistentData do
+      Application.save_id_by_key('2001', 'foobar', '')
+    end
+    
+    Application.save_id_by_key('2001', 'foobar', '8022')
+    assert_equal '8022', storage.get('application/service_id:2001/key:foobar/id')   
+  end
 
   def test_save_id_by_key
     Application.save_id_by_key('2001', 'foobar', '8022')
