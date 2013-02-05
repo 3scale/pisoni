@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.date = %q{2011-09-27}
 
   s.platform = Gem::Platform::RUBY
-  s.authors = ["Adam Cig\303\241nek", "Tiago Macedo", "Josep M. Pujol"]
+  s.authors = ["Adam Ciganek", "Tiago Macedo", "Josep M. Pujol"]
   s.email = %q{josep@3scale.net tiago@3scale.net}
   s.homepage = %q{http://www.3scale.net}
   s.summary = %q{3scale web service management system core libraries}
