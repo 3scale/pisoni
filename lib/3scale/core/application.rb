@@ -53,6 +53,7 @@ module ThreeScale
           storage.del(storage_key(service_id, id, :user_required))
           storage.del(storage_key(service_id, id, :redirect_url))
           storage.del(storage_key(service_id, id, :version))
+          storage.srem(applications_set_key(service_id),id)
         end
       end
 
@@ -82,6 +83,7 @@ module ThreeScale
           storage.set(storage_key(:plan_name), plan_name) if plan_name
           storage.set(storage_key(:user_required), user_required? ? 1 : 0)
           storage.set(storage_key(:redirect_url), redirect_url) if redirect_url
+          storage.sadd(applications_set_key(service_id),id)
           storage.incrby(storage_key(:version),1)
         end
       end
@@ -92,6 +94,14 @@ module ThreeScale
 
       def storage_key(attribute)
         self.class.storage_key(service_id, id, attribute)
+      end
+      
+      def applications_set_key(service_id)
+        self.class.applications_set_key(service_id)
+      end
+      
+      def self.applications_set_key(service_id)
+        encode_key("service_id:#{service_id}/applications")
       end
 
       # XXX: Old API compatibility methods.
@@ -112,6 +122,7 @@ module ThreeScale
       def self.id_by_key_storage_key(service_id, key)
         encode_key("application/service_id:#{service_id}/key:#{key}/id")
       end
+          
     end
   end
 end

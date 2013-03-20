@@ -6,6 +6,9 @@ class ApplicationTest < Test::Unit::TestCase
   end
 
   def test_save
+    
+    assert_equal [],  storage.smembers('service_id:2001/applications')
+        
     Application.save(:service_id => '2001',
                      :id         => '8010',
                      :state      => :active,
@@ -18,6 +21,17 @@ class ApplicationTest < Test::Unit::TestCase
     assert_equal 'awesome', storage.get('application/service_id:2001/id:8010/plan_name')
     assert_equal 'bla',     storage.get('application/service_id:2001/id:8010/redirect_url')
     assert_equal '1',       storage.get('application/service_id:2001/id:8010/version')    
+
+    assert_equal ['8010'],  storage.smembers('service_id:2001/applications')
+    
+    Application.save(:service_id => '2001',
+                     :id         => '8011',
+                     :state      => :active,
+                     :plan_id    => '3001',
+                     :plan_name  => 'awesome',
+                     :redirect_url => 'bla')
+
+    assert_equal ['8010','8011'].sort,  storage.smembers('service_id:2001/applications').sort
 
   end
 
@@ -101,6 +115,8 @@ class ApplicationTest < Test::Unit::TestCase
 
     Application.delete(2001, 8011)
     assert_nil Application.load(2001, 8011)
+    
+    
   end
 
   def test_exists
@@ -179,9 +195,13 @@ class ApplicationTest < Test::Unit::TestCase
 
     application = Application.load('2001', '8012')
     assert_equal '2', Application.get_version('2001','8012')
+    
+    assert_equal ['8012'],  storage.smembers('service_id:2001/applications')
 
     Application.delete(2001, 8012)
-    assert_nil Application.get_version('2001','8012') 
+    assert_nil Application.get_version('2001','8012')
+    
+    assert_equal [],  storage.smembers('service_id:2001/applications')
 
   end
 

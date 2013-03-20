@@ -6,18 +6,36 @@ class ServiceTest < Test::Unit::TestCase
   end
 
   def test_save
+    
+    assert_equal [], storage.smembers(Service.provider_keys_set_key)
+    assert_equal [], storage.smembers(Service.services_set_key)
+    
     Service.save!(:provider_key => 'foo', :id => 7001, :referrer_filters_required => true)
     assert_equal '7001', storage.get('service/provider_key:foo/id')
     assert_equal '1',    storage.get('service/id:7001/referrer_filters_required')
     assert_nil           storage.get('service/id:7001/backend_version')
     assert_equal '1',    storage.get('service/id:7001/user_registration_required')
 
+    assert_equal ['foo'], storage.smembers(Service.provider_keys_set_key)
+    assert_equal ['7001'], storage.smembers(Service.services_set_key)
+
+    Service.save!(:provider_key => 'foo', :id => 7002, :referrer_filters_required => true)
+    assert_equal '7001', storage.get('service/provider_key:foo/id')
+    assert_equal '1',    storage.get('service/id:7002/referrer_filters_required')
+    assert_nil           storage.get('service/id:7002/backend_version')
+    assert_equal '1',    storage.get('service/id:7002/user_registration_required')
+
+    assert_equal ['foo'], storage.smembers(Service.provider_keys_set_key)
+    assert_equal ['7001','7002'].sort, storage.smembers(Service.services_set_key).sort
   end
 
   def test_save_with_backend_version
     Service.save!(:provider_key => 'foo', :id => 7001, :backend_version => 'oauth')
     assert_equal '7001', storage.get('service/provider_key:foo/id')
     assert_equal 'oauth',storage.get('service/id:7001/backend_version')
+
+    assert_equal ['foo'], storage.smembers(Service.provider_keys_set_key)
+    assert_equal ['7001'], storage.smembers(Service.services_set_key)    
   end
 
   def test_save_with_user_registration_required
@@ -66,11 +84,19 @@ class ServiceTest < Test::Unit::TestCase
 
   def test_delete
     Service.save!(:provider_key => 'foo', :id => 7003, :referrer_filters_required => true, :backend_version => 'oauth')
+    
+    assert_equal ['foo'], storage.smembers(Service.provider_keys_set_key)
+    assert_equal ['7003'], storage.smembers(Service.services_set_key)
+    
     Service.delete_by_id!(7003, {:force => true})
 
     assert_nil storage.get('service/provider_key:foo/id')
     assert_nil storage.get('service/id:7003/referrer_filters_required')
     assert_nil storage.get('service/id:7003/backend_version')
+
+    ## providers_keys are never removed so we have some sort of history for safety
+    assert_equal ['foo'], storage.smembers(Service.provider_keys_set_key)
+    assert_equal [], storage.smembers(Service.services_set_key)
   end
 
   def test_exists?
