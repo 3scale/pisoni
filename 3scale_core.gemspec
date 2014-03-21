@@ -12,11 +12,8 @@ Gem::Specification.new do |s|
   s.summary = %q{3scale web service management system core libraries}
   s.description = %q{This gem provides core libraries for 3scale systems.}
 
-  # s.required_rubygems_version = ">= 1.3.6"
-  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.rubygems_version = %q{1.3.7}
-
   s.add_dependency 'redis', '3.0.2'
+
   s.files = Dir.glob("**/*")
   s.require_paths = ["lib"]
 
