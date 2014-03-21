@@ -2,7 +2,7 @@ module ThreeScale
   module Core
     class Service
       include Storable
-      
+
       attr_accessor :provider_key
       attr_accessor :id
       attr_accessor :backend_version
@@ -20,11 +20,11 @@ module ThreeScale
       def referrer_filters_required?
         @referrer_filters_required
       end
-	
+
       def user_registration_required?
         @user_registration_required
       end
-			
+
       def self.save!(attributes = {})
         if attributes[:user_registration_required].nil?
           val = storage.get(storage_key(attributes[:id], :user_registration_required))
@@ -33,25 +33,25 @@ module ThreeScale
             ## service already existed and was set to false, that's somewhat problematic
             ## on the tests
             attributes[:user_registration_required]=false
-          else 
+          else
             attributes[:user_registration_required]=true
           end
         end
-        service = new(attributes)				
+        service = new(attributes)
         service.save!
         service
       end
 
-      ## only save as default if it's the first one (load_id returns null)       
+      ## only save as default if it's the first one (load_id returns null)
       def save!
-        if !user_registration_required? && (default_user_plan_id.nil? || default_user_plan_name.nil?) 
+        if !user_registration_required? && (default_user_plan_id.nil? || default_user_plan_name.nil?)
           raise ServiceRequiresDefaultUserPlan
         end
 
         default_service_id = self.class.load_id(provider_key)
         @default_service = default_service_id.nil? || default_service_id==id
 
-        storage.multi do 
+        storage.multi do
           storage.set(id_storage_key, id) if default_service?
           storage.sadd(id_storage_key_set,id)
           storage.set(storage_key(:referrer_filters_required), referrer_filters_required? ? 1 : 0)
@@ -70,7 +70,7 @@ module ThreeScale
       def make_default_service
         if !default_service?
           default_service_id = self.class.load_id(provider_key)
-          storage.multi do 
+          storage.multi do
             storage.set(id_storage_key, id)
             self.class.incr_version(default_service_id)
             self.class.incr_version(id)
@@ -80,7 +80,7 @@ module ThreeScale
           return id
         end
       end
-      
+
       def self.load_by_id(service_id)
         id = service_id.to_s unless service_id.nil?
         id and begin
@@ -95,9 +95,9 @@ module ThreeScale
                  ## the default is true, because it's more restrictive, nil.to_i == 0
                 if user_registration_required.nil?
                   user_registration_required = true
-                else                           
+                else
                   user_registration_required = user_registration_required.to_i > 0
-                end                
+                end
 
                 self.incr_version(id) if vv.nil?
                 default_service_id = self.load_id(provider_key)
@@ -109,7 +109,7 @@ module ThreeScale
                     :backend_version           => backend_version,
                     :default_user_plan_id      => default_user_plan_id,
                     :default_user_plan_name    => default_user_plan_name,
-                    :default_service           => default_service_id == id,                    
+                    :default_service           => default_service_id == id,
                     :version                   => self.get_version(id))
                 end
       end
@@ -144,7 +144,7 @@ module ThreeScale
 
         raise ServiceIsDefaultService, service_id if service_id==default_service_id && !options[:force]
 
-        storage.multi do        
+        storage.multi do
           storage.del(storage_key(service_id, :referrer_filters_required))
           storage.del(storage_key(service_id, :user_registration_required))
           storage.del(storage_key(service_id, :backend_version))
@@ -174,7 +174,7 @@ module ThreeScale
       def self.exists?(provider_key)
         storage.exists(id_storage_key(provider_key))
       end
-      
+
       def self.load_id(provider_key)
         storage.get(id_storage_key(provider_key))
       end
@@ -202,24 +202,24 @@ module ThreeScale
       def id_storage_key_set
         self.class.id_storage_key_set(provider_key)
       end
-      
+
       def services_set_key
         self.class.services_set_key
       end
-      
+
       def provider_keys_set_key
         self.class.provider_keys_set_key
       end
-      
+
       def self.services_set_key
         encode_key("services_set")
       end
-      
+
       def self.provider_keys_set_key
         encode_key("provider_keys_set")
       end
-      
-      ## ---- add the user dimension. Users are unique on the service scope			
+
+      ## ---- add the user dimension. Users are unique on the service scope
       ## returns true if the user is new
       def user_add(username)
         isnew = storage.sadd(storage_key("user_set"),username)
@@ -231,7 +231,7 @@ module ThreeScale
         storage.srem(storage_key("user_set"),username)
         self.class.incr_version(id)
       end
-			
+
       def user_exists?(username)
         exists = storage.sismember(storage_key("user_set"),username)
       end
@@ -248,10 +248,10 @@ module ThreeScale
         services_list_id = Service.list(old_provider_key)
         raise ProviderKeyNotFound, old_provider_key if services_list_id.nil? or services_list_id.size==0
 
-        default_service_id = Service.load_id(old_provider_key)        
+        default_service_id = Service.load_id(old_provider_key)
         services_list_id.delete(default_service_id)
 
-        storage.multi do 
+        storage.multi do
           services_list_id.each do |service_id|
             storage.sadd(id_storage_key_set(new_provider_key),service_id)
             storage.set(storage_key(service_id, :provider_key),new_provider_key)

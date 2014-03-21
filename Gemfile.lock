@@ -2,7 +2,10 @@ GEM
   remote: http://rubygems.org/
   specs:
     ansi (1.4.3)
+    faraday (0.9.0)
+      multipart-post (>= 1.2, < 3)
     minitest (4.2.0)
+    multipart-post (2.0.0)
     rake (10.0.0)
     redis (3.0.2)
     turn (0.9.7)
@@ -13,6 +16,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  faraday (~> 0.9.0)
   minitest
   rake
   redis (= 3.0.2)
