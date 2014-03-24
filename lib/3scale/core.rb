@@ -13,5 +13,9 @@ module ThreeScale
     def self.storage
       raise 'You have to reimplement this method to return a storage instance.'
     end
+
+    def self.faraday
+      @faraday ||= Faraday.new(:url => 'http://example.com/')
+    end
   end
 end

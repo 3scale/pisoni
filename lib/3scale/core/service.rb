@@ -160,7 +160,9 @@ module ThreeScale
       end
 
       def self.list(provider_key)
-        storage.smembers(id_storage_key_set(provider_key)) || []
+        response = Core.faraday.get "services/?provider_key=#{provider_key}"
+
+        JSON.parse(response.body)
       end
 
       def self.get_version(id)
