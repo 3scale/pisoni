@@ -3,15 +3,11 @@ module ThreeScale
     class Service
       include Storable
 
-      attr_accessor :provider_key
-      attr_accessor :id
-      attr_accessor :backend_version
-      attr_writer   :referrer_filters_required
-      attr_writer   :user_registration_required
-      attr_accessor :default_user_plan_id
-      attr_accessor :default_user_plan_name
-      attr_writer   :version
-      attr_writer   :default_service
+      ATTRIBUTES = %w(provider_key id backend_version referrer_filters_required
+        user_registration_required default_user_plan_id default_user_plan_name
+        version default_service)
+
+      attr_accessor *(ATTRIBUTES.map { |attr| attr.to_sym })
 
       def default_service?
         @default_service
@@ -82,81 +78,23 @@ module ThreeScale
       end
 
       def self.load_by_id(service_id)
-        id = service_id.to_s unless service_id.nil?
-        id and begin
-                values  = storage.mget(storage_key(id, :referrer_filters_required), storage_key(id, :backend_version), storage_key(id, :user_registration_required), storage_key(id,:default_user_plan_id), storage_key(id,:default_user_plan_name),storage_key(id,:provider_key), storage_key(id,:version))
+        response = Core.faraday.get "services/#{service_id}"
+        service = JSON.parse(response.body)
 
-                referrer_filters_required, backend_version, user_registration_required, default_user_plan_id, default_user_plan_name, provider_key, vv = values
-
-                 ## warning, not sure this is very elegant
-                return nil if provider_key.nil?
-                referrer_filters_required = referrer_filters_required.to_i > 0
-
-                 ## the default is true, because it's more restrictive, nil.to_i == 0
-                if user_registration_required.nil?
-                  user_registration_required = true
-                else
-                  user_registration_required = user_registration_required.to_i > 0
-                end
-
-                self.incr_version(id) if vv.nil?
-                default_service_id = self.load_id(provider_key)
-
-                new(:provider_key              => provider_key,
-                    :id                        => id,
-                    :referrer_filters_required => referrer_filters_required,
-                    :user_registration_required => user_registration_required,
-                    :backend_version           => backend_version,
-                    :default_user_plan_id      => default_user_plan_id,
-                    :default_user_plan_name    => default_user_plan_name,
-                    :default_service           => default_service_id == id,
-                    :version                   => self.get_version(id))
-                end
-      end
-
-      def self.load(provider_key)
-        id = storage.get(id_storage_key(provider_key))
-        id and begin
-                values = storage.mget(storage_key(id, :referrer_filters_required), storage_key(id, :backend_version), storage_key(id, :user_registration_required), storage_key(id,:default_user_plan_id), storage_key(id,:default_user_plan_name),storage_key(id,:version))
-                referrer_filters_required, backend_version, user_registration_required, default_user_plan_id, default_user_plan_name, vv = values
-
-                referrer_filters_required = referrer_filters_required.to_i > 0
-                user_registration_required = user_registration_required.to_i > 0
-                self.incr_version(id) if vv.nil?
-
-                new(:provider_key              => provider_key,
-                    :id                        => id,
-                    :referrer_filters_required => referrer_filters_required,
-                    :user_registration_required => user_registration_required,
-                    :backend_version           => backend_version,
-                    :default_user_plan_id      => default_user_plan_id,
-                    :default_user_plan_name    => default_user_plan_name,
-                    :default_service           => true,
-                    :version => self.get_version(id))
-                end
+        attributes = {}
+        ATTRIBUTES.each { |attr| attributes[attr] = service[attr] }
+        new attributes
       end
 
       def self.delete_by_id!(service_id, options = {})
-        service_id = service_id.to_s
-        provider_key = storage.get(storage_key(service_id, :provider_key))
-        default_service_id = self.load_id(provider_key)
-        options[:force]=false unless options[:force]==true
+        response = Core.faraday.delete "services/#{service_id}", options
 
-        raise ServiceIsDefaultService, service_id if service_id==default_service_id && !options[:force]
-
-        storage.multi do
-          storage.del(storage_key(service_id, :referrer_filters_required))
-          storage.del(storage_key(service_id, :user_registration_required))
-          storage.del(storage_key(service_id, :backend_version))
-          storage.del(storage_key(service_id, :default_user_plan_name))
-          storage.del(storage_key(service_id, :default_user_plan_id))
-          storage.del(storage_key(service_id, :provider_key))
-          storage.del(storage_key(service_id, :version))
-          storage.del(storage_key(service_id, :user_set))
-          storage.srem(id_storage_key_set(provider_key),service_id)
-          storage.srem(services_set_key, service_id)
-          storage.del(id_storage_key(provider_key)) if service_id==default_service_id
+        if response.status != 200
+          raise ServiceIsDefaultService, service_id if response.status == 400
+          raise "Error deleting a Service, response code: #{response.satus},
+            response body: #{response.body.inspect}"
         end
+        return true
       end
 
       def self.list(provider_key)

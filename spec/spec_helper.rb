@@ -17,6 +17,11 @@ module ThreeScale::Core
     @faraday_stub_adapter ||= Faraday::Adapter::Test::Stubs.new
   end
 
+  def self.flush_faraday
+    @faraday = nil
+    @faraday_stub_adapter = nil
+  end
+
   # Use the synchronous redis client here, for simplicity.
   def self.storage
     @storage ||= ::Redis.new(:db => 2)
@@ -26,6 +31,7 @@ end
 class MiniTest::Spec
   before :each do
     storage.flushdb
+    ThreeScale::Core.flush_faraday
   end
 
   private
