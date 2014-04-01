@@ -13,6 +13,7 @@ Gem::Specification.new do |s|
   s.description = %q{This gem provides core libraries for 3scale systems.}
 
   s.add_dependency 'redis', '3.0.2'
+  s.add_dependency 'hiredis', '0.4.5'
   s.add_dependency 'faraday', '~> 0.9.0'
   s.add_dependency 'json', '~> 1.8.1'
 
