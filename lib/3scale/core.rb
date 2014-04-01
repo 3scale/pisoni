@@ -15,7 +15,10 @@ module ThreeScale
     end
 
     def self.faraday
-      @faraday ||= Faraday.new(:url => 'http://example.com/')
+      return @faraday if @faraday
+
+      @faraday = Faraday.new(:url => 'http://example.com/')
+      @faraday.basic_auth('xxxxx', 'xxxxx')
     end
   end
 end

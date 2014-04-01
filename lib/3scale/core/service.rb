@@ -9,10 +9,6 @@ module ThreeScale
 
       attr_accessor *(ATTRIBUTES.map { |attr| attr.to_sym })
 
-      def default_service?
-        @default_service
-      end
-
       def referrer_filters_required?
         @referrer_filters_required
       end
@@ -21,60 +17,35 @@ module ThreeScale
         @user_registration_required
       end
 
-      def self.save!(attributes = {})
-        if attributes[:user_registration_required].nil?
-          val = storage.get(storage_key(attributes[:id], :user_registration_required))
-          if !val.nil? && val.to_i==0
-            ## the attribute already existed and was set to false, BEWARE of that if a
-            ## service already existed and was set to false, that's somewhat problematic
-            ## on the tests
-            attributes[:user_registration_required]=false
+      def self.save!(attributes)
+        response = Core.faraday.post "services/", service: attributes
+
+        if response.status != 201
+          if response.status == 400 &&
+            (json = json(response))['error'] =~ /require a default user plan/
+            raise ServiceRequiresDefaultUserPlan
           else
-            attributes[:user_registration_required]=true
+            raise "Error saving a Service, attributes: #{attributes.inspect},
+              response code: #{response.status}, response body: #{response.body.inspect}"
           end
         end
-        service = new(attributes)
-        service.save!
-        service
+        return true
       end
 
-      ## only save as default if it's the first one (load_id returns null)
       def save!
-        if !user_registration_required? && (default_user_plan_id.nil? || default_user_plan_name.nil?)
-          raise ServiceRequiresDefaultUserPlan
-        end
-
-        default_service_id = self.class.load_id(provider_key)
-        @default_service = default_service_id.nil? || default_service_id==id
-
-        storage.multi do
-          storage.set(id_storage_key, id) if default_service?
-          storage.sadd(id_storage_key_set,id)
-          storage.set(storage_key(:referrer_filters_required), referrer_filters_required? ? 1 : 0)
-          storage.set(storage_key(:user_registration_required), user_registration_required? ? 1 : 0)
-          storage.set(storage_key(:default_user_plan_id),default_user_plan_id) unless default_user_plan_id.nil?
-          storage.set(storage_key(:default_user_plan_name),default_user_plan_name) unless default_user_plan_name.nil?
-          storage.set(storage_key(:backend_version), @backend_version) if @backend_version
-          storage.set(storage_key(:provider_key), provider_key)
-          storage.incrby(storage_key(:version), 1)
-          storage.sadd(services_set_key,id)
-          storage.sadd(provider_keys_set_key,provider_key)
-        end
+        self.class.save! attributes
       end
 
-      ## returns the old default service id
-      def make_default_service
-        if !default_service?
-          default_service_id = self.class.load_id(provider_key)
-          storage.multi do
-            storage.set(id_storage_key, id)
-            self.class.incr_version(default_service_id)
-            self.class.incr_version(id)
-          end
-          return default_service_id
-        else
-          return id
-        end
+      def attributes
+        attrs = {}
+        ATTRIBUTES.each{ |attr| attrs[attr.to_sym] = self.send(attr.to_sym) }
+
+        attrs
+      end
+
+      def make_default
+        self.default_service = true
+        self.save!
       end
 
       def self.load_by_id(service_id)
@@ -91,16 +62,10 @@ module ThreeScale
 
         if response.status != 200
           raise ServiceIsDefaultService, service_id if response.status == 400
-          raise "Error deleting a Service, response code: #{response.satus},
-            response body: #{response.body.inspect}"
+          raise "Error deleting a Service: #{service_id}, options: #{options.inspect},
+            response code: #{response.satus}, response body: #{response.body.inspect}"
         end
         return true
-      end
-
-      def self.list(provider_key)
-        response = Core.faraday.get "services/?provider_key=#{provider_key}"
-
-        JSON.parse(response.body)
       end
 
       def self.get_version(id)
@@ -180,6 +145,7 @@ module ThreeScale
         storage.scard(storage_key("user_set"))
       end
 
+      # TMP: Used.
       ## method to change the provider key for a costumer,
       def self.change_provider_key!(old_provider_key, new_provider_key)
         raise InvalidProviderKeys if old_provider_key.nil? || new_provider_key.nil? || new_provider_key == "" || old_provider_key==new_provider_key
@@ -206,6 +172,17 @@ module ThreeScale
           storage.incrby(storage_key(default_service_id,:version),1)
         end
       end
+
+      private
+
+      def default_service?
+        @default_service
+      end
+
+      def self.json(response)
+        JSON.parse(response.body)
+      end
+
     end
   end
 end
