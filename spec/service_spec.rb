@@ -85,6 +85,37 @@ module ThreeScale
         end
       end
 
+      describe '.change_provider_key!' do
+
+        it 'returns true' do
+          faraday_stub.put('services/change_provider_key/foo', new_key: 'bar'){
+            [200, {}, '{"status":"ok"}'] }
+
+          Service.change_provider_key!('foo', 'bar').must_equal true
+        end
+
+        it 'raises an exception when the key to change doesn\'t exist' do
+          faraday_stub.put('services/change_provider_key/foo', new_key: 'bar'){
+            [400, {}, '{"error":"Provider key=\"baz\" does not exist"}'] }
+
+          lambda { Service.change_provider_key!('foo', 'bar') }.must_raise ProviderKeyNotFound
+        end
+
+        it 'raises an exception when the new key already exists' do
+          faraday_stub.put('services/change_provider_key/foo', new_key: 'bar'){
+            [400, {}, '{"error":"Provider key=\"bar\" already exists"}'] }
+
+          lambda { Service.change_provider_key!('foo', 'bar') }.must_raise ProviderKeyExists
+        end
+
+        it 'raises an exception when the keys are invalid' do
+          faraday_stub.put('services/change_provider_key/foo', new_key: 'bar'){
+            [400, {}, '{"error":"Provider keys are not valid, must be not nil and different"}'] }
+
+          lambda { Service.change_provider_key!('foo', 'bar') }.must_raise InvalidProviderKeys
+        end
+      end
+
     end
   end
 end
