@@ -13,11 +13,19 @@ module ThreeScale
 
         def load_by_id(service_id)
           response = Core.faraday.get "services/#{service_id}"
-          service = JSON.parse(response.body)
 
-          attributes = {}
-          ATTRIBUTES.each { |attr| attributes[attr] = service[attr] }
-          new attributes
+          if response.status == 200
+            service = JSON.parse(response.body)
+
+            attributes = {}
+            ATTRIBUTES.each { |attr| attributes[attr] = service[attr] }
+            new attributes
+          elsif response.status == 404
+            nil
+          else
+            raise "Error getting a Service: #{service_id}, code: #{response.satus},
+              body: #{response.body.inspect}"
+          end
         end
 
         def delete_by_id!(service_id, options = {})

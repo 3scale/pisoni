@@ -5,28 +5,39 @@ module ThreeScale
     describe Service do
 
       describe '.load_by_id' do
-        before do
-          faraday_stub.get('/services/12') { [200, {},
-            '{"backend_version":"oauth","default_user_plan_name":"test name",
-            "version":"5","default_user_plan_id":"15","provider_key":"foo",
-            "user_registration_required":true,"id":"12",
-            "referrer_filters_required":true}'] }
+        describe 'with an existing service' do
+          before do
+            faraday_stub.get('/services/12') { [200, {},
+              '{"backend_version":"oauth","default_user_plan_name":"test name",
+              "version":"5","default_user_plan_id":"15","provider_key":"foo",
+              "user_registration_required":true,"id":"12",
+              "referrer_filters_required":true}'] }
+          end
+
+          it 'returns a Service object' do
+            Service.load_by_id(12).class.must_equal Service
+          end
+
+          it 'parses data from received JSON' do
+            service = Service.load_by_id(12)
+
+            service.provider_key.must_equal 'foo'
+            service.id.must_equal '12'
+            service.referrer_filters_required?.must_equal true
+            service.user_registration_required?.must_equal true
+            service.backend_version.must_equal 'oauth'
+            service.default_user_plan_id.must_equal '15'
+            service.default_user_plan_name.must_equal 'test name'
+          end
         end
 
-        it 'returns a Service object' do
-          Service.load_by_id(12).class.must_equal Service
-        end
+        describe 'with a missing service' do
+          it 'returns nil' do
+            faraday_stub.get('/services/12') { [404, {},
+              '{"error":"not_found"}'] }
 
-        it 'parses data from received JSON' do
-          service = Service.load_by_id(12)
-
-          service.provider_key.must_equal 'foo'
-          service.id.must_equal '12'
-          service.referrer_filters_required?.must_equal true
-          service.user_registration_required?.must_equal true
-          service.backend_version.must_equal 'oauth'
-          service.default_user_plan_id.must_equal '15'
-          service.default_user_plan_name.must_equal 'test name'
+            Service.load_by_id(12).must_equal nil
+          end
         end
       end
 
