@@ -7,17 +7,23 @@ module ThreeScale
       describe '.load_by_id' do
         describe 'with an existing service' do
           before do
-            Service.save! provider_key: 'foo', id: 7001,
-              referrer_filters_required: true, backend_version: 'oauth',
-              default_user_plan_id: 15, default_user_plan_name: 'test name'
+            VCR.use_cassette 'save default service for load' do
+              Service.save! provider_key: 'foo', id: 7001,
+                referrer_filters_required: true, backend_version: 'oauth',
+                default_user_plan_id: 15, default_user_plan_name: 'test name'
+            end
           end
 
           it 'returns a Service object' do
-            Service.load_by_id(7001).class.must_equal Service
+            VCR.use_cassette 'service load' do
+              Service.load_by_id(7001).class.must_equal Service
+            end
           end
 
           it 'parses data from received JSON' do
-            service = Service.load_by_id(7001)
+            service = VCR.use_cassette 'service load' do
+              Service.load_by_id(7001)
+            end
 
             service.provider_key.must_equal 'foo'
             service.id.must_equal '7001'
@@ -31,25 +37,42 @@ module ThreeScale
 
         describe 'with a missing service' do
           it 'returns nil' do
-            Service.load_by_id(7002).must_equal nil
+            VCR.use_cassette 'service load empty' do
+              Service.load_by_id(7002).must_equal nil
+            end
           end
         end
       end
 
       describe '.delete_by_id!' do
-        before { Service.save! provider_key: 'foo', id: 7001 }
-        it 'returns true if deleting a non-default service' do
-          Service.save! provider_key: 'foo', id: 7002
+        before do
+          VCR.use_cassette 'save default service for delete' do
+            Service.save! provider_key: 'foo', id: 7001
+          end
+        end
 
-          Service.delete_by_id!(7002).must_equal true
+        it 'returns true if deleting a non-default service' do
+          VCR.use_cassette 'save additional service' do
+            Service.save! provider_key: 'foo', id: 7002
+          end
+
+          VCR.use_cassette 'delete non-default service' do
+            Service.delete_by_id!(7002).must_equal true
+          end
         end
 
         it 'raises an exception when deleting a default service' do
-          lambda { Service.delete_by_id! 7001 }.must_raise ServiceIsDefaultService
+          lambda do
+            VCR.use_cassette 'delete default service' do
+              Service.delete_by_id! 7001
+            end
+          end.must_raise ServiceIsDefaultService
         end
 
         it 'deletes the service if forced' do
-          Service.delete_by_id!(7001, force: true).must_equal true
+          VCR.use_cassette 'force delete default service' do
+            Service.delete_by_id!(7001, force: true).must_equal true
+          end
         end
       end
 
@@ -57,7 +80,9 @@ module ThreeScale
         before { @service_params = {provider_key: 'foo', id: '7001'} }
 
         it 'returns service object' do
-          service = Service.save!(@service_params)
+          service = VCR.use_cassette 'save with default service params' do
+            Service.save!(@service_params)
+          end
 
           service.class.must_equal Service
           service.id.must_equal '7001'
@@ -67,37 +92,65 @@ module ThreeScale
         it 'raises an exception when missing a default user plan' do
           @service_params.merge! user_registration_required: false
 
-          lambda { Service.save!(@service_params) }.must_raise ServiceRequiresDefaultUserPlan
+          lambda do
+            VCR.use_cassette 'save without registration required' do
+              Service.save!(@service_params)
+            end
+          end.must_raise ServiceRequiresDefaultUserPlan
         end
       end
 
       describe '.make_default' do
         it 'returns the updated service' do
-          @service = Service.save!(id: 7001, provider_key: 'foo')
+          service = VCR.use_cassette 'save a default service for make_default' do
+            Service.save!(id: 7001, provider_key: 'foo')
+          end
 
-          @service.make_default.class.must_equal Service
+          VCR.use_cassette 'make a service default' do
+            service.make_default.class.must_equal Service
+          end
         end
       end
 
       describe '.change_provider_key!' do
-        before { Service.save! provider_key: 'foo', id: 7001 }
+        before do
+          VCR.use_cassette 'save default service for changing provider key' do
+            Service.save! provider_key: 'foo', id: 7001
+          end
+        end
 
         it 'returns true' do
-          Service.change_provider_key!('foo', 'bazinga').must_equal true
+          VCR.use_cassette 'changing a provider key' do
+            Service.change_provider_key!('foo', 'bazinga').must_equal true
+          end
         end
 
         it 'raises an exception when the key to change doesn\'t exist' do
-          lambda { Service.change_provider_key!('bunga', 'baz') }.must_raise ProviderKeyNotFound
+          lambda do
+            VCR.use_cassette 'changing a non-exisiting provider key' do
+              Service.change_provider_key!('bunga', 'baz')
+            end
+          end.must_raise ProviderKeyNotFound
         end
 
         it 'raises an exception when the new key already exists' do
-          Service.save! provider_key: 'bar', id: 7002
+          VCR.use_cassette 'additional service for changing a provider key' do
+            Service.save! provider_key: 'bar', id: 7002
+          end
 
-          lambda { Service.change_provider_key!('foo', 'bar') }.must_raise ProviderKeyExists
+          lambda do
+            VCR.use_cassette 'changing a provider key to existing one' do
+              Service.change_provider_key!('foo', 'bar')
+            end
+          end.must_raise ProviderKeyExists
         end
 
         it 'raises an exception when the keys are invalid' do
-          lambda { Service.change_provider_key!('foo', '') }.must_raise InvalidProviderKeys
+          lambda do
+            VCR.use_cassette 'changing a provider key to invalid one' do
+              Service.change_provider_key!('foo', '')
+            end
+          end.must_raise InvalidProviderKeys
         end
       end
 

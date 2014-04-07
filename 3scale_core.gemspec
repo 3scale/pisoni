@@ -14,8 +14,10 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'redis', '3.0.2'
   s.add_dependency 'hiredis', '0.4.5'
-  s.add_dependency 'faraday', '~> 0.9.0'
+  s.add_dependency 'faraday', '~> 0.8.9'
   s.add_dependency 'json', '~> 1.8.1'
+
+  s.add_development_dependency 'vcr', '2.9.0'
 
   s.files = Dir.glob("**/*")
   s.require_paths = ["lib"]

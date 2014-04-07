@@ -2,26 +2,28 @@ GEM
   remote: http://rubygems.org/
   specs:
     ansi (1.4.3)
-    faraday (0.9.0)
-      multipart-post (>= 1.2, < 3)
+    faraday (0.8.9)
+      multipart-post (~> 1.2.0)
     hiredis (0.4.5)
     json (1.8.1)
     minitest (4.2.0)
-    multipart-post (2.0.0)
+    multipart-post (1.2.0)
     rake (10.0.0)
     redis (3.0.2)
     turn (0.9.7)
       ansi
       minitest (~> 4)
+    vcr (2.9.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  faraday (~> 0.9.0)
+  faraday (~> 0.8.9)
   hiredis (= 0.4.5)
   json (~> 1.8.1)
   minitest
   rake
   redis (= 3.0.2)
   turn (~> 0.9.7)
+  vcr (= 2.9.0)
