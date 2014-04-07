@@ -17,9 +17,7 @@ module ThreeScale
           if response.status == 200
             service = JSON.parse(response.body)
 
-            attributes = {}
-            ATTRIBUTES.each { |attr| attributes[attr] = service[attr] }
-            new attributes
+            instantiate_from_api_data(service)
           elsif response.status == 404
             nil
           else
@@ -40,7 +38,7 @@ module ThreeScale
         end
 
         def save!(attributes)
-          response = Core.faraday.post "services/", service: attributes
+          response = Core.faraday.post "services/", {service: attributes}.to_json
 
           if response.status != 201
             if response.status == 400 &&
@@ -51,12 +49,13 @@ module ThreeScale
                 response code: #{response.status}, response body: #{response.body.inspect}"
             end
           end
-          return true
+
+          instantiate_from_api_data json(response)['service']
         end
 
         def change_provider_key!(old_key, new_key)
           response = Core.faraday.put "services/change_provider_key/#{old_key}",
-            new_key: new_key
+            {new_key: new_key}.to_json
 
           if (status = response.status) != 200
             json_response = json(response)
@@ -77,6 +76,13 @@ module ThreeScale
         end
 
         private
+
+        def instantiate_from_api_data(service)
+          attributes = {}
+          ATTRIBUTES.each { |attr| attributes[attr] = service[attr] }
+
+          new attributes
+        end
 
         def json(response)
           JSON.parse(response.body)
@@ -104,12 +110,12 @@ module ThreeScale
 
       def make_default
         self.default_service = true
-        self.save!
+        save!
       end
 
       # TODO: Remove once unused.
       def self.incr_version(id)
-        storage.incrby(storage_key(id,:version),1)
+        storage.incrby(storage_key(id,:version), 1)
       end
 
       # TODO: Remove once unused.
@@ -117,25 +123,12 @@ module ThreeScale
         encode_key("service/id:#{id}/#{attribute}")
       end
 
-      ## ---- add the user dimension. Users are unique on the service scope
-      ## returns true if the user is new
       def user_add(username)
-        isnew = storage.sadd(storage_key("user_set"),username)
-        self.class.incr_version(id)
-        return isnew
+        Core.faraday.post "services/#{id}/users", {username: username}.to_json
       end
 
       def user_delete(username)
-        storage.srem(storage_key("user_set"),username)
-        self.class.incr_version(id)
-      end
-
-      def user_exists?(username)
-        exists = storage.sismember(storage_key("user_set"),username)
-      end
-
-      def user_size
-        storage.scard(storage_key("user_set"))
+        Core.faraday.delete "services/#{id}/users/#{username}"
       end
 
       private
