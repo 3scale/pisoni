@@ -8,7 +8,7 @@ class UserTest < Test::Unit::TestCase
 
   def test_create_user_errors
     VCR.use_cassette 'test/user creation errors' do
-      service = Service.save! :provider_key => 'foo', :id => 7001
+      service = Service.save! :provider_key => 'foo', :id => 7001001
 
       assert_raise ServiceRequiresRegisteredUser do
         ## failure because the service needs registered users
@@ -17,7 +17,7 @@ class UserTest < Test::Unit::TestCase
 
       assert_raise UserRequiresDefinedPlan do
         ## failure because user requires a defined plan
-        User.save!(:username => 'username', :service_id => '7001')
+        User.save!(:username => 'username', :service_id => '7001001')
       end
 
       assert_raise UserRequiresUsername do
@@ -25,7 +25,7 @@ class UserTest < Test::Unit::TestCase
       end
 
       assert_raise UserRequiresValidService do
-        User.save!(:username => 'username', :service_id => '7001000')
+        User.save!(:username => 'username', :service_id => '7001001001')
       end
     end
   end

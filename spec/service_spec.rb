@@ -38,7 +38,7 @@ module ThreeScale
         describe 'with a missing service' do
           it 'returns nil' do
             VCR.use_cassette 'service load empty' do
-              Service.load_by_id(7002).must_equal nil
+              Service.load_by_id(7012).must_equal nil
             end
           end
         end

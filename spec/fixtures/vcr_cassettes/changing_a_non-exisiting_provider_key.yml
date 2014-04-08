@@ -1,0 +1,34 @@
+---
+http_interactions:
+- request:
+    method: put
+    uri: http://localhost:3000/internal/services/change_provider_key/bunga
+    body:
+      encoding: UTF-8
+      string: "{\"new_key\":\"baz\"}"
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 400
+      message: 
+    headers:
+      content-type:
+      - application/json;charset=utf-8
+      content-length:
+      - '49'
+      connection:
+      - close
+      server:
+      - thin 1.5.0 codename Knife
+    body:
+      encoding: UTF-8
+      string: "{\"error\":\"Provider key=\\\"bunga\\\" does not exist\"}"
+    http_version: 
+  recorded_at: Tue, 08 Apr 2014 14:18:15 GMT
+recorded_with: VCR 2.9.0
