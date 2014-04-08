@@ -2,10 +2,10 @@
 http_interactions:
 - request:
     method: put
-    uri: http://localhost:3000/internal/services/change_provider_key/bunga
+    uri: http://localhost:3000/internal/services/change_provider_key/foo
     body:
       encoding: UTF-8
-      string: "{\"new_key\":\"baz\"}"
+      string: "{\"new_key\":\"bar\"}"
     headers:
       Accept:
       - application/json
@@ -21,14 +21,14 @@ http_interactions:
       content-type:
       - application/json;charset=utf-8
       content-length:
-      - '49'
+      - '47'
       connection:
       - close
       server:
       - thin 1.5.0 codename Knife
     body:
       encoding: UTF-8
-      string: "{\"error\":\"Provider key=\\\"bunga\\\" does not exist\"}"
+      string: "{\"error\":\"Provider key=\\\"bar\\\" already exists\"}"
     http_version: 
   recorded_at: Tue, 08 Apr 2014 14:24:07 GMT
 recorded_with: VCR 2.9.0

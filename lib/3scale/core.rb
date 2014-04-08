@@ -10,21 +10,26 @@ require '3scale/core/errors'
 
 module ThreeScale
   module Core
+    extend self
 
-    def self.storage
+    def storage
       raise 'You have to reimplement this method to return a storage instance.'
     end
 
-    def self.faraday
+    def faraday
       return @faraday if @faraday
 
-      @faraday = Faraday.new(:url => 'http://localhost:3000/internal/')
+      @faraday = Faraday.new(:url => internal_api_url)
       @faraday.headers = {
         'Accept' => 'application/json',
-        'Content-Type' => 'application/'
+        'Content-Type' => 'application/json'
       }
       @faraday.basic_auth('xxxxx', 'xxxxx')
       @faraday
+    end
+
+    def internal_api_url
+      ENV['THREESCALE_CORE_INTERNAL_API'] || 'http://localhost:3000/internal/'
     end
 
   end

@@ -1,11 +1,12 @@
 ---
 http_interactions:
 - request:
-    method: put
-    uri: http://localhost:3000/internal/services/change_provider_key/bunga
+    method: post
+    uri: http://localhost:3000/internal/services/
     body:
       encoding: UTF-8
-      string: "{\"new_key\":\"baz\"}"
+      string: "{\"service\":{\"provider_key\":\"foo\",\"id\":7001,\"referrer_filters_required\":true,\"backend_version\":\"oauth\",\"default_user_plan_id\":15,\"default_user_plan_name\":\"test
+        name\"}}"
     headers:
       Accept:
       - application/json
@@ -15,20 +16,21 @@ http_interactions:
       - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
   response:
     status:
-      code: 400
+      code: 201
       message: 
     headers:
       content-type:
       - application/json;charset=utf-8
       content-length:
-      - '49'
+      - '219'
       connection:
       - close
       server:
       - thin 1.5.0 codename Knife
     body:
       encoding: UTF-8
-      string: "{\"error\":\"Provider key=\\\"bunga\\\" does not exist\"}"
+      string: "{\"service\":{\"id\":7001,\"provider_key\":\"foo\",\"backend_version\":\"oauth\",\"referrer_filters_required\":true,\"user_registration_required\":true,\"default_user_plan_id\":15,\"default_user_plan_name\":\"test
+        name\"},\"status\":\"created\"}"
     http_version: 
   recorded_at: Tue, 08 Apr 2014 14:24:07 GMT
 recorded_with: VCR 2.9.0

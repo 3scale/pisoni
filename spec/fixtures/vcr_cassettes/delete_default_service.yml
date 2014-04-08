@@ -1,11 +1,11 @@
 ---
 http_interactions:
 - request:
-    method: put
-    uri: http://localhost:3000/internal/services/change_provider_key/bunga
+    method: delete
+    uri: http://localhost:3000/internal/services/7001
     body:
-      encoding: UTF-8
-      string: "{\"new_key\":\"baz\"}"
+      encoding: US-ASCII
+      string: ''
     headers:
       Accept:
       - application/json
@@ -21,14 +21,15 @@ http_interactions:
       content-type:
       - application/json;charset=utf-8
       content-length:
-      - '49'
+      - '120'
       connection:
       - close
       server:
       - thin 1.5.0 codename Knife
     body:
       encoding: UTF-8
-      string: "{\"error\":\"Provider key=\\\"bunga\\\" does not exist\"}"
+      string: "{\"error\":\"Service id=\\\"7001\\\" is the default service, must be
+        removed forcefully or make it not default before removal\"}"
     http_version: 
   recorded_at: Tue, 08 Apr 2014 14:24:07 GMT
 recorded_with: VCR 2.9.0
