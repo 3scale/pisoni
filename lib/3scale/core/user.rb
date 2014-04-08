@@ -34,7 +34,6 @@ module ThreeScale
 
         if user.nil?
           ## the user does not exist yet, we need to create it for the case of the open loop
-
           if service.user_registration_required?
             raise ServiceRequiresRegisteredUser, service.id
           else
@@ -48,7 +47,6 @@ module ThreeScale
                      :plan_id    => service.default_user_plan_id,
                      :plan_name  => service.default_user_plan_name)
           user.save
-
         end
 
         return user

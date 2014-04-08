@@ -4,11 +4,8 @@ require 'rubygems'
 require 'bundler'
 Bundler.require(:default, :test)
 
-# require 'test/unit'
-# require 'mocha'
-# require 'redis'
-
 require '3scale/core'
+require 'vcr'
 
 # Use the synchronous redis client here, for simplicity.
 module ThreeScale::Core
@@ -25,4 +22,11 @@ class Test::Unit::TestCase
   def storage
     ThreeScale::Core.storage
   end
+end
+
+VCR.configure do |c|
+  c.cassette_library_dir = 'spec/fixtures/vcr_cassettes'
+  c.hook_into :faraday
+  #c.debug_logger = File.open('vcr_debug.log', 'w')
+  c.default_cassette_options = {allow_playback_repeats: true}
 end
