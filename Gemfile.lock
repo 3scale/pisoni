@@ -1,3 +1,23 @@
+GIT
+  remote: git@github.com:3scale/backend
+  revision: bafce04c267a90af06b157f1812fc3eb28708a46
+  specs:
+    3scale_backend (1.12.1)
+      airbrake (= 3.1.6)
+      aws-s3 (= 0.6.3)
+      bson_ext (= 1.9.0)
+      builder (= 2.1.2)
+      hiredis (= 0.4.5)
+      mongo (= 1.9.0)
+      rack (= 1.5.2)
+      redis (= 3.0.2)
+      redis-namespace (= 1.2.1)
+      resque (= 1.23.0)
+      rest-client (= 1.6.7)
+      sinatra (= 1.2.8)
+      thin (= 1.5.0)
+      yajl-ruby (= 1.1.0)
+
 PATH
   remote: .
   specs:
@@ -8,24 +28,71 @@ PATH
 GEM
   remote: http://rubygems.org/
   specs:
+    airbrake (3.1.6)
+      builder
+      girl_friday
     ansi (1.4.3)
+    aws-s3 (0.6.3)
+      builder
+      mime-types
+      xml-simple
+    bson (1.9.2)
+    bson_ext (1.9.0)
+      bson (~> 1.9.0)
+    builder (2.1.2)
+    connection_pool (1.2.0)
+    daemons (1.1.9)
+    eventmachine (1.0.3)
     faraday (0.8.9)
       multipart-post (~> 1.2.0)
+    girl_friday (0.11.2)
+      connection_pool (~> 1.0)
+      rubinius-actor
     hiredis (0.4.5)
     json (1.8.1)
+    mime-types (2.2)
     minitest (4.2.0)
+    mongo (1.9.0)
+      bson (~> 1.9.0)
+    multi_json (1.9.2)
     multipart-post (1.2.0)
+    rack (1.5.2)
     rake (10.2.2)
     redis (3.0.2)
+    redis-namespace (1.2.1)
+      redis (~> 3.0.0)
+    resque (1.23.0)
+      multi_json (~> 1.0)
+      redis-namespace (~> 1.0)
+      sinatra (>= 0.9.2)
+      vegas (~> 0.1.2)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
+    rubinius-actor (0.0.2)
+      rubinius-core-api
+    rubinius-core-api (0.0.1)
+    sinatra (1.2.8)
+      rack (~> 1.1)
+      tilt (>= 1.2.2, < 2.0)
+    thin (1.5.0)
+      daemons (>= 1.0.9)
+      eventmachine (>= 0.12.6)
+      rack (>= 1.0.0)
+    tilt (1.4.1)
     turn (0.9.7)
       ansi
       minitest (~> 4)
     vcr (2.9.0)
+    vegas (0.1.11)
+      rack (>= 1.0.0)
+    xml-simple (1.1.3)
+    yajl-ruby (1.1.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  3scale_backend!
   3scale_core!
   hiredis (= 0.4.5)
   minitest
