@@ -4,10 +4,30 @@ Core libraries for 3scale systems.
 
 == Install
 
-$ rvm use ruby-1.9.2-p0
+    $ rvm use ruby-2.1.1
 
-$ gem build 3scale_core.gemspec
+    $ gem build 3scale_core.gemspec
 
-$ gem install 3scale_core-x.y.z.gem
+    $ gem install 3scale_core-x.y.z.gem
 
 where x.y.z is the version you aim for
+
+== Development
+
+=== Running tests
+
+YOu can run both tests & specs using API responses cached with VCR:
+
+    $ bundle exec rake
+
+If you want to generate new ones (or responses changed), you need to have a
+warking instance of backend server with a freshly cleared database and you can
+run it like this:
+
+    $ cd backend
+    $ redis-cli flushdb && RACK_ENV=development bundle exec bin/3scale_backend -p 3000 start
+    $ cd ../core
+    $ rm -r spec/fixtures/vcr_cassettes/
+    $ bundle exec rake
+
+
