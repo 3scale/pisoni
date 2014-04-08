@@ -1,11 +1,7 @@
 $:.unshift(File.dirname(__FILE__) + '/../lib')
 
-require 'rubygems'
-require 'bundler'
-Bundler.require(:default, :test)
-
-require '3scale/core'
-require 'vcr'
+require 'bundler/setup'
+Bundler.require(:default, :development, :test)
 
 # Use the synchronous redis client here, for simplicity.
 module ThreeScale::Core

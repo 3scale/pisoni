@@ -1,3 +1,5 @@
+require 'json'
+
 require '3scale/core/storage_key_helpers'
 require '3scale/core/storable'
 
