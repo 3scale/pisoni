@@ -10,14 +10,21 @@ module ThreeScale::Core
   end
 end
 
-class Test::Unit::TestCase
-  include ThreeScale::Core
+module CoreTests
+  def before_setup
+    storage.flushall
+  end
 
   private
 
   def storage
     ThreeScale::Core.storage
   end
+end
+
+class Test::Unit::TestCase
+  include ThreeScale::Core
+  include CoreTests
 end
 
 VCR.configure do |c|
