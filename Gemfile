@@ -7,6 +7,8 @@ group :test do
   gem 'minitest'
 
   gem '3scale_backend', git: 'git@github.com:3scale/backend'
+
+  gem 'pry'
 end
 
 group :development do

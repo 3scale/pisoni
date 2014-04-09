@@ -40,6 +40,7 @@ GEM
     bson_ext (1.9.0)
       bson (~> 1.9.0)
     builder (2.1.2)
+    coderay (1.1.0)
     connection_pool (1.2.0)
     daemons (1.1.9)
     eventmachine (1.0.3)
@@ -57,6 +58,7 @@ GEM
     hiredis (0.4.5)
     httpclient (2.3.4.1)
     json (1.8.1)
+    method_source (0.8.2)
     mime-types (2.2)
     minitest (4.2.0)
     mongo (1.9.0)
@@ -64,6 +66,10 @@ GEM
     multi_json (1.9.2)
     multipart-post (1.2.0)
     nesty (1.0.2)
+    pry (0.9.12.6)
+      coderay (~> 1.0)
+      method_source (~> 0.8)
+      slop (~> 3.4)
     rack (1.5.2)
     rake (10.2.2)
     redis (3.0.2)
@@ -82,6 +88,7 @@ GEM
     sinatra (1.2.8)
       rack (~> 1.1)
       tilt (>= 1.2.2, < 2.0)
+    slop (3.5.0)
     thin (1.5.0)
       daemons (>= 1.0.9)
       eventmachine (>= 0.12.6)
@@ -105,6 +112,7 @@ DEPENDENCIES
   geminabox
   hiredis (= 0.4.5)
   minitest
+  pry
   rake
   redis (= 3.0.2)
   turn (~> 0.9.7)
