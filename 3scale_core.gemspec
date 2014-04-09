@@ -1,8 +1,11 @@
 # -*- encoding: utf-8 -*-
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require '3scale/core/version'
 
 Gem::Specification.new do |s|
   s.name = %q{3scale_core}
-  s.version = "0.7.0"
+  s.version = ThreeScale::Core::VERSION
   s.date = %q{2011-09-27}
 
   s.platform = Gem::Platform::RUBY
