@@ -13,14 +13,17 @@ end
 task :ci do
   backend = fork do
     ENV['RACK_ENV'] = 'development'
-    exec('3scale_backend', 'start', '-p', '3000')
+    exec('3scale_backend', 'start', '-p', '3001')
   end
 
-  sleep 20
+  sleep 10
 
   at_exit { Process.kill('INT', backend) }
 
-  exit Rake::Task['test'].invoke
+  ENV['FULL_BUILD'] = '1'
+  ENV['THREESCALE_CORE_INTERNAL_API'] = 'http://localhost:3001/internal/'
+
+  exit system('rake', 'test')
 end
 
 ENV['gem_push'] = '0' # don't push to rubygems.org when doing rake release

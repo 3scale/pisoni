@@ -24,5 +24,6 @@ VCR.configure do |c|
   c.cassette_library_dir = 'spec/fixtures/vcr_cassettes'
   c.hook_into :faraday
   #c.debug_logger = File.open('vcr_debug.log', 'w')
-  c.default_cassette_options = {allow_playback_repeats: true}
+  full_build = ENV['FULL_BUILD'] == '1'
+  c.default_cassette_options = { allow_playback_repeats: true, record: full_build ? :all : :new_episodes }
 end
