@@ -1,5 +1,6 @@
 # encoding: utf-8
 require 'rake/testtask'
+require 'bundler/gem_tasks'
 
 task :default => :test
 
@@ -20,4 +21,11 @@ task :ci do
   at_exit { Process.kill('INT', backend) }
 
   exit Rake::Task['test'].invoke
+end
+
+ENV['gem_push'] = '0' # don't push to rubygems.org when doing rake release
+task geminabox: :release do
+  Bundler.with_clean_env do
+    exec('gem', 'inabox')
+  end
 end
