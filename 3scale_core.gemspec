@@ -23,7 +23,10 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'redis', '3.0.2'
   s.add_development_dependency 'hiredis', '0.4.5'
 
-  s.files = Dir.glob("**/*")
+  s.files         = `git ls-files`.split($/)
+  s.executables   = s.files.grep(%r{^bin/}) { |f| File.basename(f) }
+  s.test_files    = s.files.grep(%r{^(test|spec|features)/})
+
   s.require_paths = ["lib"]
 
   s.rdoc_options = ["--charset=UTF-8"]
