@@ -8,3 +8,7 @@ group :test do
 
   gem '3scale_backend', git: 'git@github.com:3scale/backend'
 end
+
+group :development do
+  gem 'geminabox'
+end

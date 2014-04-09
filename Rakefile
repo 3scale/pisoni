@@ -25,7 +25,11 @@ end
 
 ENV['gem_push'] = '0' # don't push to rubygems.org when doing rake release
 task geminabox: :release do
+  require 'geminabox_client'
+  # because geminabox is smart and tries to guess the gem name from current folder
+  gem = GeminaboxClient::GemLocator.find_gem('3scale_core')
+
   Bundler.with_clean_env do
-    exec('gem', 'inabox')
+    exec('gem', 'inabox', gem)
   end
 end

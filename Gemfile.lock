@@ -45,10 +45,17 @@ GEM
     eventmachine (1.0.3)
     faraday (0.8.9)
       multipart-post (~> 1.2.0)
+    geminabox (0.12.4)
+      builder
+      faraday
+      httpclient (>= 2.2.7)
+      nesty
+      sinatra (>= 1.2.7)
     girl_friday (0.11.2)
       connection_pool (~> 1.0)
       rubinius-actor
     hiredis (0.4.5)
+    httpclient (2.3.4.1)
     json (1.8.1)
     mime-types (2.2)
     minitest (4.2.0)
@@ -56,6 +63,7 @@ GEM
       bson (~> 1.9.0)
     multi_json (1.9.2)
     multipart-post (1.2.0)
+    nesty (1.0.2)
     rack (1.5.2)
     rake (10.2.2)
     redis (3.0.2)
@@ -94,6 +102,7 @@ PLATFORMS
 DEPENDENCIES
   3scale_backend!
   3scale_core!
+  geminabox
   hiredis (= 0.4.5)
   minitest
   rake
