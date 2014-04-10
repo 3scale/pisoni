@@ -1,6 +1,6 @@
 GIT
   remote: git@github.com:3scale/backend
-  revision: bafce04c267a90af06b157f1812fc3eb28708a46
+  revision: f4edb79bcfbe37a867cf869ad3cef235ae80c7be
   specs:
     3scale_backend (1.12.1)
       airbrake (= 3.1.6)
@@ -16,6 +16,7 @@ GIT
       rest-client (= 1.6.7)
       sinatra (= 1.2.8)
       thin (= 1.5.0)
+      tilt (= 1.4.1)
       yajl-ruby (= 1.1.0)
 
 PATH

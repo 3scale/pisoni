@@ -47,16 +47,14 @@ module ThreeScale
       describe '.delete_by_id!' do
         before do
           VCR.use_cassette 'save default service for delete' do
-            Service.save! provider_key: 'foo', id: 7001
+            Service.save! provider_key: 'foo', id: 7001, default_service: true
           end
         end
 
         it 'returns true if deleting a non-default service' do
-          VCR.use_cassette 'save additional service' do
+          VCR.use_cassette 'deleting non-default service' do
             Service.save! provider_key: 'foo', id: 7002
-          end
 
-          VCR.use_cassette 'delete non-default service' do
             Service.delete_by_id!(7002).must_equal true
           end
         end
@@ -67,12 +65,6 @@ module ThreeScale
               Service.delete_by_id! 7001
             end
           end.must_raise ServiceIsDefaultService
-        end
-
-        it 'deletes the service if forced' do
-          VCR.use_cassette 'force delete default service' do
-            Service.delete_by_id!(7001, force: true).must_equal true
-          end
         end
       end
 

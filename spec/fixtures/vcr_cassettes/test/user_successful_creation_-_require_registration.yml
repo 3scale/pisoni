@@ -186,4 +186,190 @@ http_interactions:
       string: "{\"status\":\"ok\"}"
     http_version: 
   recorded_at: Tue, 08 Apr 2014 14:24:07 GMT
+- request:
+    method: post
+    uri: http://localhost:3001/internal/services/
+    body:
+      encoding: UTF-8
+      string: "{\"service\":{\"provider_key\":\"foo\",\"id\":\"7002\"}}"
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 201
+      message: 
+    headers:
+      content-type:
+      - application/json;charset=utf-8
+      content-length:
+      - '213'
+      connection:
+      - close
+      server:
+      - thin 1.5.0 codename Knife
+    body:
+      encoding: UTF-8
+      string: "{\"service\":{\"id\":\"7002\",\"provider_key\":\"foo\",\"backend_version\":null,\"referrer_filters_required\":null,\"user_registration_required\":true,\"default_user_plan_id\":null,\"default_user_plan_name\":null},\"status\":\"created\"}"
+    http_version: 
+  recorded_at: Thu, 10 Apr 2014 13:45:28 GMT
+- request:
+    method: get
+    uri: http://localhost:3001/internal/services/7002
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      content-type:
+      - application/json;charset=utf-8
+      content-length:
+      - '183'
+      connection:
+      - close
+      server:
+      - thin 1.5.0 codename Knife
+    body:
+      encoding: UTF-8
+      string: "{\"id\":\"7002\",\"provider_key\":\"foo\",\"backend_version\":null,\"referrer_filters_required\":false,\"user_registration_required\":true,\"default_user_plan_id\":null,\"default_user_plan_name\":null}"
+    http_version: 
+  recorded_at: Thu, 10 Apr 2014 13:45:28 GMT
+- request:
+    method: get
+    uri: http://localhost:3001/internal/services/7002
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      content-type:
+      - application/json;charset=utf-8
+      content-length:
+      - '183'
+      connection:
+      - close
+      server:
+      - thin 1.5.0 codename Knife
+    body:
+      encoding: UTF-8
+      string: "{\"id\":\"7002\",\"provider_key\":\"foo\",\"backend_version\":null,\"referrer_filters_required\":false,\"user_registration_required\":true,\"default_user_plan_id\":null,\"default_user_plan_name\":null}"
+    http_version: 
+  recorded_at: Thu, 10 Apr 2014 13:45:28 GMT
+- request:
+    method: post
+    uri: http://localhost:3001/internal/services/7002/users
+    body:
+      encoding: UTF-8
+      string: "{\"username\":\"username\"}"
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      content-type:
+      - application/json;charset=utf-8
+      content-length:
+      - '15'
+      connection:
+      - close
+      server:
+      - thin 1.5.0 codename Knife
+    body:
+      encoding: UTF-8
+      string: "{\"status\":\"ok\"}"
+    http_version: 
+  recorded_at: Thu, 10 Apr 2014 13:45:28 GMT
+- request:
+    method: get
+    uri: http://localhost:3001/internal/services/7002
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      content-type:
+      - application/json;charset=utf-8
+      content-length:
+      - '183'
+      connection:
+      - close
+      server:
+      - thin 1.5.0 codename Knife
+    body:
+      encoding: UTF-8
+      string: "{\"id\":\"7002\",\"provider_key\":\"foo\",\"backend_version\":null,\"referrer_filters_required\":false,\"user_registration_required\":true,\"default_user_plan_id\":null,\"default_user_plan_name\":null}"
+    http_version: 
+  recorded_at: Thu, 10 Apr 2014 13:45:28 GMT
+- request:
+    method: delete
+    uri: http://localhost:3001/internal/services/7002/users/username
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      content-type:
+      - application/json;charset=utf-8
+      content-length:
+      - '15'
+      connection:
+      - close
+      server:
+      - thin 1.5.0 codename Knife
+    body:
+      encoding: UTF-8
+      string: "{\"status\":\"ok\"}"
+    http_version: 
+  recorded_at: Thu, 10 Apr 2014 13:45:28 GMT
 recorded_with: VCR 2.9.0
