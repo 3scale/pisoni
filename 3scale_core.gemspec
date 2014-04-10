@@ -1,8 +1,11 @@
 # -*- encoding: utf-8 -*-
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require '3scale/core/version'
 
 Gem::Specification.new do |s|
   s.name = %q{3scale_core}
-  s.version = "0.7.0"
+  s.version = ThreeScale::Core::VERSION
   s.date = %q{2011-09-27}
 
   s.platform = Gem::Platform::RUBY
@@ -12,17 +15,19 @@ Gem::Specification.new do |s|
   s.summary = %q{3scale web service management system core libraries}
   s.description = %q{This gem provides core libraries for 3scale systems.}
 
-  # s.required_rubygems_version = ">= 1.3.6"
-  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.rubygems_version = %q{1.3.7}
+  s.add_dependency 'faraday', '~> 0.8.9'
+  s.add_dependency 'json', '~> 1.8.1'
 
-  s.add_dependency 'hiredis',                 '0.4.5'
-  s.add_dependency 'redis',                   '3.0.2'
+  s.add_development_dependency 'vcr', '2.9.0'
+  s.add_development_dependency 'rake'
+  s.add_development_dependency 'redis', '3.0.2'
+  s.add_development_dependency 'hiredis', '0.4.5'
 
-  s.files = Dir.glob("**/*")
-  # s.require_path = "lib"
+  s.files         = `git ls-files`.split($/)
+  s.executables   = s.files.grep(%r{^bin/}) { |f| File.basename(f) }
+  s.test_files    = s.files.grep(%r{^(test|spec|features)/})
+
   s.require_paths = ["lib"]
 
   s.rdoc_options = ["--charset=UTF-8"]
-
 end

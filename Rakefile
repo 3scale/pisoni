@@ -1,32 +1,38 @@
 # encoding: utf-8
 require 'rake/testtask'
-
+require 'bundler/gem_tasks'
 
 task :default => :test
 
 Rake::TestTask.new do |task|
-  task.test_files = FileList['test/**/*_test.rb']
+  task.test_files = FileList['test/**/*_test.rb', 'spec/**/*_spec.rb']
   task.libs = [ 'lib', File.expand_path('.') ]
   task.verbose = true
 end
 
-# TODO: replace by standard .gemspec tight with Bundler
-begin
-  require 'jeweler'
-
-  Jeweler::Tasks.new do |gemspec|
-    gemspec.name     = '3scale_core'
-    gemspec.summary  = '3scale web service management system core libraries'
-    gemspec.description = 'This gem provides core libraries for 3scale systems.'
-
-    gemspec.email    = 'adam@3scale.net'
-    gemspec.homepage = 'http://www.3scale.net'
-    gemspec.authors  = ['Adam Cigánek']
+task :ci do
+  backend = fork do
+    ENV['RACK_ENV'] = 'development'
+    exec('3scale_backend', 'start', '-p', '3001')
   end
-  
-  # HAX: I want only git:release, nothing else.
-  Rake::Task['release'].clear_prerequisites
-  task :release => 'git:release'
-rescue LoadError
-  puts "Jeweler not available. Install it with: gem install jeweler"
+
+  sleep 10
+
+  at_exit { Process.kill('INT', backend) }
+
+  ENV['FULL_BUILD'] = '1'
+  ENV['THREESCALE_CORE_INTERNAL_API'] = 'http://localhost:3001/internal/'
+
+  exit system('rake', 'test')
+end
+
+ENV['gem_push'] = '0' # don't push to rubygems.org when doing rake release
+task geminabox: :release do
+  require 'geminabox_client'
+  # because geminabox is smart and tries to guess the gem name from current folder
+  gem = GeminaboxClient::GemLocator.find_gem('3scale_core')
+
+  Bundler.with_clean_env do
+    exec('gem', 'inabox', gem)
+  end
 end

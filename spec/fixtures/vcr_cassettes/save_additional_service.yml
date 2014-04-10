@@ -1,0 +1,65 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://localhost:3000/internal/services/
+    body:
+      encoding: UTF-8
+      string: "{\"service\":{\"provider_key\":\"foo\",\"id\":7002}}"
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 201
+      message: 
+    headers:
+      content-type:
+      - application/json;charset=utf-8
+      content-length:
+      - '211'
+      connection:
+      - close
+      server:
+      - thin 1.5.0 codename Knife
+    body:
+      encoding: UTF-8
+      string: "{\"service\":{\"id\":7002,\"provider_key\":\"foo\",\"backend_version\":null,\"referrer_filters_required\":null,\"user_registration_required\":true,\"default_user_plan_id\":null,\"default_user_plan_name\":null},\"status\":\"created\"}"
+    http_version: 
+  recorded_at: Tue, 08 Apr 2014 14:24:07 GMT
+- request:
+    method: post
+    uri: http://localhost:3001/internal/services/
+    body:
+      encoding: UTF-8
+      string: "{\"service\":{\"provider_key\":\"foo\",\"id\":7002}}"
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 201
+      message: 
+    headers:
+      content-type:
+      - application/json;charset=utf-8
+      content-length:
+      - '211'
+      connection:
+      - close
+      server:
+      - thin 1.5.0 codename Knife
+    body:
+      encoding: UTF-8
+      string: "{\"service\":{\"id\":7002,\"provider_key\":\"foo\",\"backend_version\":null,\"referrer_filters_required\":null,\"user_registration_required\":true,\"default_user_plan_id\":null,\"default_user_plan_name\":null},\"status\":\"created\"}"
+    http_version: 
+  recorded_at: Wed, 09 Apr 2014 14:17:55 GMT
+recorded_with: VCR 2.9.0

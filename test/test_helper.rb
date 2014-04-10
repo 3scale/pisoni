@@ -1,14 +1,7 @@
 $:.unshift(File.dirname(__FILE__) + '/../lib')
 
-require 'rubygems'
-require 'bundler'
-Bundler.require(:default, :test)
-
-# require 'test/unit'
-# require 'mocha'
-# require 'redis'
-
-require '3scale/core'
+require 'bundler/setup'
+Bundler.require(:default, :development, :test)
 
 # Use the synchronous redis client here, for simplicity.
 module ThreeScale::Core
@@ -17,12 +10,28 @@ module ThreeScale::Core
   end
 end
 
-class Test::Unit::TestCase
-  include ThreeScale::Core
+module CoreTests
 
   private
 
   def storage
     ThreeScale::Core.storage
   end
+end
+
+class Test::Unit::TestCase
+  include ThreeScale::Core
+  include CoreTests
+
+  def before_setup
+    storage.flushall
+  end
+end
+
+VCR.configure do |c|
+  c.cassette_library_dir = 'spec/fixtures/vcr_cassettes'
+  c.hook_into :faraday
+  #c.debug_logger = File.open('vcr_debug.log', 'w')
+  full_build = ENV['FULL_BUILD'] == '1'
+  c.default_cassette_options = { allow_playback_repeats: true, record: full_build ? :all : :new_episodes }
 end
