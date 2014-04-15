@@ -16,7 +16,7 @@ where x.y.z is the version you aim for
 
 === Running tests
 
-YOu can run both tests & specs using API responses cached with VCR:
+You can run both tests & specs using API responses cached with VCR:
 
     $ bundle exec rake
 
@@ -24,10 +24,4 @@ If you want to generate new ones (or responses changed), you need to have a
 warking instance of backend server with a freshly cleared database and you can
 run it like this:
 
-    $ cd backend
-    $ redis-cli flushdb && RACK_ENV=development bundle exec bin/3scale_backend -p 3000 start
-    $ cd ../core
-    $ rm -r spec/fixtures/vcr_cassettes/
-    $ bundle exec rake
-
-
+    $ bundle exec rake ci
