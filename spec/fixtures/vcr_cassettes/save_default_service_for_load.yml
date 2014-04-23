@@ -5,8 +5,8 @@ http_interactions:
     uri: http://localhost:3000/internal/services/
     body:
       encoding: UTF-8
-      string: "{\"service\":{\"provider_key\":\"foo\",\"id\":7001,\"referrer_filters_required\":true,\"backend_version\":\"oauth\",\"default_user_plan_id\":15,\"default_user_plan_name\":\"test
-        name\"}}"
+      string: ! '{"service":{"provider_key":"foo","id":7001,"referrer_filters_required":true,"backend_version":"oauth","default_user_plan_id":15,"default_user_plan_name":"test
+        name"}}'
     headers:
       Accept:
       - application/json
@@ -29,8 +29,8 @@ http_interactions:
       - thin 1.5.0 codename Knife
     body:
       encoding: UTF-8
-      string: "{\"service\":{\"id\":7001,\"provider_key\":\"foo\",\"backend_version\":\"oauth\",\"referrer_filters_required\":true,\"user_registration_required\":true,\"default_user_plan_id\":15,\"default_user_plan_name\":\"test
-        name\"},\"status\":\"created\"}"
+      string: ! '{"service":{"id":7001,"provider_key":"foo","backend_version":"oauth","referrer_filters_required":true,"user_registration_required":true,"default_user_plan_id":15,"default_user_plan_name":"test
+        name"},"status":"created"}'
     http_version: 
   recorded_at: Tue, 08 Apr 2014 14:24:07 GMT
 - request:
@@ -38,8 +38,8 @@ http_interactions:
     uri: http://localhost:3001/internal/services/
     body:
       encoding: UTF-8
-      string: "{\"service\":{\"provider_key\":\"foo\",\"id\":7001,\"referrer_filters_required\":true,\"backend_version\":\"oauth\",\"default_user_plan_id\":15,\"default_user_plan_name\":\"test
-        name\"}}"
+      string: ! '{"service":{"provider_key":"foo","id":7001,"referrer_filters_required":true,"backend_version":"oauth","default_user_plan_id":15,"default_user_plan_name":"test
+        name"}}'
     headers:
       Accept:
       - application/json
@@ -61,9 +61,9 @@ http_interactions:
       server:
       - thin 1.5.0 codename Knife
     body:
-      encoding: UTF-8
-      string: "{\"service\":{\"id\":7001,\"provider_key\":\"foo\",\"backend_version\":\"oauth\",\"referrer_filters_required\":true,\"user_registration_required\":true,\"default_user_plan_id\":15,\"default_user_plan_name\":\"test
-        name\"},\"status\":\"created\"}"
+      encoding: US-ASCII
+      string: ! '{"service":{"id":7001,"provider_key":"foo","backend_version":"oauth","referrer_filters_required":true,"user_registration_required":true,"default_user_plan_id":15,"default_user_plan_name":"test
+        name"},"status":"created"}'
     http_version: 
-  recorded_at: Thu, 10 Apr 2014 13:45:28 GMT
+  recorded_at: Wed, 23 Apr 2014 12:51:36 GMT
 recorded_with: VCR 2.9.0

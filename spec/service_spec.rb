@@ -94,12 +94,9 @@ module ThreeScale
 
       describe '.make_default' do
         it 'returns the updated service' do
-          service = VCR.use_cassette 'save a default service for make_default' do
-            Service.save!(id: 7001, provider_key: 'foo')
-          end
-
           VCR.use_cassette 'make a service default' do
-            service.make_default.class.must_equal Service
+            service = Service.save!(id: 7001, provider_key: 'foo')
+            Service.make_default(service.id).class.must_equal Service
           end
         end
       end
