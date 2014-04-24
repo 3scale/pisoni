@@ -75,6 +75,28 @@ module ThreeScale
           return true
         end
 
+        # Public: Sets a service as default.
+        #
+        # service_id ID of the Service to set as default
+        #
+        # Returns the changed Service object.
+        def make_default(service_id)
+          response = Core.faraday.put "services/#{service_id}",
+            {service: {default_service: true}}.to_json
+
+          if response.status != 200
+            if response.status == 400 &&
+              (json = json(response))['error'] =~ /require a default user plan/
+              raise ServiceRequiresDefaultUserPlan
+            else
+              raise "Error making a Service (id: #{service_id.inspect}) default,
+                response code: #{response.status}, response body: #{response.body.inspect}"
+            end
+          end
+
+          instantiate_from_api_data json(response)['service']
+        end
+
         private
 
         def instantiate_from_api_data(service)
@@ -108,11 +130,6 @@ module ThreeScale
         attrs
       end
 
-      def make_default
-        self.default_service = true
-        save!
-      end
-
       # TODO: Remove once unused.
       def self.incr_version(id)
         storage.incrby(storage_key(id,:version), 1)
@@ -129,12 +146,6 @@ module ThreeScale
 
       def user_delete(username)
         Core.faraday.delete "services/#{id}/users/#{username}"
-      end
-
-      private
-
-      def default_service?
-        @default_service
       end
 
     end

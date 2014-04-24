@@ -28,8 +28,8 @@ http_interactions:
       - thin 1.5.0 codename Knife
     body:
       encoding: UTF-8
-      string: "{\"error\":\"Service id=\\\"7001\\\" is the default service, must be
-        removed forcefully or make it not default before removal\"}"
+      string: ! '{"error":"Service id=\"7001\" is the default service, must be removed
+        forcefully or make it not default before removal"}'
     http_version: 
   recorded_at: Tue, 08 Apr 2014 14:24:07 GMT
 - request:
@@ -59,9 +59,8 @@ http_interactions:
       server:
       - thin 1.5.0 codename Knife
     body:
-      encoding: UTF-8
-      string: "{\"error\":\"Service id=\\\"7001\\\" is the default service, cannot
-        be removed\"}"
+      encoding: US-ASCII
+      string: ! '{"error":"Service id=\"7001\" is the default service, cannot be removed"}'
     http_version: 
-  recorded_at: Thu, 10 Apr 2014 13:45:28 GMT
+  recorded_at: Wed, 23 Apr 2014 12:51:36 GMT
 recorded_with: VCR 2.9.0
