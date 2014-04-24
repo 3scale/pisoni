@@ -35,7 +35,7 @@ class UserTest < Test::Unit::TestCase
       service = Service.save!(provider_key: 'foo', id: '7002')
       User.save! username: 'username', service_id: '7002', plan_id: '1001',
         plan_name: 'planname'
-      user = User.load(service, 'username')
+      user = User.load(service.id, 'username')
 
       assert_equal true, user.active?
       assert_equal 'username', user.username
