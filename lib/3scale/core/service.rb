@@ -7,7 +7,7 @@ module ThreeScale
         user_registration_required default_user_plan_id default_user_plan_name
         version default_service)
 
-      attr_accessor *(ATTRIBUTES.map { |attr| attr.to_sym })
+      attr_accessor(*(ATTRIBUTES.map { |attr| attr.to_sym }))
 
       class << self
 
@@ -38,19 +38,7 @@ module ThreeScale
         end
 
         def save!(attributes)
-          response = Core.faraday.post "services/", {service: attributes}.to_json
-
-          if response.status != 201
-            if response.status == 400 &&
-              (json = json(response))['error'] =~ /require a default user plan/
-              raise ServiceRequiresDefaultUserPlan
-            else
-              raise "Error saving a Service, attributes: #{attributes.inspect},
-                response code: #{response.status}, response body: #{response.body.inspect}"
-            end
-          end
-
-          instantiate_from_api_data json(response)['service']
+          update_backend(:post, attributes)
         end
 
         def change_provider_key!(old_key, new_key)
@@ -81,23 +69,31 @@ module ThreeScale
         #
         # Returns the changed Service object.
         def make_default(service_id)
-          response = Core.faraday.put "services/#{service_id}",
-            {service: {default_service: true}}.to_json
+          update_backend :put, {default_service: true}, service_id
+        end
 
-          if response.status != 200
-            if response.status == 400 &&
-              (json = json(response))['error'] =~ /require a default user plan/
-              raise ServiceRequiresDefaultUserPlan
-            else
-              raise "Error making a Service (id: #{service_id.inspect}) default,
-                response code: #{response.status}, response body: #{response.body.inspect}"
-            end
-          end
+        private
+
+        def update_backend(method, attributes, service_id = '')
+          response = Core.faraday.send method, "services/#{service_id}", {service: attributes}.to_json
+
+          expected_status = method == :post ? 201 : 200
+          handle_update_errors response, expected_status
 
           instantiate_from_api_data json(response)['service']
         end
 
-        private
+        def handle_update_errors(response, expected_status)
+          if response.status != expected_status
+            if response.status == 400 &&
+              (json = json(response))['error'] =~ /require a default user plan/
+              raise ServiceRequiresDefaultUserPlan
+            else
+              raise "Error saving a Service, attributes: #{attributes.inspect},
+                response code: #{response.status}, response body: #{response.body.inspect}"
+            end
+          end
+        end
 
         def instantiate_from_api_data(service)
           attributes = {}
