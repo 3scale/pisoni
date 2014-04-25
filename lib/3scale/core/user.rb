@@ -10,27 +10,27 @@ module ThreeScale
       attr_accessor :plan_name
       attr_writer   :version
 
-      def self.load(service, username)
-        key = self.key(service.id, username)
+      def self.load(service_id, username)
+        key = self.key(service_id, username)
 
-        values = storage.hmget(key,"state","plan_id","plan_name","version")
+        values = storage.hmget(key, "state", "plan_id", "plan_name", "version")
         state, plan_id, plan_name, vv = values
 
-	      user = nil
-        if not state.nil?
-          user = new(:service_id => service.id,
-                          :username   => username,
-                          :state      => state.to_sym,
-                          :plan_id    => plan_id,
-                          :plan_name  => plan_name)
-          self.incr_version(service.id, username) if vv.nil?
+        user = nil
+        unless state.nil?
+          user = new(:service_id => service_id,
+                     :username   => username,
+                     :state      => state.to_sym,
+                     :plan_id    => plan_id,
+                     :plan_name  => plan_name)
+          self.incr_version(service_id, username) if vv.nil?
         end
 
         return user
       end
 
       def self.load_or_create!(service, username)
-        user = self.load(service, username)
+        user = self.load(service.id, username)
 
         if user.nil?
           ## the user does not exist yet, we need to create it for the case of the open loop
