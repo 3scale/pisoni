@@ -35,7 +35,7 @@ module ThreeScale
     end
 
     def donbot_username
-      ENV['DONBOT_AUTH_PASSWORD'] || 'xxxxx'
+      ENV['DONBOT_AUTH_USERNAME'] || 'xxxxx'
     end
 
     def internal_api_url
