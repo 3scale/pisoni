@@ -26,8 +26,16 @@ module ThreeScale
         'Accept' => 'application/json',
         'Content-Type' => 'application/json'
       }
-      @faraday.basic_auth('xxxxx', 'xxxxx')
+      @faraday.basic_auth(donbot_username, donbot_password)
       @faraday
+    end
+
+    def donbot_password
+      ENV['DONBOT_AUTH_PASSWORD'] || 'xxxxx'
+    end
+
+    def donbot_username
+      ENV['DONBOT_AUTH_PASSWORD'] || 'xxxxx'
     end
 
     def internal_api_url
