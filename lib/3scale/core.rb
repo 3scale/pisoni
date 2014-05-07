@@ -31,15 +31,15 @@ module ThreeScale
     end
 
     def donbot_password
-      ENV['DONBOT_AUTH_PASSWORD'] || 'xxxxx'
+      'xxxxx'
     end
 
     def donbot_username
-      ENV['DONBOT_AUTH_USERNAME'] || 'xxxxx'
+      'xxxxx'
     end
 
     def internal_api_url
-      ENV['THREESCALE_CORE_INTERNAL_API'] || 'http://localhost:3000/internal/'
+      ENV['THREESCALE_CORE_INTERNAL_API'] || 'http://localhost:8080/internal/'
     end
 
   end
