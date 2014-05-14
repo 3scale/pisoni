@@ -21,7 +21,7 @@ module ThreeScale
     def faraday
       return @faraday if @faraday
 
-      @faraday = Faraday.new(:url => internal_api_url)
+      @faraday = Faraday.new(:url => donbot_url)
       @faraday.headers = {
         'Accept' => 'application/json',
         'Content-Type' => 'application/json'
@@ -38,8 +38,13 @@ module ThreeScale
       'xxxxx'
     end
 
-    def internal_api_url
-      ENV['THREESCALE_CORE_INTERNAL_API'] || 'http://localhost:8080/internal/'
+    def donbot_url=(url)
+      @donbot_url = url
+    end
+
+    def donbot_url
+      ENV['THREESCALE_CORE_INTERNAL_API'] || @donbot_url ||
+        raise(UnknownDonbotAPIEndpoint)
     end
 
   end
