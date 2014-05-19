@@ -1,5 +1,7 @@
 module ThreeScale
   module Core
+    class UnknownDonbotAPIEndpoint < RuntimeError; end
+
     class Error < RuntimeError
       def to_xml(options = {})
         xml = Builder::XmlMarkup.new
@@ -28,18 +30,18 @@ module ThreeScale
 
     NotFound = Class.new(Error)
     Invalid  = Class.new(Error)
-    
+
     class ApplicationHasInconsistentData < Error
       def initialize(id, user_key)
         super %(Application id="#{id}" with user_key="#{user_key}" has inconsistent data and could not be saved)
       end
     end
-    
+
     class ServiceRequiresDefaultUserPlan < Error
       def initialize
         super %(Services without the need for registered users require a default user plan)
       end
-    end     
+    end
 
     class ServiceIsDefaultService < Error
       def initialize(id = nil)
@@ -88,8 +90,8 @@ module ThreeScale
         super %(Provider key="#{key}" already exists)
       end
     end
-  
-    class ProviderKeyNotFound < Error 
+
+    class ProviderKeyNotFound < Error
       def initialize(key)
         super %(Provider key="#{key}" does not exist)
       end
