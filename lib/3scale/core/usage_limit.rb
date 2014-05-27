@@ -36,23 +36,19 @@ module ThreeScale
       end
 
       def self.save(attributes)
-        storage.multi do
-          PERIODS.select { |period| attributes[period] }.each do |period|
-            storage.set(key(attributes[:service_id],
-                            attributes[:plan_id], 
-                            attributes[:metric_id],
-                            period), 
-                        attributes[period])
-          end
-          Service.incr_version(attributes[:service_id])
+        PERIODS.select { |period| attributes[period] }.each do |period|
+          storage.set(key(attributes[:service_id],
+                          attributes[:plan_id],
+                          attributes[:metric_id],
+                          period),
+                      attributes[period])
         end
+        Service.incr_version(attributes[:service_id])
       end
 
       def self.delete(service_id, plan_id, metric_id, period)
-        storage.multi do
-          storage.del(key(service_id, plan_id, metric_id, period))
-          Service.incr_version(service_id)
-        end
+        storage.del(key(service_id, plan_id, metric_id, period))
+        Service.incr_version(service_id)
       end
 
       def metric_name

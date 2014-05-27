@@ -19,7 +19,7 @@ module ThreeScale
         name && new(:id         => id.to_s,
                     :service_id => service_id.to_s,
                     :name       => name,
-                    :parent_id  => parent_id)  
+                    :parent_id  => parent_id)
       end
 
       def self.load_all_names(service_id, ids)
@@ -29,7 +29,7 @@ module ThreeScale
       def self.load_name(service_id, id)
         storage.get(key(service_id, id, :name))
       end
-      
+
       def self.load_id(service_id, name)
         storage.get(id_key(service_id, name))
       end
@@ -42,26 +42,25 @@ module ThreeScale
 
       def self.delete(service_id, id)
         name = load_name(service_id, id)
-        
-        storage.multi do
-          storage.del(key(service_id, id, :name))
-          storage.del(key(service_id, id, :parent_id))
-          storage.del(id_key(service_id, name))
-          storage.srem(id_set_key(service_id), id)
 
-          Service.incr_version(service_id)
-        end
+        storage.srem(id_set_key(service_id), id)
+
+        storage.del(key(service_id, id, :name))
+        storage.del(key(service_id, id, :parent_id))
+        storage.del(id_key(service_id, name))
+
+        Service.incr_version(service_id)
       end
 
       def save
-        storage.multi do
-          storage.set(id_key(service_id, name), id)
-          storage.set(key(service_id, id, :name), name)
-          storage.set(key(service_id, id, :parent_id), parent_id) if parent_id
-          storage.sadd(id_set_key(service_id), id)
-       end
-       save_children
-       Service.incr_version(service_id)
+        storage.set(id_key(service_id, name), id)
+        storage.set(key(service_id, id, :name), name)
+        storage.set(key(service_id, id, :parent_id), parent_id) if parent_id
+
+        storage.sadd(id_set_key(service_id), id)
+
+        save_children
+        Service.incr_version(service_id)
       end
 
       def children
@@ -78,7 +77,7 @@ module ThreeScale
         def id_key(service_id, name)
           encode_key("metric/service_id:#{service_id}/name:#{name}/id")
         end
-        
+
         def id_set_key(service_id)
           encode_key("metrics/service_id:#{service_id}/ids")
         end

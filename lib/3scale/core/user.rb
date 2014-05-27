@@ -68,17 +68,15 @@ module ThreeScale
 
       def save
         service = Service.load_by_id(service_id)
+
+        storage.hset key, "state", state.to_s if state
+        storage.hset key, "plan_id", plan_id if plan_id
+        storage.hset key, "plan_name", plan_name if plan_name
+        storage.hset key, "username", username if username
+        storage.hset key, "service_id", service_id if service_id
+        storage.hincrby key, "version", 1
+
         service.user_add(username)
-
-        storage.multi do
-          storage.hset key, "state", state.to_s if state
-          storage.hset key, "plan_id", plan_id if plan_id
-          storage.hset key, "plan_name", plan_name if plan_name
-          storage.hset key, "username", username if username
-          storage.hset key, "service_id", service_id if service_id
-          storage.hincrby key, "version", 1
-        end
-
       end
 
       def self.get_version(service_id, username)
@@ -101,19 +99,19 @@ module ThreeScale
       end
 
       def key
-          self.class.key(service_id,username)
+        self.class.key(service_id,username)
       end
 
       def self.key(service_id, username)
-         "service:#{service_id}/user:#{username}"
+        "service:#{service_id}/user:#{username}"
       end
 
       def storage_key(service_id, username, attribute)
-         self.class.storage_key(service_id, username, attribute)
+        self.class.storage_key(service_id, username, attribute)
       end
 
       def self.storage_key(service_id, username, attribute)
-         "service:#{service_id}/user:#{username}/#{attribute}"
+        "service:#{service_id}/user:#{username}/#{attribute}"
       end
 
     end
