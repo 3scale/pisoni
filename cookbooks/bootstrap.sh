@@ -26,3 +26,5 @@ apt-get install -y libxslt-dev libxml2-dev
 
 # Application setup
 gem install bundler rake
+
+su - vagrant -c "echo export LC_ALL=en_US.UTF8 >> ~/.bashrc"
