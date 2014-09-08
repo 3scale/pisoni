@@ -23,7 +23,7 @@ task :ci do
 
   ENV['FULL_BUILD'] = '1'
 
-  exit system('rake', 'test')
+  Rake::Task['test'].invoke
 end
 
 ENV['gem_push'] = '0' # don't push to rubygems.org when doing rake release
