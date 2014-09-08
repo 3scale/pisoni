@@ -27,4 +27,8 @@ apt-get install -y libxslt-dev libxml2-dev
 # Application setup
 gem install bundler rake
 
+# Instruct the local backend used on ci mode to use our Redis instance
+# (note that core and backend use different dbs within Redis)
+su - vagrant -c "echo ThreeScale::Backend.configure { \|c\| c.redis.proxy=\'localhost:6379\' } > ~/.3scale_backend.conf"
+
 su - vagrant -c "echo export LC_ALL=en_US.UTF8 >> ~/.bashrc"
