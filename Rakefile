@@ -12,15 +12,17 @@ Rake::TestTask.new do |task|
 end
 
 task :ci do
-  backend = fork do
-    ENV['RACK_ENV'] = 'development'
-    exec('3scale_backend', 'start', '-p', '3001')
+  # assume we have already set up our own backend if the env variable is set
+  if ENV['THREESCALE_CORE_INTERNAL_API'].nil?
+    backend = fork do
+      ENV['RACK_ENV'] = 'development'
+      exec('3scale_backend', 'start', '-p', '3001')
+    end
+    sleep 10
+    at_exit { Process.kill('INT', backend) }
   end
 
-  sleep 10
-
-  at_exit { Process.kill('INT', backend) }
-
+  # instruct VCR to record http requests/responses
   ENV['FULL_BUILD'] = '1'
 
   Rake::Task['test'].invoke
