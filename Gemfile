@@ -1,4 +1,5 @@
 source "http://rubygems.org"
+source 'https://xxxxx:xxxxx@localhost'
 
 gemspec
 
