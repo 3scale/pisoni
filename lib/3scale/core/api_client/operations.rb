@@ -138,7 +138,7 @@ module ThreeScale
             ret[:attributes] = attributes
 
             if ok
-              ret[:object] = if options[:build]
+              ret[:object] = if attributes and options[:build]
                                ((options[:build] == true) ? self : options[:build]).public_send(:new, attributes)
                              else
                                nil
