@@ -119,7 +119,15 @@ module ThreeScale
             attributes = {options[:request_prefix] => attributes} if options[:request_prefix]
 
             uri = options.fetch(:uri, default_uri)
-            response = Core.faraday.send method, uri, attributes.to_json
+            # GET, DELETE and HEAD are treated differently by Faraday. We need
+            # to set the body in there.
+            if method == :get or method == :delete
+              response = Core.faraday.send method, uri do |req|
+                req.body = attributes.to_json
+              end
+            else
+              response = Core.faraday.send method, uri, attributes.to_json
+            end
 
             ok = status_ok? method, response.status
 
