@@ -29,6 +29,11 @@ module ThreeScale
             return @default_http_error_exception ||= APIError unless exception
             @default_http_error_exception = exception
           end
+
+          def default_prefix(prefix = nil)
+            return @default_prefix ||= self.to_s.split(':').last.downcase.to_sym unless prefix
+            @default_prefix = prefix
+          end
         end
       end
     end

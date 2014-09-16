@@ -89,6 +89,42 @@ module ThreeScale
             ret[:object]
           end
 
+          def api_get_prefixes(options)
+            return options[:request_prefix] || options[:prefix] || default_prefix,
+              options[:response_prefix] || options[:prefix] || default_prefix
+          end
+          private :api_get_prefixes
+
+          def api_request_params(params, prefix)
+            prefix.empty? ? params : { prefix => params }
+          end
+          private :api_request_params
+
+          def api_response_params(params, prefix)
+            prefix.empty? ? params : params[prefix]
+          end
+          private :api_response_params
+
+          def api_http(method, uri, attributes)
+            # GET, DELETE and HEAD are treated differently by Faraday. We need
+            # to set the body in there.
+            if method == :get or method == :delete
+              Core.faraday.send method, uri do |req|
+                req.body = attributes.to_json
+              end
+            else
+              Core.faraday.send method, uri, attributes.to_json
+            end
+          end
+          private :api_http
+
+          def api_parse_json(text)
+            parse_json(text)
+          rescue JSON::ParserError
+            raise "JSON Parser Error"
+          end
+          private :api_parse_json
+
           # api method - talk with the remote HTTP service
           #
           # method - HTTP method to use
@@ -98,7 +134,7 @@ module ThreeScale
           #   :on_error => exception - either use nil to not raise, or :raise (default, use default_http_error_exception) or an exception class
           #   :request_prefix => symbol - wrap request's JSON attributes under this field
           #   :response_prefix => symbol - parse response's JSON attributes under this field
-          #   :prefix => symbol - used as both request and response prefix, takes precedence
+          #   :prefix => symbol - used as both request and response prefix, has lowest precedence
           #   :build => boolean|class - call new with response's JSON if response is ok, defaults to false
           # block (optional) - receives two params: http status code and attributes
           #   this block if present handles error responses, invalidates :on_error option,
@@ -112,29 +148,16 @@ module ThreeScale
           #     :attributes - JSON parsed attributes of the response's body
 
           def api(method, attributes, options = {})
-            # manage method options
-            if options[:prefix]
-              options[:request_prefix] = options[:response_prefix] = options[:prefix]
-            end
-            attributes = {options[:request_prefix] => attributes} if options[:request_prefix]
-
+            prefix_req, prefix_resp = api_get_prefixes options
+            attributes = api_request_params attributes, prefix_req
             uri = options.fetch(:uri, default_uri)
-            # GET, DELETE and HEAD are treated differently by Faraday. We need
-            # to set the body in there.
-            if method == :get or method == :delete
-              response = Core.faraday.send method, uri do |req|
-                req.body = attributes.to_json
-              end
-            else
-              response = Core.faraday.send method, uri, attributes.to_json
-            end
+            response = api_http method, uri, attributes
 
             ok = status_ok? method, response.status
-
             ret = { response: response, ok: ok }
 
-            attributes = parse_json(response.body)
-            attributes = attributes[options[:response_prefix]] if options[:response_prefix]
+            attributes = api_parse_json(response.body)
+            attributes = api_response_params attributes, prefix_resp
             ret[:attributes] = attributes
 
             if ok

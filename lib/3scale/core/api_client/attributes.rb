@@ -19,6 +19,7 @@ module ThreeScale
           self.class.attributes.each do |attr|
             send("#{attr}=", attributes[attr])
           end
+          self
         end
 
         def dirty?
