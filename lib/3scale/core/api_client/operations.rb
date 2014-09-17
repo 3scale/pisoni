@@ -65,7 +65,7 @@ module ThreeScale
 
           def api_do_get(attributes, api_options = {})
             api :get, attributes, api_options do |response, _|
-              :raise unless response.status == 404
+              response.status != 404
             end
           end
 
@@ -79,7 +79,7 @@ module ThreeScale
 
           def api_do_delete(attributes, api_options = {})
             api :delete, attributes, api_options do |response, _|
-              :raise unless response.status == 404
+              response.status != 404
             end
           end
 
@@ -115,11 +115,11 @@ module ThreeScale
           # attributes - HTTP request body parameters
           # options:
           #   :uri => string - sets the uri for this particular request
-          #   :on_error => exception - either use nil to not raise, or :raise (default, use default_http_error_exception) or an exception class
+          #   :raise => boolean - raise APIError on error, defaults to true
           #   :build => boolean - create a new object with response's JSON if response is ok, defaults to false
           # block (optional) - receives two params: http status code and attributes
-          #   this block if present handles error responses, invalidates :on_error option,
-          #   you should return an array of [exception_to_raise|nil, built_object (if any) or nil]
+          #   this block if present handles error responses, invalidates :raise option,
+          #   you should return an array of [raise (boolean), built_object (if any) or nil]
           #
           # returns:
           #   a hash consisting of:
@@ -149,13 +149,9 @@ module ThreeScale
                              end
             else
               # something went wrong. let's either let the user fix it, and ask him to provide us
-              # with directions returned from block or just use :on_error
-              except, ret[:object] = block_given? ? yield(response, attributes) : [options.fetch(:on_error, :raise), nil]
-              if except
-                except = default_http_error_exception if except == :raise
-                raise except, "Error #{method.upcase}'ing #{uri}, attributes: #{attributes.inspect}, " \
-              "response code: #{response.status}, response body: #{response.body.inspect}"
-              end
+              # with directions returned from block or just use :raise
+              do_raise, ret[:object] = block_given? ? yield(response, attributes) : [options.fetch(:raise, true), nil]
+              raise APIError.new(method, uri, response, attributes) if do_raise
             end
 
             ret

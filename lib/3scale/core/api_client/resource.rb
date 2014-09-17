@@ -1,7 +1,12 @@
 module ThreeScale
   module Core
     module APIClient
-      APIError = Class.new(StandardError)
+      class APIError < StandardError
+        def initialize(method, uri, response, attributes)
+          super "Error #{response.status} #{method.upcase} #{uri}, attributes:" \
+            " #{attributes.inspect}, response.body: #{response.body.inspect}"
+        end
+      end
 
       class Resource
 
