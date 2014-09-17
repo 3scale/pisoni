@@ -89,22 +89,6 @@ module ThreeScale
             ret[:object]
           end
 
-          def api_get_prefixes(options)
-            return options[:request_prefix] || options[:prefix] || default_prefix,
-              options[:response_prefix] || options[:prefix] || default_prefix
-          end
-          private :api_get_prefixes
-
-          def api_request_params(params, prefix)
-            prefix.empty? ? params : { prefix => params }
-          end
-          private :api_request_params
-
-          def api_response_params(params, prefix)
-            prefix.empty? ? params : params[prefix]
-          end
-          private :api_response_params
-
           def api_http(method, uri, attributes)
             # GET, DELETE and HEAD are treated differently by Faraday. We need
             # to set the body in there.
@@ -132,9 +116,6 @@ module ThreeScale
           # options:
           #   :uri => string - sets the uri for this particular request
           #   :on_error => exception - either use nil to not raise, or :raise (default, use default_http_error_exception) or an exception class
-          #   :request_prefix => symbol - wrap request's JSON attributes under this field
-          #   :response_prefix => symbol - parse response's JSON attributes under this field
-          #   :prefix => symbol - used as both request and response prefix, has lowest precedence
           #   :build => boolean|class - call new with response's JSON if response is ok, defaults to false
           # block (optional) - receives two params: http status code and attributes
           #   this block if present handles error responses, invalidates :on_error option,
@@ -148,8 +129,8 @@ module ThreeScale
           #     :attributes - JSON parsed attributes of the response's body
 
           def api(method, attributes, options = {})
-            prefix_req, prefix_resp = api_get_prefixes options
-            attributes = api_request_params attributes, prefix_req
+            prefix = default_prefix
+            attributes = { prefix => attributes }
             uri = options.fetch(:uri, default_uri)
             response = api_http method, uri, attributes
 
@@ -157,7 +138,7 @@ module ThreeScale
             ret = { response: response, ok: ok }
 
             attributes = api_parse_json(response.body)
-            attributes = api_response_params attributes, prefix_resp
+            attributes = attributes[prefix]
             ret[:attributes] = attributes
 
             if ok
