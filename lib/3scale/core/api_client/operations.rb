@@ -116,7 +116,7 @@ module ThreeScale
           # options:
           #   :uri => string - sets the uri for this particular request
           #   :on_error => exception - either use nil to not raise, or :raise (default, use default_http_error_exception) or an exception class
-          #   :build => boolean|class - call new with response's JSON if response is ok, defaults to false
+          #   :build => boolean - create a new object with response's JSON if response is ok, defaults to false
           # block (optional) - receives two params: http status code and attributes
           #   this block if present handles error responses, invalidates :on_error option,
           #   you should return an array of [exception_to_raise|nil, built_object (if any) or nil]
@@ -143,7 +143,7 @@ module ThreeScale
 
             if ok
               ret[:object] = if attributes and options[:build]
-                               ((options[:build] == true) ? self : options[:build]).public_send(:new, attributes)
+                               new attributes
                              else
                                nil
                              end
