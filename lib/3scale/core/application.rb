@@ -12,41 +12,53 @@ module ThreeScale
         @version = version.to_i
       end
 
-      def self.load(service_id, id)
-        api_read({service_id: service_id, id: id}, prefix: :app)
+      def self.base_uri
+        '/internal/services'
       end
 
-      # XXX Old API. Just returns an id.
-      def self.load_id_by_key(service_id, user_key)
-        ret = api_do_get({service_id: service_id, user_key: user_key}, prefix: :app, uri: "#{default_uri}/by_key")
-        ret[:ok] ? ret[:attributes][:id] : nil
+      def base_uri
+        self.class.base_uri
+      end
+
+      def self.load(service_id, id)
+        api_read({}, uri: "#{base_uri}/#{service_id}/applications/#{id}")
       end
 
       def self.save(attributes)
-        api_save attributes, prefix: :app
-      end
-
-      def self.save_id_by_key(service_id, user_key, id)
-        raise ApplicationHasInconsistentData.new(id, user_key) if (service_id.nil? || id.nil? || user_key.nil? || service_id=="" || id=="" || user_key=="")
-        ret = api_do_post({service_id: service_id, user_key: user_key, id: id}, prefix: :app, uri: "#{default_uri}/by_key")
-        ret[:ok]
+        service_id, id = attributes[:service_id], attributes[:id]
+        if load(service_id, id)
+          api_update attributes, uri: "#{base_uri}/#{service_id}/applications/#{id}"
+        else
+          api_create attributes, uri: "#{base_uri}/#{service_id}/applications/#{id}"
+        end
       end
 
       def self.delete(service_id, id)
-        api_delete({service_id: service_id, id: id}, prefix: :app)
-      end
-
-      # XXX Old API. Just deletes a key.
-      def self.delete_id_by_key(service_id, user_key)
-        api_delete({service_id: service_id, user_key: user_key}, prefix: :app, uri: "#{default_uri}/by_key")
+        api_delete({}, uri: "#{base_uri}/#{service_id}/applications/#{id}")
       end
 
       def save
-        api_save prefix: :app
+        api_save uri: "#{base_uri}/#{service_id}/applications/#{id}"
       end
 
       def user_required?
         user_required
+      end
+
+      # XXX Old API. Just returns an id. DEPRECATED.
+      def self.load_id_by_key(service_id, user_key)
+        ret = api_do_get({}, uri: "#{base_uri}/#{service_id}/applications/key/#{user_key}")
+        ret[:ok] ? ret[:attributes][:id] : nil
+      end
+
+      def self.save_id_by_key(service_id, user_key, id)
+        raise ApplicationHasInconsistentData.new(id, user_key) if (service_id.nil? || id.nil? || user_key.nil? || service_id=="" || id=="" || user_key=="")
+        ret = api_do_put({}, uri: "#{base_uri}/#{service_id}/applications/#{id}/key/#{user_key}")
+        ret[:ok]
+      end
+
+      def self.delete_id_by_key(service_id, user_key)
+        api_delete({}, uri: "#{base_uri}/#{service_id}/applications/key/#{user_key}")
       end
 
     end
