@@ -130,7 +130,7 @@ module ThreeScale
 
           def api(method, attributes, options = {})
             prefix = default_prefix
-            attributes = { prefix => attributes }
+            attributes = { prefix => attributes } unless attributes.empty?
             uri = options.fetch(:uri, default_uri)
             response = api_http method, uri, attributes
 
