@@ -20,7 +20,7 @@ task :ci do
   if ENV['THREESCALE_CORE_INTERNAL_API'].nil?
     backend = fork do
       ENV['RACK_ENV'] = 'development'
-      exec('3scale_backend', 'start', '-p', '3001')
+      exec('bundle', 'exec', '3scale_backend', 'start', '-p', '3001')
     end
     sleep 10
     at_exit { Process.kill('INT', backend) }

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+export CI=jenkins
+
+/usr/bin/redis-server --port 6379 --daemonize yes
+echo ThreeScale::Backend.configure { \|c\| c.redis.proxy=\'localhost:6379\' } > ~/.3scale_backend.conf
+
+bundle exec rake ci
