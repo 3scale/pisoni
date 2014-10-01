@@ -15,10 +15,10 @@ dpkg-reconfigure -f noninteractive tzdata
 # Basic tools
 apt-get install -y git
 
-# Ruby 1.9.3
+# Ruby 2.1
 apt-get -y install ruby rubygems ruby-switch
-apt-get -y install ruby1.9.3
-ruby-switch --set ruby1.9.1
+apt-get -y install ruby2.1 ruby2.1-dev
+ruby-switch --set ruby2.1
 
 # Dependencies
 apt-get install -y libxslt-dev libxml2-dev
