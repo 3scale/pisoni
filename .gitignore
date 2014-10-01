@@ -1,3 +1,4 @@
 .bundle
 .cache_rake_t
 pkg
+Gemfile.lock
