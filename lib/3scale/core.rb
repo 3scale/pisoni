@@ -3,6 +3,7 @@ require 'json'
 require '3scale/core/storage_key_helpers'
 require '3scale/core/storable'
 
+require '3scale/core/api_client'
 require '3scale/core/application'
 require '3scale/core/metric'
 require '3scale/core/service'
