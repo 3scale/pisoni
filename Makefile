@@ -9,7 +9,8 @@ NAME = $(PROJECT)-build
 all: clean build test
 
 test:
-	$(RUN) --name $(NAME) $(PROJECT)
+	$(PROJECT_PATH)/docker/test $(PROJECT) $(NAME)
+
 pull:
 	- docker pull 3scale/ruby:2.1
 
