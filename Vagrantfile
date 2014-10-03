@@ -16,6 +16,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.berkshelf.enabled = true
   config.omnibus.chef_version = :latest
 
+  # Add SSH agent forwarding so that we're able to retrieve
+  # private repos from this machine
+  config.ssh.forward_agent = true
+
   config.vm.provision :chef_solo do |chef|
     chef.add_recipe 'apt'
     chef.add_recipe 'redisio::install'
