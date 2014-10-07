@@ -23,8 +23,9 @@ IPPORT=$(${DOCKER} port "${CID}" 22)
 IP=$(echo "${IPPORT}" | cut -d':' -f 1)
 PORT=$(echo "${IPPORT}" | cut -d':' -f 2)
 chmod 600 "${MYDIR}/docker_key"
-ssh root@"${IP}" -p "${PORT}" -i "${MYDIR}/docker_key" -o StrictHostKeyChecking=no -o ForwardAgent=yes \
-  "mkdir -p /root/.ssh && /bin/echo -e 'Host *\nStrictHostKeyChecking no' > /root/.ssh/config \
+ssh root@"${IP}" -p "${PORT}" -i "${MYDIR}/docker_key" -o UserKnownHostsFile=/dev/null \
+  -o StrictHostKeyChecking=no -o ForwardAgent=yes \
+  "mkdir -p /root/.ssh && /bin/echo -e 'Host *\nStrictHostKeyChecking no\nUserKnownHostsFile /dev/null' > /root/.ssh/config \
   && cd /opt/${PROJECTNAME} \
   && bundle install --jobs `grep -c processor /proc/cpuinfo` \
   && cd /opt/${PROJECTNAME} && script/ci"
