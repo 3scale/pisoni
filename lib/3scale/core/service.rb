@@ -38,7 +38,7 @@ module ThreeScale
         end
 
         def save!(attributes)
-          update_backend(:post, attributes)
+          update_backend(:put, attributes, attributes[:id])
         end
 
         def change_provider_key!(old_key, new_key)
