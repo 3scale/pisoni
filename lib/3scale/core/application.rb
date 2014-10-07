@@ -26,11 +26,7 @@ module ThreeScale
 
       def self.save(attributes)
         service_id, id = attributes[:service_id], attributes[:id]
-        if load(service_id, id)
-          api_update attributes, uri: "#{base_uri}/#{service_id}/applications/#{id}"
-        else
-          api_create attributes, uri: "#{base_uri}/#{service_id}/applications/#{id}"
-        end
+        api_update attributes, uri: "#{base_uri}/#{service_id}/applications/#{id}"
       end
 
       def self.delete(service_id, id)
