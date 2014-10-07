@@ -53,9 +53,9 @@ module ThreeScale
 
         it 'returns true if deleting a non-default service' do
           VCR.use_cassette 'deleting non-default service' do
-            Service.save! provider_key: 'foo', id: 7002
+            Service.save! provider_key: 'foo', id: 7005
 
-            Service.delete_by_id!(7002).must_equal true
+            Service.delete_by_id!(7005).must_equal true
           end
         end
 
@@ -69,7 +69,7 @@ module ThreeScale
       end
 
       describe '.save!' do
-        before { @service_params = {provider_key: 'foo', id: '7001'} }
+        before { @service_params = {provider_key: 'fooBAR', id: '10001'} }
 
         it 'returns service object' do
           service = VCR.use_cassette 'save with default service params' do
@@ -77,8 +77,8 @@ module ThreeScale
           end
 
           service.class.must_equal Service
-          service.id.must_equal '7001'
-          service.provider_key.must_equal 'foo'
+          service.id.must_equal '10001'
+          service.provider_key.must_equal 'fooBAR'
         end
 
         it 'raises an exception when missing a default user plan' do
