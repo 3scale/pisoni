@@ -21,7 +21,7 @@ module ThreeScale
           elsif response.status == 404
             nil
           else
-            raise "Error getting a Service: #{service_id}, code: #{response.satus},
+            raise "Error getting a Service: #{service_id}, code: #{response.status},
               body: #{response.body.inspect}"
           end
         end
@@ -32,7 +32,7 @@ module ThreeScale
           if response.status != 200
             raise ServiceIsDefaultService, service_id if response.status == 400
             raise "Error deleting a Service: #{service_id}, options: #{options.inspect},
-              response code: #{response.satus}, response body: #{response.body.inspect}"
+              response code: #{response.status}, response body: #{response.body.inspect}"
           end
           return true
         end
