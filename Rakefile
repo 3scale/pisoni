@@ -33,6 +33,7 @@ task :ci do
 end
 
 ENV['gem_push'] = '0' # don't push to rubygems.org when doing rake release
+desc 'Releases the gem and pushes it to our geminabox'
 task geminabox: :release do
   require 'geminabox_client'
   # because geminabox is smart and tries to guess the gem name from current folder
