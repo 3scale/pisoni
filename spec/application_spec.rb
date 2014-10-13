@@ -187,7 +187,7 @@ module ThreeScale
           VCR.use_cassette 'save instance app with different plan name' do
             @app.save
           end
-          newapp = VCR.use_cassette 'load from saved instance app identifier' do
+          newapp = VCR.use_cassette 'load from saved instance app with changed plan' do
             Application.load @app.service_id, @app.id
           end
           newapp.id.must_equal @app.id
@@ -201,7 +201,7 @@ module ThreeScale
 
         it 'increases the version' do
           old_version = @app.version
-          VCR.use_cassette 'save instance app with different plan name' do
+          VCR.use_cassette 'save instance app' do
             @app.save
           end
           @app.version.must_equal(old_version + 1)
@@ -235,7 +235,7 @@ module ThreeScale
             VCR.use_cassette 'change key of service and app' do
               Application.save_id_by_key(2001, 'another_key', 8011)
             end.must_equal true
-            VCR.use_cassette 'get modified user key app ID' do
+            VCR.use_cassette 'get again modified user key app ID' do
               Application.load_id_by_key(2001, 'another_key')
             end.must_equal '8011'
           end
