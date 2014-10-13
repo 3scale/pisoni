@@ -5,7 +5,7 @@ http_interactions:
     uri: http://localhost:3000/internal/services/
     body:
       encoding: UTF-8
-      string: ! '{"service":{"provider_key":"foo","id":"7001","user_registration_required":false,"default_user_plan_name":"planname","default_user_plan_id":"1001"}}'
+      string: '{"service":{"provider_key":"foo","id":"7001","user_registration_required":false,"default_user_plan_name":"planname","default_user_plan_id":"1001"}}'
     headers:
       Accept:
       - application/json
@@ -28,7 +28,7 @@ http_interactions:
       - thin 1.5.0 codename Knife
     body:
       encoding: UTF-8
-      string: ! '{"service":{"id":"7001","provider_key":"foo","backend_version":null,"referrer_filters_required":null,"user_registration_required":false,"default_user_plan_id":"1001","default_user_plan_name":"planname"},"status":"created"}'
+      string: '{"service":{"id":"7001","provider_key":"foo","backend_version":null,"referrer_filters_required":null,"user_registration_required":false,"default_user_plan_id":"1001","default_user_plan_name":"planname"},"status":"created"}'
     http_version: 
   recorded_at: Tue, 08 Apr 2014 14:24:07 GMT
 - request:
@@ -59,7 +59,7 @@ http_interactions:
       - thin 1.5.0 codename Knife
     body:
       encoding: UTF-8
-      string: ! '{"id":"7001","provider_key":"foo","backend_version":"oauth","referrer_filters_required":false,"user_registration_required":false,"default_user_plan_id":"1001","default_user_plan_name":"planname"}'
+      string: '{"id":"7001","provider_key":"foo","backend_version":"oauth","referrer_filters_required":false,"user_registration_required":false,"default_user_plan_id":"1001","default_user_plan_name":"planname"}'
     http_version: 
   recorded_at: Tue, 08 Apr 2014 14:24:07 GMT
 - request:
@@ -67,7 +67,7 @@ http_interactions:
     uri: http://localhost:3000/internal/services/7001/users
     body:
       encoding: UTF-8
-      string: ! '{"username":"username0"}'
+      string: '{"username":"username0"}'
     headers:
       Accept:
       - application/json
@@ -90,7 +90,7 @@ http_interactions:
       - thin 1.5.0 codename Knife
     body:
       encoding: UTF-8
-      string: ! '{"status":"ok"}'
+      string: '{"status":"ok"}'
     http_version: 
   recorded_at: Tue, 08 Apr 2014 14:24:07 GMT
 - request:
@@ -121,7 +121,7 @@ http_interactions:
       - thin 1.5.0 codename Knife
     body:
       encoding: UTF-8
-      string: ! '{"id":"7001","provider_key":"foo","backend_version":"oauth","referrer_filters_required":false,"user_registration_required":false,"default_user_plan_id":"1001","default_user_plan_name":"planname"}'
+      string: '{"id":"7001","provider_key":"foo","backend_version":"oauth","referrer_filters_required":false,"user_registration_required":false,"default_user_plan_id":"1001","default_user_plan_name":"planname"}'
     http_version: 
   recorded_at: Tue, 08 Apr 2014 14:24:07 GMT
 - request:
@@ -129,7 +129,7 @@ http_interactions:
     uri: http://localhost:3000/internal/services/7001/users
     body:
       encoding: UTF-8
-      string: ! '{"username":"username1"}'
+      string: '{"username":"username1"}'
     headers:
       Accept:
       - application/json
@@ -152,7 +152,7 @@ http_interactions:
       - thin 1.5.0 codename Knife
     body:
       encoding: UTF-8
-      string: ! '{"status":"ok"}'
+      string: '{"status":"ok"}'
     http_version: 
   recorded_at: Tue, 08 Apr 2014 14:24:07 GMT
 - request:
@@ -183,7 +183,7 @@ http_interactions:
       - thin 1.5.0 codename Knife
     body:
       encoding: UTF-8
-      string: ! '{"id":"7001","provider_key":"foo","backend_version":"oauth","referrer_filters_required":false,"user_registration_required":false,"default_user_plan_id":"1001","default_user_plan_name":"planname"}'
+      string: '{"id":"7001","provider_key":"foo","backend_version":"oauth","referrer_filters_required":false,"user_registration_required":false,"default_user_plan_id":"1001","default_user_plan_name":"planname"}'
     http_version: 
   recorded_at: Tue, 08 Apr 2014 14:24:07 GMT
 - request:
@@ -191,7 +191,7 @@ http_interactions:
     uri: http://localhost:3000/internal/services/7001/users
     body:
       encoding: UTF-8
-      string: ! '{"username":"username2"}'
+      string: '{"username":"username2"}'
     headers:
       Accept:
       - application/json
@@ -214,7 +214,7 @@ http_interactions:
       - thin 1.5.0 codename Knife
     body:
       encoding: UTF-8
-      string: ! '{"status":"ok"}'
+      string: '{"status":"ok"}'
     http_version: 
   recorded_at: Tue, 08 Apr 2014 14:24:07 GMT
 - request:
@@ -245,7 +245,7 @@ http_interactions:
       - thin 1.5.0 codename Knife
     body:
       encoding: UTF-8
-      string: ! '{"id":"7001","provider_key":"foo","backend_version":"oauth","referrer_filters_required":false,"user_registration_required":false,"default_user_plan_id":"1001","default_user_plan_name":"planname"}'
+      string: '{"id":"7001","provider_key":"foo","backend_version":"oauth","referrer_filters_required":false,"user_registration_required":false,"default_user_plan_id":"1001","default_user_plan_name":"planname"}'
     http_version: 
   recorded_at: Tue, 08 Apr 2014 14:24:07 GMT
 - request:
@@ -253,7 +253,7 @@ http_interactions:
     uri: http://localhost:3000/internal/services/7001/users
     body:
       encoding: UTF-8
-      string: ! '{"username":"username3"}'
+      string: '{"username":"username3"}'
     headers:
       Accept:
       - application/json
@@ -276,7 +276,7 @@ http_interactions:
       - thin 1.5.0 codename Knife
     body:
       encoding: UTF-8
-      string: ! '{"status":"ok"}'
+      string: '{"status":"ok"}'
     http_version: 
   recorded_at: Tue, 08 Apr 2014 14:24:07 GMT
 - request:
@@ -307,7 +307,7 @@ http_interactions:
       - thin 1.5.0 codename Knife
     body:
       encoding: UTF-8
-      string: ! '{"id":"7001","provider_key":"foo","backend_version":"oauth","referrer_filters_required":false,"user_registration_required":false,"default_user_plan_id":"1001","default_user_plan_name":"planname"}'
+      string: '{"id":"7001","provider_key":"foo","backend_version":"oauth","referrer_filters_required":false,"user_registration_required":false,"default_user_plan_id":"1001","default_user_plan_name":"planname"}'
     http_version: 
   recorded_at: Tue, 08 Apr 2014 14:24:07 GMT
 - request:
@@ -315,7 +315,7 @@ http_interactions:
     uri: http://localhost:3000/internal/services/7001/users
     body:
       encoding: UTF-8
-      string: ! '{"username":"username4"}'
+      string: '{"username":"username4"}'
     headers:
       Accept:
       - application/json
@@ -338,7 +338,7 @@ http_interactions:
       - thin 1.5.0 codename Knife
     body:
       encoding: UTF-8
-      string: ! '{"status":"ok"}'
+      string: '{"status":"ok"}'
     http_version: 
   recorded_at: Tue, 08 Apr 2014 14:24:07 GMT
 - request:
@@ -369,7 +369,7 @@ http_interactions:
       - thin 1.5.0 codename Knife
     body:
       encoding: UTF-8
-      string: ! '{"id":"7001","provider_key":"foo","backend_version":"oauth","referrer_filters_required":false,"user_registration_required":false,"default_user_plan_id":"1001","default_user_plan_name":"planname"}'
+      string: '{"id":"7001","provider_key":"foo","backend_version":"oauth","referrer_filters_required":false,"user_registration_required":false,"default_user_plan_id":"1001","default_user_plan_name":"planname"}'
     http_version: 
   recorded_at: Tue, 08 Apr 2014 14:24:07 GMT
 - request:
@@ -377,7 +377,7 @@ http_interactions:
     uri: http://localhost:3000/internal/services/7001/users
     body:
       encoding: UTF-8
-      string: ! '{"username":"username5"}'
+      string: '{"username":"username5"}'
     headers:
       Accept:
       - application/json
@@ -400,7 +400,7 @@ http_interactions:
       - thin 1.5.0 codename Knife
     body:
       encoding: UTF-8
-      string: ! '{"status":"ok"}'
+      string: '{"status":"ok"}'
     http_version: 
   recorded_at: Tue, 08 Apr 2014 14:24:07 GMT
 - request:
@@ -408,7 +408,7 @@ http_interactions:
     uri: http://localhost:3001/internal/services/
     body:
       encoding: UTF-8
-      string: ! '{"service":{"provider_key":"foo","id":"7001","user_registration_required":false,"default_user_plan_name":"planname","default_user_plan_id":"1001"}}'
+      string: '{"service":{"provider_key":"foo","id":"7001","user_registration_required":false,"default_user_plan_name":"planname","default_user_plan_id":"1001"}}'
     headers:
       Accept:
       - application/json
@@ -422,18 +422,20 @@ http_interactions:
       message: 
     headers:
       content-type:
-      - application/json;charset=utf-8
+      - application/json
       content-length:
       - '222'
+      x-content-type-options:
+      - nosniff
       connection:
       - close
       server:
       - thin 1.5.0 codename Knife
     body:
-      encoding: US-ASCII
-      string: ! '{"service":{"id":"7001","provider_key":"foo","backend_version":null,"referrer_filters_required":null,"user_registration_required":false,"default_user_plan_id":"1001","default_user_plan_name":"planname"},"status":"created"}'
+      encoding: UTF-8
+      string: '{"service":{"id":"7001","provider_key":"foo","backend_version":null,"referrer_filters_required":null,"user_registration_required":false,"default_user_plan_id":"1001","default_user_plan_name":"planname"},"status":"created"}'
     http_version: 
-  recorded_at: Wed, 23 Apr 2014 12:51:36 GMT
+  recorded_at: Mon, 13 Oct 2014 15:26:37 GMT
 - request:
     method: get
     uri: http://localhost:3001/internal/services/7001
@@ -453,24 +455,26 @@ http_interactions:
       message: 
     headers:
       content-type:
-      - application/json;charset=utf-8
+      - application/json
       content-length:
       - '192'
+      x-content-type-options:
+      - nosniff
       connection:
       - close
       server:
       - thin 1.5.0 codename Knife
     body:
-      encoding: US-ASCII
-      string: ! '{"id":"7001","provider_key":"foo","backend_version":null,"referrer_filters_required":false,"user_registration_required":false,"default_user_plan_id":"1001","default_user_plan_name":"planname"}'
+      encoding: UTF-8
+      string: '{"id":"7001","provider_key":"foo","backend_version":null,"referrer_filters_required":false,"user_registration_required":false,"default_user_plan_id":"1001","default_user_plan_name":"planname"}'
     http_version: 
-  recorded_at: Wed, 23 Apr 2014 12:51:36 GMT
+  recorded_at: Mon, 13 Oct 2014 15:26:37 GMT
 - request:
     method: post
     uri: http://localhost:3001/internal/services/7001/users
     body:
       encoding: UTF-8
-      string: ! '{"username":"username0"}'
+      string: '{"username":"username0"}'
     headers:
       Accept:
       - application/json
@@ -484,18 +488,20 @@ http_interactions:
       message: 
     headers:
       content-type:
-      - application/json;charset=utf-8
+      - application/json
       content-length:
       - '15'
+      x-content-type-options:
+      - nosniff
       connection:
       - close
       server:
       - thin 1.5.0 codename Knife
     body:
-      encoding: US-ASCII
-      string: ! '{"status":"ok"}'
+      encoding: UTF-8
+      string: '{"status":"ok"}'
     http_version: 
-  recorded_at: Wed, 23 Apr 2014 12:51:36 GMT
+  recorded_at: Mon, 13 Oct 2014 15:26:37 GMT
 - request:
     method: get
     uri: http://localhost:3001/internal/services/7001
@@ -515,24 +521,26 @@ http_interactions:
       message: 
     headers:
       content-type:
-      - application/json;charset=utf-8
+      - application/json
       content-length:
       - '192'
+      x-content-type-options:
+      - nosniff
       connection:
       - close
       server:
       - thin 1.5.0 codename Knife
     body:
-      encoding: US-ASCII
-      string: ! '{"id":"7001","provider_key":"foo","backend_version":null,"referrer_filters_required":false,"user_registration_required":false,"default_user_plan_id":"1001","default_user_plan_name":"planname"}'
+      encoding: UTF-8
+      string: '{"id":"7001","provider_key":"foo","backend_version":null,"referrer_filters_required":false,"user_registration_required":false,"default_user_plan_id":"1001","default_user_plan_name":"planname"}'
     http_version: 
-  recorded_at: Wed, 23 Apr 2014 12:51:36 GMT
+  recorded_at: Mon, 13 Oct 2014 15:26:37 GMT
 - request:
     method: post
     uri: http://localhost:3001/internal/services/7001/users
     body:
       encoding: UTF-8
-      string: ! '{"username":"username1"}'
+      string: '{"username":"username1"}'
     headers:
       Accept:
       - application/json
@@ -546,18 +554,20 @@ http_interactions:
       message: 
     headers:
       content-type:
-      - application/json;charset=utf-8
+      - application/json
       content-length:
       - '15'
+      x-content-type-options:
+      - nosniff
       connection:
       - close
       server:
       - thin 1.5.0 codename Knife
     body:
-      encoding: US-ASCII
-      string: ! '{"status":"ok"}'
+      encoding: UTF-8
+      string: '{"status":"ok"}'
     http_version: 
-  recorded_at: Wed, 23 Apr 2014 12:51:36 GMT
+  recorded_at: Mon, 13 Oct 2014 15:26:37 GMT
 - request:
     method: get
     uri: http://localhost:3001/internal/services/7001
@@ -577,24 +587,26 @@ http_interactions:
       message: 
     headers:
       content-type:
-      - application/json;charset=utf-8
+      - application/json
       content-length:
       - '192'
+      x-content-type-options:
+      - nosniff
       connection:
       - close
       server:
       - thin 1.5.0 codename Knife
     body:
-      encoding: US-ASCII
-      string: ! '{"id":"7001","provider_key":"foo","backend_version":null,"referrer_filters_required":false,"user_registration_required":false,"default_user_plan_id":"1001","default_user_plan_name":"planname"}'
+      encoding: UTF-8
+      string: '{"id":"7001","provider_key":"foo","backend_version":null,"referrer_filters_required":false,"user_registration_required":false,"default_user_plan_id":"1001","default_user_plan_name":"planname"}'
     http_version: 
-  recorded_at: Wed, 23 Apr 2014 12:51:36 GMT
+  recorded_at: Mon, 13 Oct 2014 15:26:37 GMT
 - request:
     method: post
     uri: http://localhost:3001/internal/services/7001/users
     body:
       encoding: UTF-8
-      string: ! '{"username":"username2"}'
+      string: '{"username":"username2"}'
     headers:
       Accept:
       - application/json
@@ -608,18 +620,20 @@ http_interactions:
       message: 
     headers:
       content-type:
-      - application/json;charset=utf-8
+      - application/json
       content-length:
       - '15'
+      x-content-type-options:
+      - nosniff
       connection:
       - close
       server:
       - thin 1.5.0 codename Knife
     body:
-      encoding: US-ASCII
-      string: ! '{"status":"ok"}'
+      encoding: UTF-8
+      string: '{"status":"ok"}'
     http_version: 
-  recorded_at: Wed, 23 Apr 2014 12:51:36 GMT
+  recorded_at: Mon, 13 Oct 2014 15:26:37 GMT
 - request:
     method: get
     uri: http://localhost:3001/internal/services/7001
@@ -639,24 +653,26 @@ http_interactions:
       message: 
     headers:
       content-type:
-      - application/json;charset=utf-8
+      - application/json
       content-length:
       - '192'
+      x-content-type-options:
+      - nosniff
       connection:
       - close
       server:
       - thin 1.5.0 codename Knife
     body:
-      encoding: US-ASCII
-      string: ! '{"id":"7001","provider_key":"foo","backend_version":null,"referrer_filters_required":false,"user_registration_required":false,"default_user_plan_id":"1001","default_user_plan_name":"planname"}'
+      encoding: UTF-8
+      string: '{"id":"7001","provider_key":"foo","backend_version":null,"referrer_filters_required":false,"user_registration_required":false,"default_user_plan_id":"1001","default_user_plan_name":"planname"}'
     http_version: 
-  recorded_at: Wed, 23 Apr 2014 12:51:36 GMT
+  recorded_at: Mon, 13 Oct 2014 15:26:37 GMT
 - request:
     method: post
     uri: http://localhost:3001/internal/services/7001/users
     body:
       encoding: UTF-8
-      string: ! '{"username":"username3"}'
+      string: '{"username":"username3"}'
     headers:
       Accept:
       - application/json
@@ -670,18 +686,20 @@ http_interactions:
       message: 
     headers:
       content-type:
-      - application/json;charset=utf-8
+      - application/json
       content-length:
       - '15'
+      x-content-type-options:
+      - nosniff
       connection:
       - close
       server:
       - thin 1.5.0 codename Knife
     body:
-      encoding: US-ASCII
-      string: ! '{"status":"ok"}'
+      encoding: UTF-8
+      string: '{"status":"ok"}'
     http_version: 
-  recorded_at: Wed, 23 Apr 2014 12:51:36 GMT
+  recorded_at: Mon, 13 Oct 2014 15:26:37 GMT
 - request:
     method: get
     uri: http://localhost:3001/internal/services/7001
@@ -701,24 +719,26 @@ http_interactions:
       message: 
     headers:
       content-type:
-      - application/json;charset=utf-8
+      - application/json
       content-length:
       - '192'
+      x-content-type-options:
+      - nosniff
       connection:
       - close
       server:
       - thin 1.5.0 codename Knife
     body:
-      encoding: US-ASCII
-      string: ! '{"id":"7001","provider_key":"foo","backend_version":null,"referrer_filters_required":false,"user_registration_required":false,"default_user_plan_id":"1001","default_user_plan_name":"planname"}'
+      encoding: UTF-8
+      string: '{"id":"7001","provider_key":"foo","backend_version":null,"referrer_filters_required":false,"user_registration_required":false,"default_user_plan_id":"1001","default_user_plan_name":"planname"}'
     http_version: 
-  recorded_at: Wed, 23 Apr 2014 12:51:36 GMT
+  recorded_at: Mon, 13 Oct 2014 15:26:37 GMT
 - request:
     method: post
     uri: http://localhost:3001/internal/services/7001/users
     body:
       encoding: UTF-8
-      string: ! '{"username":"username4"}'
+      string: '{"username":"username4"}'
     headers:
       Accept:
       - application/json
@@ -732,18 +752,20 @@ http_interactions:
       message: 
     headers:
       content-type:
-      - application/json;charset=utf-8
+      - application/json
       content-length:
       - '15'
+      x-content-type-options:
+      - nosniff
       connection:
       - close
       server:
       - thin 1.5.0 codename Knife
     body:
-      encoding: US-ASCII
-      string: ! '{"status":"ok"}'
+      encoding: UTF-8
+      string: '{"status":"ok"}'
     http_version: 
-  recorded_at: Wed, 23 Apr 2014 12:51:36 GMT
+  recorded_at: Mon, 13 Oct 2014 15:26:37 GMT
 - request:
     method: get
     uri: http://localhost:3001/internal/services/7001
@@ -763,24 +785,26 @@ http_interactions:
       message: 
     headers:
       content-type:
-      - application/json;charset=utf-8
+      - application/json
       content-length:
       - '192'
+      x-content-type-options:
+      - nosniff
       connection:
       - close
       server:
       - thin 1.5.0 codename Knife
     body:
-      encoding: US-ASCII
-      string: ! '{"id":"7001","provider_key":"foo","backend_version":null,"referrer_filters_required":false,"user_registration_required":false,"default_user_plan_id":"1001","default_user_plan_name":"planname"}'
+      encoding: UTF-8
+      string: '{"id":"7001","provider_key":"foo","backend_version":null,"referrer_filters_required":false,"user_registration_required":false,"default_user_plan_id":"1001","default_user_plan_name":"planname"}'
     http_version: 
-  recorded_at: Wed, 23 Apr 2014 12:51:36 GMT
+  recorded_at: Mon, 13 Oct 2014 15:26:37 GMT
 - request:
     method: post
     uri: http://localhost:3001/internal/services/7001/users
     body:
       encoding: UTF-8
-      string: ! '{"username":"username5"}'
+      string: '{"username":"username5"}'
     headers:
       Accept:
       - application/json
@@ -794,16 +818,18 @@ http_interactions:
       message: 
     headers:
       content-type:
-      - application/json;charset=utf-8
+      - application/json
       content-length:
       - '15'
+      x-content-type-options:
+      - nosniff
       connection:
       - close
       server:
       - thin 1.5.0 codename Knife
     body:
-      encoding: US-ASCII
-      string: ! '{"status":"ok"}'
+      encoding: UTF-8
+      string: '{"status":"ok"}'
     http_version: 
-  recorded_at: Wed, 23 Apr 2014 12:51:36 GMT
+  recorded_at: Mon, 13 Oct 2014 15:26:37 GMT
 recorded_with: VCR 2.9.0

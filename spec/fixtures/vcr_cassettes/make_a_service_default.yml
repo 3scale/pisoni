@@ -5,7 +5,7 @@ http_interactions:
     uri: http://localhost:3000/internal/services/
     body:
       encoding: UTF-8
-      string: ! '{"service":{"provider_key":"foo","id":7001,"backend_version":null,"referrer_filters_required":null,"user_registration_required":true,"default_user_plan_id":null,"default_user_plan_name":null,"version":null,"default_service":true}}'
+      string: '{"service":{"provider_key":"foo","id":7001,"backend_version":null,"referrer_filters_required":null,"user_registration_required":true,"default_user_plan_id":null,"default_user_plan_name":null,"version":null,"default_service":true}}'
     headers:
       Accept:
       - application/json
@@ -28,7 +28,7 @@ http_interactions:
       - thin 1.5.0 codename Knife
     body:
       encoding: UTF-8
-      string: ! '{"service":{"id":7001,"provider_key":"foo","backend_version":null,"referrer_filters_required":null,"user_registration_required":true,"default_user_plan_id":null,"default_user_plan_name":null},"status":"created"}'
+      string: '{"service":{"id":7001,"provider_key":"foo","backend_version":null,"referrer_filters_required":null,"user_registration_required":true,"default_user_plan_id":null,"default_user_plan_name":null},"status":"created"}'
     http_version: 
   recorded_at: Tue, 08 Apr 2014 14:24:07 GMT
 - request:
@@ -36,7 +36,7 @@ http_interactions:
     uri: http://localhost:3001/internal/services/
     body:
       encoding: UTF-8
-      string: ! '{"service":{"id":7001,"provider_key":"foo"}}'
+      string: '{"service":{"id":7001,"provider_key":"foo"}}'
     headers:
       Accept:
       - application/json
@@ -59,15 +59,15 @@ http_interactions:
       - thin 1.5.0 codename Knife
     body:
       encoding: US-ASCII
-      string: ! '{"service":{"id":7001,"provider_key":"foo","backend_version":null,"referrer_filters_required":null,"user_registration_required":true,"default_user_plan_id":null,"default_user_plan_name":null},"status":"created"}'
+      string: '{"service":{"id":7001,"provider_key":"foo","backend_version":null,"referrer_filters_required":null,"user_registration_required":true,"default_user_plan_id":null,"default_user_plan_name":null},"status":"created"}'
     http_version: 
-  recorded_at: Wed, 23 Apr 2014 12:43:54 GMT
+  recorded_at: Wed, 23 Apr 2014 12:51:36 GMT
 - request:
     method: post
     uri: http://localhost:3001/internal/services/
     body:
       encoding: UTF-8
-      string: ! '{"service":{"id":7001,"provider_key":"foo"}}'
+      string: '{"service":{"id":7001,"provider_key":"foo"}}'
     headers:
       Accept:
       - application/json
@@ -81,24 +81,26 @@ http_interactions:
       message: 
     headers:
       content-type:
-      - application/json;charset=utf-8
+      - application/json
       content-length:
       - '211'
+      x-content-type-options:
+      - nosniff
       connection:
       - close
       server:
       - thin 1.5.0 codename Knife
     body:
-      encoding: US-ASCII
-      string: ! '{"service":{"id":7001,"provider_key":"foo","backend_version":null,"referrer_filters_required":null,"user_registration_required":true,"default_user_plan_id":null,"default_user_plan_name":null},"status":"created"}'
+      encoding: UTF-8
+      string: '{"service":{"id":7001,"provider_key":"foo","backend_version":null,"referrer_filters_required":null,"user_registration_required":true,"default_user_plan_id":null,"default_user_plan_name":null},"status":"created"}'
     http_version: 
-  recorded_at: Wed, 23 Apr 2014 12:51:36 GMT
+  recorded_at: Mon, 13 Oct 2014 15:26:37 GMT
 - request:
     method: put
     uri: http://localhost:3001/internal/services/7001
     body:
       encoding: UTF-8
-      string: ! '{"service":{"default_service":true}}'
+      string: '{"service":{"default_service":true}}'
     headers:
       Accept:
       - application/json
@@ -112,16 +114,18 @@ http_interactions:
       message: 
     headers:
       content-type:
-      - application/json;charset=utf-8
+      - application/json
       content-length:
       - '209'
+      x-content-type-options:
+      - nosniff
       connection:
       - close
       server:
       - thin 1.5.0 codename Knife
     body:
-      encoding: US-ASCII
-      string: ! '{"service":{"id":"7001","provider_key":"foo","backend_version":null,"referrer_filters_required":false,"user_registration_required":true,"default_user_plan_id":null,"default_user_plan_name":null},"status":"ok"}'
+      encoding: UTF-8
+      string: '{"service":{"id":"7001","provider_key":"foo","backend_version":null,"referrer_filters_required":false,"user_registration_required":true,"default_user_plan_id":null,"default_user_plan_name":null},"status":"ok"}'
     http_version: 
-  recorded_at: Wed, 23 Apr 2014 12:51:36 GMT
+  recorded_at: Mon, 13 Oct 2014 15:26:37 GMT
 recorded_with: VCR 2.9.0
