@@ -30,4 +30,6 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.rdoc_options = ["--charset=UTF-8"]
+
+  s.metadata['allowed_push_host'] = 'https://localhost'
 end
