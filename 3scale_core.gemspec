@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require_relative 'lib/3scale/core/version'
+require '3scale/core/version'
 
 Gem::Specification.new do |s|
   s.name = %q{3scale_core}
