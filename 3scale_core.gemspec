@@ -32,4 +32,5 @@ Gem::Specification.new do |s|
   s.rdoc_options = ["--charset=UTF-8"]
 
   s.metadata['allowed_push_host'] = 'https://localhost'
+  s.required_ruby_version = '>= 2.1.2'
 end
