@@ -25,21 +25,24 @@ module ThreeScale
       end
 
       def self.load_name(service_id, id)
-        ret = api_do_get({}, uri: "#{base_uri}/#{service_id}/metrics/#{id}")
-        ret[:attributes][:name] if ret[:ok]
+        load_metric_api(service_id, :name, id.to_s)
       end
 
       def self.load_id(service_id, name)
-        ret = api_do_get({}, uri: "#{base_uri}/#{service_id}/metrics/name/#{name}")
-        ret[:attributes][:id] if ret[:ok]
+        load_metric_api(service_id, :id, "name/#{name}")
       end
 
       # XXX depends on UsageLimit
       def self.load_all_ids(service_id)
-        ret = api_do_get({}, uri: "#{base_uri}/#{service_id}/metrics/all")
-        ret[:attributes][:ids] if ret[:ok]
+        load_metric_api(service_id, :ids, 'all')
       end
 
+      private
+
+      def self.load_metric_api(service_id, attr, uri)
+        ret = api_do_get({}, uri: "#{base_uri}/#{service_id}/metrics/#{uri}")
+        ret[:attributes][attr] if ret[:ok]
+      end
     end
   end
 end
