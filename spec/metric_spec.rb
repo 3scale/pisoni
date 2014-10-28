@@ -14,7 +14,7 @@ module ThreeScale
         end
 
         it 'exists' do
-          VCR.use_cassette '.save load sample metric' do
+          VCR.use_cassette 'class .save load sample metric' do
             Metric.load(@metric.service_id, @metric.id)
           end.wont_be_nil
         end

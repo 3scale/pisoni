@@ -50,7 +50,7 @@ class UsageLimitTest < Test::Unit::TestCase
   end
 
   def test_load_all_returns_empty_array_if_there_are_no_metrics
-    usage_limits = VCR.use_cassette 'UsageLimit.load_all w/o metrics' do
+    usage_limits = VCR.use_cassette 'UsageLimit.load_all without metrics' do
       UsageLimit.load_all(2001, 3001)
     end
     assert usage_limits.empty?, 'Expected usage_limits to be empty'
