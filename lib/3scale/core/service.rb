@@ -45,22 +45,9 @@ module ThreeScale
           response = Core.faraday.put "services/change_provider_key/#{old_key}",
             {new_key: new_key}.to_json
 
-          if (status = response.status) != 200
-            json_response = json(response)
-            if status == 400 && json_response['error'] =~ /does not exist/
-              raise ProviderKeyNotFound, old_key
-            elsif status == 400 && json_response['error'] =~ /already exists/
-              raise ProviderKeyExists, new_key
-            elsif status == 400 && json_response['error'] =~ /are not valid/
-              raise InvalidProviderKeys
-            else
-              raise "Error changing a provider key, old_key: #{old_key.inspect},
-                new_key: #{new_key.inspect}, response code: #{response.status},
-                response body: #{response.body.inspect}"
-            end
-          end
-
-          return true
+          status = response.status
+          status == 200 or handle_change_provider_key_failure status, response,
+                                                              old_key, new_key
         end
 
         # Public: Sets a service as default.
@@ -73,6 +60,30 @@ module ThreeScale
         end
 
         private
+
+        def provider_key_exception(error, old_key, new_key)
+          case error
+          when /does not exist/
+            ProviderKeyNotFound.new old_key
+          when /already exists/
+            ProviderKeyExists.new new_key
+          when /are not valid/
+            InvalidProviderKeys.new
+          else
+            nil
+          end
+        end
+
+        def handle_change_provider_key_failure(status, response, old_key, new_key)
+          ex = if status == 400
+                 json_error = json(response)['error']
+                 provider_key_exception(json_error, old_key, new_key) if json_error
+               end
+
+          raise ex || "Error changing a provider key, old_key: #{old_key.inspect}" \
+            ", new_key: #{new_key.inspect}, response code: #{response.status}" \
+            ", response body: #{response.body.inspect}"
+        end
 
         def update_backend(method, attributes, service_id = '')
           response = Core.faraday.send method, "services/#{service_id}", {service: attributes}.to_json
