@@ -161,6 +161,18 @@ module ThreeScale
           new_app.redirect_url.must_equal(reloaded_app.redirect_url)
           new_app.version.must_equal(reloaded_app.version)
         end
+
+        it 'raises a client-side error when missing mandatory attributes' do
+          {service_id: 9000, foo: 'bar', id: 6077}.each_cons(2) do |attrs|
+            attrs = attrs.to_h
+            # note missing service_id, id
+            attrs.merge!(state: 'suspended', plan_id: '3066',
+              plan_name: 'crappy', redirect_url: 'blah', version: '666')
+            lambda do
+              Application.save(attrs)
+            end.must_raise KeyError # minitest wont catch parent exceptions :/
+          end
+        end
       end
 
       describe '#save' do
