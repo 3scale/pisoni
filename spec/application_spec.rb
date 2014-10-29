@@ -122,7 +122,7 @@ module ThreeScale
         end
 
         it 'exists' do
-          VCR.use_cassette '.save load application instance' do
+          VCR.use_cassette 'class .save load application instance' do
             Application.load(@app.service_id, @app.id)
           end.wont_be_nil
         end
@@ -177,7 +177,7 @@ module ThreeScale
         end
 
         it 'exists' do
-          VCR.use_cassette '#save load application instance' do
+          VCR.use_cassette 'instance #save load application instance' do
             Application.load(@app.service_id, @app.id)
           end.wont_be_nil
         end
