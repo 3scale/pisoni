@@ -47,6 +47,17 @@ module ThreeScale
           reloaded_metric.wont_be_nil
           new_metric.name.must_equal(reloaded_metric.name)
         end
+
+        it 'raises a client-side error when missing mandatory attributes' do
+          {service_id: 9000, foo: 'bar', id: 6077}.each_cons(2) do |attrs|
+            attrs = attrs.to_h
+            # note missing service_id, id
+            attrs.merge!(name: 'somename')
+            lambda do
+              Metric.save(attrs)
+            end.must_raise KeyError # minitest wont catch parent exceptions :/
+          end
+        end
       end
 
       describe '.load' do
