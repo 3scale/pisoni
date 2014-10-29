@@ -33,6 +33,39 @@ http_interactions:
   recorded_at: Tue, 08 Apr 2014 14:24:07 GMT
 - request:
     method: put
+    uri: http://10.0.2.2:8081/internal/services/change_provider_key/foo
+    body:
+      encoding: UTF-8
+      string: '{"new_key":""}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 400
+      message: 
+    headers:
+      content-type:
+      - application/json
+      content-length:
+      - '70'
+      x-content-type-options:
+      - nosniff
+      connection:
+      - close
+      server:
+      - thin 1.5.0 codename Knife
+    body:
+      encoding: UTF-8
+      string: '{"error":"Provider keys are not valid, must be not nil and different"}'
+    http_version: 
+  recorded_at: Thu, 30 Oct 2014 10:52:08 GMT
+- request:
+    method: put
     uri: http://localhost:3001/internal/services/change_provider_key/foo
     body:
       encoding: UTF-8
@@ -63,5 +96,5 @@ http_interactions:
       encoding: UTF-8
       string: '{"error":"Provider keys are not valid, must be not nil and different"}'
     http_version: 
-  recorded_at: Mon, 13 Oct 2014 15:26:37 GMT
+  recorded_at: Thu, 30 Oct 2014 14:38:17 GMT
 recorded_with: VCR 2.9.0

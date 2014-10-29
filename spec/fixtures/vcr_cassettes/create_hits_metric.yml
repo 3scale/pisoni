@@ -1,11 +1,11 @@
 ---
 http_interactions:
 - request:
-    method: delete
-    uri: http://10.0.2.2:8081/internal/services/1999/applications/8011
+    method: put
+    uri: http://10.0.2.2:8081/internal/services/2001/metrics/4001
     body:
       encoding: UTF-8
-      string: "{}"
+      string: '{"metric":{"service_id":2001,"id":4001,"name":"hits"}}'
     headers:
       Accept:
       - application/json
@@ -15,13 +15,13 @@ http_interactions:
       - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
   response:
     status:
-      code: 404
+      code: 200
       message: 
     headers:
       content-type:
       - application/json
       content-length:
-      - '54'
+      - '95'
       x-content-type-options:
       - nosniff
       connection:
@@ -30,15 +30,15 @@ http_interactions:
       - thin 1.5.0 codename Knife
     body:
       encoding: UTF-8
-      string: '{"status":"not_found","error":"application not found"}'
+      string: '{"status":"modified","metric":{"service_id":"2001","id":"4001","parent_id":null,"name":"hits"}}'
     http_version: 
-  recorded_at: Thu, 30 Oct 2014 10:52:07 GMT
+  recorded_at: Thu, 30 Oct 2014 10:52:08 GMT
 - request:
-    method: delete
-    uri: http://localhost:3001/internal/services/1999/applications/8011
+    method: put
+    uri: http://localhost:3001/internal/services/2001/metrics/4001
     body:
       encoding: UTF-8
-      string: "{}"
+      string: '{"metric":{"service_id":2001,"id":4001,"name":"hits"}}'
     headers:
       Accept:
       - application/json
@@ -48,13 +48,13 @@ http_interactions:
       - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
   response:
     status:
-      code: 404
+      code: 200
       message: 
     headers:
       content-type:
       - application/json
       content-length:
-      - '54'
+      - '95'
       x-content-type-options:
       - nosniff
       connection:
@@ -63,7 +63,7 @@ http_interactions:
       - thin 1.5.0 codename Knife
     body:
       encoding: UTF-8
-      string: '{"status":"not_found","error":"application not found"}'
+      string: '{"status":"modified","metric":{"service_id":"2001","id":"4001","parent_id":null,"name":"hits"}}'
     http_version: 
-  recorded_at: Thu, 30 Oct 2014 14:38:16 GMT
+  recorded_at: Thu, 30 Oct 2014 14:38:17 GMT
 recorded_with: VCR 2.9.0
