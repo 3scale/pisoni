@@ -163,7 +163,7 @@ module ThreeScale
         end
 
         it 'raises a client-side error when missing mandatory attributes' do
-          {service_id: 9000, foo: 'bar', id: 6077}.each_cons(2) do |attrs|
+          {service_id: 9000, foo: 'bar', bar: 'foo', id: 6077}.each_cons(2) do |attrs|
             attrs = attrs.to_h
             # note missing service_id, id
             attrs.merge!(state: 'suspended', plan_id: '3066',
