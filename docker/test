@@ -9,6 +9,16 @@ atexit_fn()
     popd > /dev/null 2>&1
 }
 
+# waits for args IP address and port to be listening to connections
+wait_for()
+{
+    while ! timeout 1 cat < /dev/null > /dev/tcp/$1/$2 2> /dev/null; do
+        echo "Waiting for tcp://$1:$2"
+        sleep 1
+    done
+    echo "tcp://$1:$2 is opened"
+}
+
 if test $# -lt 2; then
     echo "${MYNAME} <PROJECT> <NAME>" >&2
     exit 1
@@ -19,14 +29,12 @@ NAME=${2}
 DOCKER=$(which docker || exit 1)
 
 CID=$(${DOCKER} run -d -p 22 --name ${NAME} ${PROJECT} /usr/sbin/sshd -o AllowAgentForwarding=yes -D)
-# I suspect there is a small race here which I don't know how to sync and
-# it is that sometimes sshd seems to not be ready to serve the client, and
-# closes the connection when exchanging identifications. So waiting a bit here.
-sleep 1
+chmod 600 "${MYDIR}/docker_key"
 IPPORT=$(${DOCKER} port "${CID}" 22)
 IP=$(echo "${IPPORT}" | cut -d':' -f 1)
 PORT=$(echo "${IPPORT}" | cut -d':' -f 2)
-chmod 600 "${MYDIR}/docker_key"
+# wait for the port to be up and listening
+wait_for "${IP}" "${PORT}"
 ssh root@"${IP}" -p "${PORT}" -i "${MYDIR}/docker_key" -o UserKnownHostsFile=/dev/null \
   -o StrictHostKeyChecking=no -o ForwardAgent=yes \
   "mkdir -p /root/.ssh && /bin/echo -e 'Host *\nStrictHostKeyChecking no\nUserKnownHostsFile /dev/null' > /root/.ssh/config \
