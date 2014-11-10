@@ -24,15 +24,6 @@ module ThreeScale
         api_delete({}, uri: "#{base_uri}/#{service_id}/metrics/#{id}")
       end
 
-      def self.load_id(service_id, name)
-        load_metric_api(service_id, :id, "name/#{name}")
-      end
-
-      # XXX depends on UsageLimit
-      def self.load_all_ids(service_id)
-        load_metric_api(service_id, :ids, 'all')
-      end
-
       private
 
       def self.load_metric_api(service_id, attr, uri)
