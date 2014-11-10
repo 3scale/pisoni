@@ -5,12 +5,12 @@ module ThreeScale
 
       attributes :service_id, :plan_id, :metric_id, :value, *PERIODS
 
-      def self.base_uri
-        '/internal/services'
+      def self.base_uri(service_id, plan_id, metric_id, period)
+        "/internal/services/#{service_id}/plans/#{plan_id}/usagelimits/#{metric_id}/#{period}"
       end
 
       def self.load_value(service_id, plan_id, metric_id, period)
-        obj = api_read({}, uri: "#{base_uri}/#{service_id}/plans/#{plan_id}/usagelimits/#{metric_id}/#{period}")
+        obj = api_read({}, uri: base_uri(service_id, plan_id, metric_id, period))
         obj and obj.public_send(period).to_i
       end
 
@@ -20,12 +20,12 @@ module ThreeScale
         PERIODS.map do |period|
           value = attributes.fetch(period, nil)
           next unless value
-          api_update(fixed_fields.merge({period.to_sym => value}), uri: "#{base_uri}/#{service_id}/plans/#{plan_id}/usagelimits/#{metric_id}/#{period}")
+          api_update(fixed_fields.merge({period.to_sym => value}), uri: base_uri(service_id, plan_id, metric_id, period))
         end.last
       end
 
       def self.delete(service_id, plan_id, metric_id, period)
-        api_delete({}, uri: "#{base_uri}/#{service_id}/plans/#{plan_id}/usagelimits/#{metric_id}/#{period}")
+        api_delete({}, uri: base_uri(service_id, plan_id, metric_id, period))
       end
 
     end
