@@ -15,13 +15,17 @@ module ThreeScale
       end
 
       def self.save(attributes)
+        # save currently DOES NOT support multiple periods at the same time,
+        # since it would mean multiple API calls per call to this method.
+        periodlst = PERIODS & attributes.keys
+        raise UsageLimitInvalidPeriods.new(periodlst) unless periodlst.one?
+
         service_id, plan_id, metric_id = attributes.fetch(:service_id), attributes.fetch(:plan_id), attributes.fetch(:metric_id)
+        period = periodlst.shift
+        value = attributes[period]
         fixed_fields = { service_id: service_id, plan_id: plan_id, metric_id: metric_id }.freeze
-        PERIODS.map do |period|
-          value = attributes.fetch(period, nil)
-          next unless value
-          api_update(fixed_fields.merge({period.to_sym => value}), uri: base_uri(service_id, plan_id, metric_id, period))
-        end.last
+
+        api_update(fixed_fields.merge({period => value}), uri: base_uri(service_id, plan_id, metric_id, period))
       end
 
       def self.delete(service_id, plan_id, metric_id, period)
