@@ -24,6 +24,7 @@ module ThreeScale
 
       @faraday = Faraday.new(:url => donbot_url)
       @faraday.headers = {
+        'User-Agent' => "3scale_core v#{ThreeScale::Core::VERSION}",
         'Accept' => 'application/json',
         'Content-Type' => 'application/json'
       }
