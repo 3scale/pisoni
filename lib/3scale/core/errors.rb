@@ -96,5 +96,11 @@ module ThreeScale
         super %(Provider key="#{key}" does not exist)
       end
     end
+
+    class UsageLimitInvalidPeriods < Error
+      def initialize(periods)
+        super %(UsageLimit invalid periods #{periods})
+      end
+    end
   end
 end
