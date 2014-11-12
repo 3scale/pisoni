@@ -28,14 +28,13 @@ PROJECT=${1}
 NAME=${2}
 DOCKER=$(which docker || exit 1)
 
-CID=$(${DOCKER} run -d -p 22 --name ${NAME} ${PROJECT} /usr/sbin/sshd -o AllowAgentForwarding=yes -D)
+${DOCKER} run -d -p 22 --name ${NAME} ${PROJECT} /usr/sbin/sshd -o AllowAgentForwarding=yes -D
+IP=$(${DOCKER} inspect --format='{{.NetworkSettings.IPAddress}}' ${NAME})
 chmod 600 "${MYDIR}/docker_key"
-IPPORT=$(${DOCKER} port "${CID}" 22)
-IP=$(echo "${IPPORT}" | cut -d':' -f 1)
-PORT=$(echo "${IPPORT}" | cut -d':' -f 2)
+
 # wait for the port to be up and listening
-wait_for "${IP}" "${PORT}"
-ssh root@"${IP}" -p "${PORT}" -i "${MYDIR}/docker_key" -o UserKnownHostsFile=/dev/null \
+wait_for "${IP}" "22"
+ssh root@"${IP}" -i "${MYDIR}/docker_key" -o UserKnownHostsFile=/dev/null \
   -o StrictHostKeyChecking=no -o ForwardAgent=yes \
   "mkdir -p /root/.ssh && /bin/echo -e 'Host *\nStrictHostKeyChecking no\nUserKnownHostsFile /dev/null' > /root/.ssh/config \
   && cd /opt/${PROJECTNAME} \
