@@ -2,10 +2,10 @@
 http_interactions:
 - request:
     method: put
-    uri: http://localhost:3001/internal/services/7002
+    uri: http://localhost:3001/internal/services/change_provider_key/bunga
     body:
       encoding: UTF-8
-      string: '{"service":{"provider_key":"foo","id":7002,"user_registration_required":false}}'
+      string: '{"new_key":"baz"}'
     headers:
       Accept:
       - application/json
@@ -21,7 +21,7 @@ http_interactions:
       content-type:
       - application/json
       content-length:
-      - '86'
+      - '49'
       x-content-type-options:
       - nosniff
       connection:
@@ -30,8 +30,7 @@ http_interactions:
       - thin 1.5.0 codename Knife
     body:
       encoding: UTF-8
-      string: '{"error":"Services without the need for registered users require a
-        default user plan"}'
+      string: '{"error":"Provider key=\"bunga\" does not exist"}'
     http_version: 
-  recorded_at: Mon, 13 Oct 2014 15:26:37 GMT
+  recorded_at: Thu, 13 Nov 2014 20:51:00 GMT
 recorded_with: VCR 2.9.0

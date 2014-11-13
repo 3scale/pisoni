@@ -1,11 +1,11 @@
 ---
 http_interactions:
 - request:
-    method: put
+    method: delete
     uri: http://localhost:3001/internal/services/7002
     body:
-      encoding: UTF-8
-      string: '{"service":{"provider_key":"foo","id":7002,"user_registration_required":false}}'
+      encoding: US-ASCII
+      string: ''
     headers:
       Accept:
       - application/json
@@ -15,13 +15,13 @@ http_interactions:
       - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
   response:
     status:
-      code: 400
+      code: 200
       message: 
     headers:
       content-type:
       - application/json
       content-length:
-      - '86'
+      - '15'
       x-content-type-options:
       - nosniff
       connection:
@@ -30,8 +30,7 @@ http_interactions:
       - thin 1.5.0 codename Knife
     body:
       encoding: UTF-8
-      string: '{"error":"Services without the need for registered users require a
-        default user plan"}'
+      string: '{"status":"ok"}'
     http_version: 
-  recorded_at: Mon, 13 Oct 2014 15:26:37 GMT
+  recorded_at: Thu, 13 Nov 2014 20:51:00 GMT
 recorded_with: VCR 2.9.0
