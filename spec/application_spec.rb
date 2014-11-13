@@ -250,6 +250,10 @@ module ThreeScale
             VCR.use_cassette 'get again modified user key app ID' do
               Application.load_id_by_key(2001, 'another_key')
             end.must_equal '8011'
+            # clean up this key
+            VCR.use_cassette 'clean up the new user key' do
+              Application.delete_id_by_key(2001, 'another_key')
+            end
           end
         end
 

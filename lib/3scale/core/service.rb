@@ -38,7 +38,7 @@ module ThreeScale
         end
 
         def save!(attributes)
-          update_backend(:post, attributes)
+          update_backend(:put, attributes, attributes[:id])
         end
 
         def change_provider_key!(old_key, new_key)
@@ -89,12 +89,12 @@ module ThreeScale
           response = Core.faraday.send method, "services/#{service_id}", {service: attributes}.to_json
 
           expected_status = method == :post ? 201 : 200
-          handle_update_errors response, expected_status
+          handle_update_errors response, expected_status, attributes
 
           instantiate_from_api_data json(response)['service']
         end
 
-        def handle_update_errors(response, expected_status)
+        def handle_update_errors(response, expected_status, attributes)
           if response.status != expected_status
             if response.status == 400 &&
               (json = json(response))['error'] =~ /require a default user plan/
