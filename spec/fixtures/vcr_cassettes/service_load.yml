@@ -2,72 +2,6 @@
 http_interactions:
 - request:
     method: get
-    uri: http://localhost:3000/internal/services/7001
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      Content-Type:
-      - application/json
-      Authorization:
-      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
-  response:
-    status:
-      code: 200
-      message: 
-    headers:
-      content-type:
-      - application/json;charset=utf-8
-      content-length:
-      - '192'
-      connection:
-      - close
-      server:
-      - thin 1.5.0 codename Knife
-    body:
-      encoding: UTF-8
-      string: '{"id":"7001","provider_key":"foo","backend_version":"oauth","referrer_filters_required":true,"user_registration_required":true,"default_user_plan_id":"15","default_user_plan_name":"test
-        name"}'
-    http_version: 
-  recorded_at: Tue, 08 Apr 2014 14:24:07 GMT
-- request:
-    method: get
-    uri: http://10.0.2.2:8081/internal/services/7001
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      Content-Type:
-      - application/json
-      Authorization:
-      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
-  response:
-    status:
-      code: 200
-      message: 
-    headers:
-      content-type:
-      - application/json
-      content-length:
-      - '192'
-      x-content-type-options:
-      - nosniff
-      connection:
-      - close
-      server:
-      - thin 1.5.0 codename Knife
-    body:
-      encoding: UTF-8
-      string: '{"id":"7001","provider_key":"foo","backend_version":"oauth","referrer_filters_required":true,"user_registration_required":true,"default_user_plan_id":"15","default_user_plan_name":"test
-        name"}'
-    http_version: 
-  recorded_at: Thu, 30 Oct 2014 10:52:08 GMT
-- request:
-    method: get
     uri: http://localhost:3001/internal/services/7001
     body:
       encoding: US-ASCII
@@ -87,7 +21,7 @@ http_interactions:
       content-type:
       - application/json
       content-length:
-      - '192'
+      - '215'
       x-content-type-options:
       - nosniff
       connection:
@@ -97,7 +31,7 @@ http_interactions:
     body:
       encoding: UTF-8
       string: '{"id":"7001","provider_key":"foo","backend_version":"oauth","referrer_filters_required":true,"user_registration_required":true,"default_user_plan_id":"15","default_user_plan_name":"test
-        name"}'
+        name","default_service":true}'
     http_version: 
   recorded_at: Thu, 30 Oct 2014 14:38:17 GMT
 recorded_with: VCR 2.9.0

@@ -1,77 +1,11 @@
 ---
 http_interactions:
 - request:
-    method: post
-    uri: http://localhost:3000/internal/services/
+    method: put
+    uri: http://localhost:3001/internal/services/7002
     body:
       encoding: UTF-8
-      string: '{"service":{"provider_key":"foo","id":"7001","user_registration_required":false}}'
-    headers:
-      Accept:
-      - application/json
-      Content-Type:
-      - application/json
-      Authorization:
-      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
-  response:
-    status:
-      code: 400
-      message: 
-    headers:
-      content-type:
-      - application/json;charset=utf-8
-      content-length:
-      - '86'
-      connection:
-      - close
-      server:
-      - thin 1.5.0 codename Knife
-    body:
-      encoding: UTF-8
-      string: '{"error":"Services without the need for registered users require a
-        default user plan"}'
-    http_version: 
-  recorded_at: Tue, 08 Apr 2014 14:24:07 GMT
-- request:
-    method: post
-    uri: http://10.0.2.2:8081/internal/services/
-    body:
-      encoding: UTF-8
-      string: '{"service":{"provider_key":"foo","id":"7001","user_registration_required":false}}'
-    headers:
-      Accept:
-      - application/json
-      Content-Type:
-      - application/json
-      Authorization:
-      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
-  response:
-    status:
-      code: 400
-      message: 
-    headers:
-      content-type:
-      - application/json
-      content-length:
-      - '86'
-      x-content-type-options:
-      - nosniff
-      connection:
-      - close
-      server:
-      - thin 1.5.0 codename Knife
-    body:
-      encoding: UTF-8
-      string: '{"error":"Services without the need for registered users require a
-        default user plan"}'
-    http_version: 
-  recorded_at: Thu, 30 Oct 2014 10:52:08 GMT
-- request:
-    method: post
-    uri: http://localhost:3001/internal/services/
-    body:
-      encoding: UTF-8
-      string: '{"service":{"provider_key":"foo","id":"7001","user_registration_required":false}}'
+      string: '{"service":{"provider_key":"foo","id":7002,"user_registration_required":false}}'
     headers:
       Accept:
       - application/json
