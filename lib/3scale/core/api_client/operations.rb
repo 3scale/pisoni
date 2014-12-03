@@ -41,6 +41,8 @@ module ThreeScale
         end
 
         module ClassMethods
+          include ThreeScale::Core::Logger
+
           # CRUD methods
 
           def api_create(attributes, api_options = {})
@@ -132,6 +134,11 @@ module ThreeScale
             prefix = default_prefix
             attributes = { prefix => attributes } unless attributes.empty?
             uri = options.fetch(:uri, default_uri)
+
+            logger.debug do
+              "=> #{method.upcase} #{uri} [#{attributes}]"
+            end
+
             response = api_http method, uri, attributes
 
             ok = status_ok? method, response.status
@@ -140,6 +147,10 @@ module ThreeScale
             attributes = api_parse_json(response.body)
             attributes = attributes[prefix]
             ret[:attributes] = attributes
+
+            logger.debug do
+              "<= #{response.status} #{method.upcase} #{uri} [#{attributes}]"
+            end
 
             if ok
               ret[:object] = if attributes and options[:build]
