@@ -67,18 +67,6 @@ module ThreeScale
       end
     end
 
-    class UserRequiresValidService < Error
-      def initialize
-        super %(User requires a valid service, the service does not exist)
-      end
-    end
-
-    class UserRequiresDefinedPlan < Error
-      def initialize
-        super %(User requires a defined plan)
-      end
-    end
-
     class InvalidProviderKeys < Error
       def initialize
         super %(Provider keys are not valid, must be not nil and different)
