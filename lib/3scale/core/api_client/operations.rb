@@ -43,51 +43,56 @@ module ThreeScale
         module ClassMethods
           # CRUD methods
 
-          def api_create(attributes, api_options = {})
-            api_create_object :api_do_post, attributes, api_options
+          def api_create(attributes, api_options = {}, &blk)
+            api_create_object :api_do_post, attributes, api_options, &blk
           end
           alias_method :api_save, :api_create
 
-          def api_read(attributes, api_options = {})
-            api_create_object :api_do_get, attributes, api_options
+          def api_read(attributes, api_options = {}, &blk)
+            api_create_object :api_do_get, attributes, api_options, &blk
           end
           alias_method :api_load, :api_read
 
-          def api_update(attributes, api_options = {})
-            api_create_object :api_do_put, attributes, api_options
+          def api_update(attributes, api_options = {}, &blk)
+            api_create_object :api_do_put, attributes, api_options, &blk
           end
 
-          def api_delete(attributes, api_options = {})
-            api_do_delete(attributes, api_options)[:ok]
+          def api_delete(attributes, api_options = {}, &blk)
+            api_do_delete(attributes, api_options, &blk)[:ok]
           end
 
           # Helpers
 
-          def api_do_get(attributes, api_options = {})
-            api :get, attributes, api_options do |response, _|
-              response.status != 404
-            end
+          def api_do_get(attributes, api_options = {}, &blk)
+            blk = filter_404 if blk.nil?
+            api :get, attributes, api_options, &blk
           end
 
-          def api_do_put(attributes, api_options = {})
-            api :put, attributes, api_options
+          def api_do_put(attributes, api_options = {}, &blk)
+            api :put, attributes, api_options, &blk
           end
 
-          def api_do_post(attributes, api_options = {})
-            api :post, attributes, api_options
+          def api_do_post(attributes, api_options = {}, &blk)
+            api :post, attributes, api_options, &blk
           end
 
-          def api_do_delete(attributes, api_options = {})
-            api :delete, attributes, api_options do |response, _|
-              response.status != 404
-            end
+          def api_do_delete(attributes, api_options = {}, &blk)
+            blk = filter_404 if blk.nil?
+            api :delete, attributes, api_options, &blk
           end
 
-          def api_create_object(method, attributes, api_options = {})
-            ret = send method, attributes, api_options.merge(build: true)
+          def api_create_object(method, attributes, api_options = {}, &blk)
+            ret = send method, attributes, api_options.merge(build: true), &blk
             ret[:object].send :persisted=, true if ret[:object]
             ret[:object]
           end
+
+          def filter_404
+            @filter_404_proc ||= proc do |response, _|
+              response.status != 404
+            end
+          end
+          private :filter_404
 
           def api_http(method, uri, attributes)
             # GET, DELETE and HEAD are treated differently by Faraday. We need
