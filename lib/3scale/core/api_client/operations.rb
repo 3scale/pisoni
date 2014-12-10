@@ -143,10 +143,10 @@ module ThreeScale
             ret = { response: response, ok: ok }
 
             attributes = api_parse_json(response.body)
-            attributes = attributes[prefix]
-            ret[:attributes] = attributes
 
             if ok
+              attributes = attributes[prefix]
+
               ret[:object] = if attributes and options[:build]
                                new attributes
                              else
@@ -159,6 +159,7 @@ module ThreeScale
               raise APIError.new(method, uri, response, attributes) if do_raise
             end
 
+            ret[:attributes] = attributes
             ret
           end
 
