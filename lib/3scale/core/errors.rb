@@ -67,6 +67,18 @@ module ThreeScale
       end
     end
 
+    class UserRequiresValidServiceId < Error
+      def initialize(id)
+        super %(Service id #{id} is invalid, user requires a valid id)
+      end
+    end
+
+    class UserRequiresDefinedPlan < Error
+      def initialize(plan_id, plan_name)
+        super %(User requires a defined plan, plan id: #{plan_id} plan name: #{plan_name})
+      end
+    end
+
     class InvalidProviderKeys < Error
       def initialize
         super %(Provider keys are not valid, must be not nil and different)
