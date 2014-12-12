@@ -65,5 +65,5 @@ http_interactions:
       encoding: UTF-8
       string: '{"status":"not_found","error":"application not found"}'
     http_version: 
-  recorded_at: Thu, 30 Oct 2014 14:38:16 GMT
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
 recorded_with: VCR 2.9.0

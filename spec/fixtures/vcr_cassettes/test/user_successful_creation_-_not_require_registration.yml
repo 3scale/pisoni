@@ -32,7 +32,7 @@ http_interactions:
       encoding: UTF-8
       string: '{"service":{"id":"7001","provider_key":"foo","backend_version":null,"referrer_filters_required":null,"user_registration_required":false,"default_user_plan_id":"1001","default_user_plan_name":"planname","default_service":false},"status":"ok"}'
     http_version: 
-  recorded_at: Thu, 30 Oct 2014 14:38:17 GMT
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
 - request:
     method: get
     uri: http://localhost:3001/internal/services/7001
@@ -65,7 +65,7 @@ http_interactions:
       encoding: UTF-8
       string: '{"id":"7001","provider_key":"foo","backend_version":null,"referrer_filters_required":false,"user_registration_required":false,"default_user_plan_id":"1001","default_user_plan_name":"planname","default_service":false}'
     http_version: 
-  recorded_at: Thu, 30 Oct 2014 14:38:17 GMT
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
 - request:
     method: post
     uri: http://localhost:3001/internal/services/7001/users
@@ -98,7 +98,7 @@ http_interactions:
       encoding: UTF-8
       string: '{"status":"ok"}'
     http_version: 
-  recorded_at: Thu, 30 Oct 2014 14:38:17 GMT
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
 - request:
     method: get
     uri: http://localhost:3001/internal/services/7001
@@ -131,7 +131,7 @@ http_interactions:
       encoding: UTF-8
       string: '{"id":"7001","provider_key":"foo","backend_version":null,"referrer_filters_required":false,"user_registration_required":false,"default_user_plan_id":"1001","default_user_plan_name":"planname","default_service":false}'
     http_version: 
-  recorded_at: Thu, 30 Oct 2014 14:38:17 GMT
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
 - request:
     method: post
     uri: http://localhost:3001/internal/services/7001/users
@@ -164,7 +164,7 @@ http_interactions:
       encoding: UTF-8
       string: '{"status":"ok"}'
     http_version: 
-  recorded_at: Thu, 30 Oct 2014 14:38:17 GMT
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
 - request:
     method: get
     uri: http://localhost:3001/internal/services/7001
@@ -197,7 +197,7 @@ http_interactions:
       encoding: UTF-8
       string: '{"id":"7001","provider_key":"foo","backend_version":null,"referrer_filters_required":false,"user_registration_required":false,"default_user_plan_id":"1001","default_user_plan_name":"planname","default_service":false}'
     http_version: 
-  recorded_at: Thu, 30 Oct 2014 14:38:17 GMT
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
 - request:
     method: post
     uri: http://localhost:3001/internal/services/7001/users
@@ -230,7 +230,7 @@ http_interactions:
       encoding: UTF-8
       string: '{"status":"ok"}'
     http_version: 
-  recorded_at: Thu, 30 Oct 2014 14:38:17 GMT
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
 - request:
     method: get
     uri: http://localhost:3001/internal/services/7001
@@ -263,7 +263,7 @@ http_interactions:
       encoding: UTF-8
       string: '{"id":"7001","provider_key":"foo","backend_version":null,"referrer_filters_required":false,"user_registration_required":false,"default_user_plan_id":"1001","default_user_plan_name":"planname","default_service":false}'
     http_version: 
-  recorded_at: Thu, 30 Oct 2014 14:38:17 GMT
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
 - request:
     method: post
     uri: http://localhost:3001/internal/services/7001/users
@@ -296,7 +296,7 @@ http_interactions:
       encoding: UTF-8
       string: '{"status":"ok"}'
     http_version: 
-  recorded_at: Thu, 30 Oct 2014 14:38:17 GMT
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
 - request:
     method: get
     uri: http://localhost:3001/internal/services/7001
@@ -329,7 +329,7 @@ http_interactions:
       encoding: UTF-8
       string: '{"id":"7001","provider_key":"foo","backend_version":null,"referrer_filters_required":false,"user_registration_required":false,"default_user_plan_id":"1001","default_user_plan_name":"planname","default_service":false}'
     http_version: 
-  recorded_at: Thu, 30 Oct 2014 14:38:17 GMT
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
 - request:
     method: post
     uri: http://localhost:3001/internal/services/7001/users
@@ -362,7 +362,7 @@ http_interactions:
       encoding: UTF-8
       string: '{"status":"ok"}'
     http_version: 
-  recorded_at: Thu, 30 Oct 2014 14:38:17 GMT
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
 - request:
     method: get
     uri: http://localhost:3001/internal/services/7001
@@ -395,7 +395,7 @@ http_interactions:
       encoding: UTF-8
       string: '{"id":"7001","provider_key":"foo","backend_version":null,"referrer_filters_required":false,"user_registration_required":false,"default_user_plan_id":"1001","default_user_plan_name":"planname","default_service":false}'
     http_version: 
-  recorded_at: Thu, 30 Oct 2014 14:38:17 GMT
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
 - request:
     method: post
     uri: http://localhost:3001/internal/services/7001/users
@@ -428,5 +428,5 @@ http_interactions:
       encoding: UTF-8
       string: '{"status":"ok"}'
     http_version: 
-  recorded_at: Thu, 30 Oct 2014 14:38:17 GMT
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
 recorded_with: VCR 2.9.0
