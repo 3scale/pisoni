@@ -33,5 +33,5 @@ http_interactions:
       string: '{"id":"7001","provider_key":"foo","backend_version":"oauth","referrer_filters_required":true,"user_registration_required":true,"default_user_plan_id":"15","default_user_plan_name":"test
         name","default_service":true}'
     http_version: 
-  recorded_at: Thu, 30 Oct 2014 14:38:17 GMT
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
 recorded_with: VCR 2.9.0
