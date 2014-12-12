@@ -32,7 +32,7 @@ http_interactions:
       encoding: UTF-8
       string: '{"status":"modified","application":{"id":"8011"}}'
     http_version: 
-  recorded_at: Thu, 30 Oct 2014 10:52:07 GMT
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
 - request:
     method: put
     uri: http://localhost:3001/internal/services/2001/applications/8011/key/a_key
