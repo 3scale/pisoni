@@ -67,15 +67,15 @@ module ThreeScale
       end
     end
 
-    class UserRequiresValidService < Error
-      def initialize
-        super %(User requires a valid service, the service does not exist)
+    class UserRequiresValidServiceId < Error
+      def initialize(id)
+        super %(Service id #{id} is invalid, user requires a valid id)
       end
     end
 
     class UserRequiresDefinedPlan < Error
-      def initialize
-        super %(User requires a defined plan)
+      def initialize(plan_id, plan_name)
+        super %(User requires a defined plan, plan id: #{plan_id} plan name: #{plan_name})
       end
     end
 
