@@ -25,7 +25,7 @@ http_interactions:
       x-content-type-options:
       - nosniff
       connection:
-      - close
+      - keep-alive
       server:
       - thin 1.5.0 codename Knife
     body:
@@ -58,7 +58,7 @@ http_interactions:
       x-content-type-options:
       - nosniff
       connection:
-      - close
+      - keep-alive
       server:
       - thin 1.5.0 codename Knife
     body:
@@ -91,7 +91,7 @@ http_interactions:
       x-content-type-options:
       - nosniff
       connection:
-      - close
+      - keep-alive
       server:
       - thin 1.5.0 codename Knife
     body:
@@ -124,7 +124,7 @@ http_interactions:
       x-content-type-options:
       - nosniff
       connection:
-      - close
+      - keep-alive
       server:
       - thin 1.5.0 codename Knife
     body:
@@ -157,7 +157,7 @@ http_interactions:
       x-content-type-options:
       - nosniff
       connection:
-      - close
+      - keep-alive
       server:
       - thin 1.5.0 codename Knife
     body:
@@ -190,7 +190,7 @@ http_interactions:
       x-content-type-options:
       - nosniff
       connection:
-      - close
+      - keep-alive
       server:
       - thin 1.5.0 codename Knife
     body:
