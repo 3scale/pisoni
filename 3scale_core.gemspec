@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'faraday', '~> 0.8.9'
   s.add_dependency 'json', '~> 1.8.1'
-  s.add_dependency 'injectedlogger', '~> 0.0.7'
+  s.add_dependency 'injectedlogger', '~> 0.0.12'
   s.add_dependency 'net-http-persistent'
 
   s.add_development_dependency 'vcr', '2.9.0'
