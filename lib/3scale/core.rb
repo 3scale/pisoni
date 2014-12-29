@@ -24,7 +24,9 @@ module ThreeScale
     def faraday
       return @faraday if @faraday
 
-      @faraday = Faraday.new(:url => donbot_url)
+      @faraday = Faraday.new(:url => donbot_url) do |f|
+        f.adapter :net_http_persistent
+      end
       @faraday.headers = {
         'User-Agent' => "3scale_core v#{ThreeScale::Core::VERSION}",
         'Accept' => 'application/json',

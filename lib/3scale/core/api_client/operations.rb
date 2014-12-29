@@ -141,10 +141,12 @@ module ThreeScale
             uri = options.fetch(:uri, default_uri)
 
             logger.debug do
-              "=> #{method.upcase} #{uri} [#{attributes}]"
+              "===> #{method.upcase} #{uri} [#{attributes}]"
             end
 
+            before = Time.now
             response = api_http method, uri, attributes
+            after = Time.now
 
             ok = status_ok? method, response.status
             ret = { response: response, ok: ok }
@@ -152,7 +154,7 @@ module ThreeScale
             attributes = api_parse_json(response.body)
 
             logger.debug do
-              "<= #{response.status} #{method.upcase} #{uri} [#{attributes}]"
+              "<=#{response.headers['connection'] == 'keep-alive' ? 'K' : ' '}= #{response.status} #{method.upcase} #{uri} [#{attributes}] (#{after - before})"
             end
 
             if ok
