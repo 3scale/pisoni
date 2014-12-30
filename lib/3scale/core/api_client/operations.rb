@@ -151,7 +151,11 @@ module ThreeScale
             ok = status_ok? method, response.status
             ret = { response: response, ok: ok }
 
-            attributes = api_parse_json(response.body)
+            attributes = if response.headers['content-type'].index 'json'
+              api_parse_json(response.body)
+            else
+              {}
+            end
 
             logger.debug do
               "<=#{response.headers['connection'] == 'keep-alive' ? 'K' : ' '}= #{response.status} #{method.upcase} #{uri} [#{attributes}] (#{after - before})"
