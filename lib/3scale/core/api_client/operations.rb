@@ -106,6 +106,8 @@ module ThreeScale
             else
               Core.faraday.send method, uri, attributes.to_json
             end
+          rescue Faraday::Error::ClientError, SystemCallError => e
+            raise ConnectionError, e
           end
           private :api_http
 
