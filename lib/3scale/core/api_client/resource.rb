@@ -9,7 +9,7 @@ module ThreeScale
         def initialize(method, uri, response, attributes)
           @method, @uri, @response, @attributes = method, uri, response, attributes
           super "#{self.class}: #{response.status} #{method.upcase} #{uri}, attributes:" \
-            " #{attributes.inspect}, response.body: #{response.body.inspect}"
+            " #{attributes.inspect}, response.body: #{response.body[0,256]}"
         end
       end
 
