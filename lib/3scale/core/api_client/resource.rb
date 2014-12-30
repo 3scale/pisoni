@@ -1,7 +1,9 @@
 module ThreeScale
   module Core
     module APIClient
-      class APIError < StandardError
+      Error = Class.new StandardError
+
+      class APIError < Error
         attr_reader :method, :uri, :response, :attributes
 
         def initialize(method, uri, response, attributes)
@@ -10,6 +12,8 @@ module ThreeScale
             " #{attributes.inspect}, response.body: #{response.body.inspect}"
         end
       end
+
+      JSONError = Class.new Error
 
       class Resource
 
