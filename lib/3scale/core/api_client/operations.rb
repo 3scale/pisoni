@@ -112,7 +112,10 @@ module ThreeScale
           def api_parse_json(text)
             parse_json(text)
           rescue JSON::ParserError
-            raise "JSON Parser Error"
+            # you can obtain the full error message with
+            # rescue JSONError => e
+            #   puts e.cause.message
+            raise JSONError
           end
           private :api_parse_json
 
