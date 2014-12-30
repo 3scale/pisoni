@@ -13,6 +13,12 @@ module ThreeScale
         end
       end
 
+      class ConnectionError < Error
+        def initialize(error)
+          super "#{self.class}: #{error.message}"
+        end
+      end
+
       JSONError = Class.new Error
 
       class Resource
