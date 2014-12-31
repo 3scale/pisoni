@@ -106,13 +106,18 @@ module ThreeScale
             else
               Core.faraday.send method, uri, attributes.to_json
             end
+          rescue Faraday::Error::ClientError, SystemCallError => e
+            raise ConnectionError, e
           end
           private :api_http
 
           def api_parse_json(text)
             parse_json(text)
           rescue JSON::ParserError
-            raise "JSON Parser Error"
+            # you can obtain the full error message with
+            # rescue JSONError => e
+            #   puts e.cause.message
+            raise JSONError
           end
           private :api_parse_json
 
@@ -151,7 +156,11 @@ module ThreeScale
             ok = status_ok? method, response.status
             ret = { response: response, ok: ok }
 
-            attributes = api_parse_json(response.body)
+            attributes = if response.headers['content-type'].index 'json'
+              api_parse_json(response.body)
+            else
+              {}
+            end
 
             logger.debug do
               "<=#{response.headers['connection'] == 'keep-alive' ? 'K' : ' '}= #{response.status} #{method.upcase} #{uri} [#{attributes}] (#{after - before})"
