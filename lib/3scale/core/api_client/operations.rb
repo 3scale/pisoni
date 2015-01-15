@@ -121,6 +121,26 @@ module ThreeScale
           end
           private :api_parse_json
 
+          # Our current HTTP client (Faraday wrapper) does not expose HTTP
+          # version, which would be convenient for determining whether we have
+          # a keep-alive connection. For that we would probably need to write a
+          # Faraday middleware.
+          #
+          # Anyway, in HTTP/1.0 we are not guaranteed to have a Connection:
+          # response field, so it does not always use Connection: close (they
+          # are closed by default). HTTP/1.1 OTOH does keep-alive by default, so
+          # it will close the connection when actually sending a Connection:
+          # close. So:
+          # HTTP/1.1: KA if no Connection field or if present and not 'close'
+          # HTTP/1.0: no KA unless Connection: keep-alive.
+          # XXX UNDEFINED: no Connection header, depends on HTTP version:
+          # 1.1: keep-alive
+          # 1.0: close
+          def keep_alive_response?(response)
+            response.headers['connection'] != 'close'
+          end
+          private :keep_alive_response?
+
           # api method - talk with the remote HTTP service
           #
           # method - HTTP method to use
@@ -146,7 +166,7 @@ module ThreeScale
             uri = options.fetch(:uri, default_uri)
 
             logger.debug do
-              "===> #{method.upcase} #{uri} [#{attributes}]"
+              "==> #{method.upcase} #{uri} [#{attributes}]"
             end
 
             before = Time.now
@@ -163,7 +183,7 @@ module ThreeScale
             end
 
             logger.debug do
-              "<=#{response.headers['connection'] == 'keep-alive' ? 'K' : ' '}= #{response.status} #{method.upcase} #{uri} [#{attributes}] (#{after - before})"
+              "<#{keep_alive_response?(response) ? '=' : '/'}= #{response.status} #{method.upcase} #{uri} [#{attributes}] (#{after - before})"
             end
 
             if ok
