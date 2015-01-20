@@ -184,13 +184,17 @@ module ThreeScale
             after = Time.now
 
             ok = status_ok? method, response.status
-            ret = { response: response, ok: ok }
 
-            attributes = if response.headers['content-type'].index 'json'
-              api_parse_json(response.body)
-            else
-              {}
-            end
+            attributes = begin
+                           api_parse_json(response)
+                         rescue JSONError => e
+                           logger.error do
+                             "#{api_response_inspect(method, uri, response, '', after, before)} - #{e.message}"
+                           end
+                           raise e
+                         end
+
+            ret = { response: response, ok: ok }
 
             logger.debug do
               api_response_inspect(method, uri, response, attributes, after, before)
