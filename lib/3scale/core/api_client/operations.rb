@@ -197,7 +197,7 @@ module ThreeScale
             end
 
             if ok
-              attributes = attributes[prefix]
+              attributes = attributes.fetch(prefix, nil)
 
               ret[:object] = if attributes and options[:build]
                                new attributes
