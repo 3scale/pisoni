@@ -111,13 +111,18 @@ module ThreeScale
           end
           private :api_http
 
-          def api_parse_json(text)
-            parse_json(text)
-          rescue JSON::ParserError
-            # you can obtain the full error message with
+          def api_parse_json(response)
+            raise JSONError, "non-acceptable content-type #{response.headers['content-type']}" unless response.headers['content-type'].include? 'json'
+            parse_json(response.body)
+          rescue JSON::ParserError => e
+            # you can obtain the error message with
             # rescue JSONError => e
-            #   puts e.cause.message
-            raise JSONError
+            #   puts(e.cause ? e.cause.message : e.message)
+            #
+            # e.message will always return a trimmed (bounded) message, while
+            # e.cause.message, when a cause is present, may return a long
+            # message including the whole response body.
+            raise JSONError, e
           end
           private :api_parse_json
 
@@ -140,6 +145,11 @@ module ThreeScale
             response.headers['connection'] != 'close'
           end
           private :keep_alive_response?
+
+          def api_response_inspect(method, uri, response, attributes, after, before)
+            "<#{keep_alive_response?(response) ? '=' : '/'}= #{response.status} #{method.upcase} #{uri} [#{attributes}] (#{after - before})"
+          end
+          private :api_response_inspect
 
           # api method - talk with the remote HTTP service
           #
@@ -174,20 +184,24 @@ module ThreeScale
             after = Time.now
 
             ok = status_ok? method, response.status
+
+            attributes = begin
+                           api_parse_json(response)
+                         rescue JSONError => e
+                           logger.error do
+                             "#{api_response_inspect(method, uri, response, '', after, before)} - #{e.message}"
+                           end
+                           raise e
+                         end
+
             ret = { response: response, ok: ok }
 
-            attributes = if response.headers['content-type'].index 'json'
-              api_parse_json(response.body)
-            else
-              {}
-            end
-
             logger.debug do
-              "<#{keep_alive_response?(response) ? '=' : '/'}= #{response.status} #{method.upcase} #{uri} [#{attributes}] (#{after - before})"
+              api_response_inspect(method, uri, response, attributes, after, before)
             end
 
             if ok
-              attributes = attributes[prefix]
+              attributes = attributes.fetch(prefix, nil)
 
               ret[:object] = if attributes and options[:build]
                                new attributes
