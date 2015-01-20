@@ -146,6 +146,11 @@ module ThreeScale
           end
           private :keep_alive_response?
 
+          def api_response_inspect(method, uri, response, attributes, after, before)
+            "<#{keep_alive_response?(response) ? '=' : '/'}= #{response.status} #{method.upcase} #{uri} [#{attributes}] (#{after - before})"
+          end
+          private :api_response_inspect
+
           # api method - talk with the remote HTTP service
           #
           # method - HTTP method to use
@@ -188,7 +193,7 @@ module ThreeScale
             end
 
             logger.debug do
-              "<#{keep_alive_response?(response) ? '=' : '/'}= #{response.status} #{method.upcase} #{uri} [#{attributes}] (#{after - before})"
+              api_response_inspect(method, uri, response, attributes, after, before)
             end
 
             if ok
