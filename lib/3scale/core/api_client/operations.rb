@@ -111,13 +111,18 @@ module ThreeScale
           end
           private :api_http
 
-          def api_parse_json(text)
-            parse_json(text)
-          rescue JSON::ParserError
-            # you can obtain the full error message with
+          def api_parse_json(response)
+            raise JSONError, "non-acceptable content-type #{response.headers['content-type']}" unless response.headers['content-type'].include? 'json'
+            parse_json(response.body)
+          rescue JSON::ParserError => e
+            # you can obtain the error message with
             # rescue JSONError => e
-            #   puts e.cause.message
-            raise JSONError
+            #   puts(e.cause ? e.cause.message : e.message)
+            #
+            # e.message will always return a trimmed (bounded) message, while
+            # e.cause.message, when a cause is present, may return a long
+            # message including the whole response body.
+            raise JSONError, e
           end
           private :api_parse_json
 
