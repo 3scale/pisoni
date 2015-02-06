@@ -1,30 +1,18 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-require 'berkshelf/vagrant'
-
 VAGRANTFILE_API_VERSION = "2"
 
+ENV['VAGRANT_DEFAULT_PROVIDER'] ||= 'docker'
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.provider "virtualbox" do |v|
-    v.memory = 2048
-    v.cpus = 2
-    v.customize ["modifyvm", :id, "--ioapic", "on"]
+  config.vm.provider "docker" do |v|
+    v.cmd       = ["/usr/sbin/sshd", "-D"]
+    v.build_dir = "."
+    v.has_ssh = true
   end
 
-  config.vm.box = "ubuntu/precise64"
-  config.berkshelf.enabled = true
-  config.omnibus.chef_version = :latest
+  config.ssh.username = 'ruby'
+  config.ssh.private_key_path = 'docker/ssh/docker_key'
 
-  # Add SSH agent forwarding so that we're able to retrieve
-  # private repos from this machine
-  config.ssh.forward_agent = true
-
-  config.vm.provision :chef_solo do |chef|
-    chef.add_recipe 'apt'
-    chef.add_recipe 'redisio::install'
-    chef.add_recipe 'redisio::enable'
-  end
-
-  config.vm.provision :shell, :path => "cookbooks/bootstrap.sh"
+  config.vm.synced_folder '.', '/vagrant'
 end
