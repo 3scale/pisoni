@@ -6,8 +6,20 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 136221EE52
 && apt-get -y -q update \
 && apt-get -y -q install redis-server=2:2.8.19-1chl1~precise1
 
+WORKDIR /tmp/core/
+
+ADD Gemfile /tmp/core/
+ADD lib/3scale/core/version.rb /tmp/core/lib/3scale/core/
+ADD 3scale_core.gemspec /tmp/core/
+
+RUN bundle config --global without ''
+
+RUN fast_bundle install
+
 WORKDIR /opt/core/
 ADD . /opt/core
 
 ADD docker/ssh /home/ruby/.ssh
 RUN chown -R ruby:ruby /home/ruby/.ssh
+
+CMD script/ci

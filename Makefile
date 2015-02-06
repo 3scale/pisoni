@@ -9,7 +9,7 @@ NAME = $(PROJECT)-build
 all: clean build test
 
 test:
-	$(PROJECT_PATH)/docker/test $(PROJECT) $(NAME)
+	$(RUN) --name $(NAME) $(PROJECT)
 
 pull:
 	- docker pull 3scale/docker:dev-2.1.5
@@ -18,7 +18,7 @@ bash:
 	$(RUN) -t -i $(PROJECT) bash
 
 build: pull
-	docker build -t $(PROJECT) $(PROJECT_PATH)
+	docker build -t $(PROJECT) .
 
 clean:
 	- docker rm --force $(NAME)
