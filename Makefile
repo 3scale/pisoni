@@ -12,7 +12,7 @@ test:
 	$(PROJECT_PATH)/docker/test $(PROJECT) $(NAME)
 
 pull:
-	- docker pull 3scale/ruby:2.1
+	- docker pull 3scale/docker:dev-2.1.5
 
 bash:
 	$(RUN) -t -i $(PROJECT) bash
@@ -22,4 +22,3 @@ build: pull
 
 clean:
 	- docker rm --force $(NAME)
-
