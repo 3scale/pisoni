@@ -22,7 +22,7 @@ module ThreeScale
       class JSONError < Error
         def initialize(error)
           msg = error.respond_to?(:message) ? error.message : error
-          super "#{self.class}: #{msg[0,256]}"
+          super "#{self.class}: #{msg[0,512]}"
         end
       end
 
