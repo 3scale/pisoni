@@ -112,7 +112,7 @@ module ThreeScale
           private :api_http
 
           def api_parse_json(response)
-            raise JSONError, "non-acceptable content-type #{response.headers['content-type']}" unless response.headers['content-type'].include? 'json'
+            raise JSONError, "unacceptable content-type #{response.headers['content-type']} (#{response.headers['server']}): #{response.body[0,512]}" unless response.headers['content-type'].include? 'json'
             parse_json(response.body)
           rescue JSON::ParserError => e
             # you can obtain the error message with
