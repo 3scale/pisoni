@@ -2,7 +2,6 @@ require 'json'
 
 require '3scale/core/version'
 require '3scale/core/logger'
-require '3scale/core/storage_key_helpers'
 require '3scale/core/storable'
 
 require '3scale/core/api_client'
@@ -16,10 +15,6 @@ require '3scale/core/errors'
 module ThreeScale
   module Core
     extend self
-
-    def storage
-      raise 'You have to reimplement this method to return a storage instance.'
-    end
 
     def faraday
       return @faraday if @faraday
