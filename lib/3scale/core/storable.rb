@@ -2,8 +2,6 @@ module ThreeScale
   module Core
     # Mix this into objects that should be storable in the storage.
     module Storable
-      include StorageKeyHelpers
-
       def self.included(base)
         base.extend(ClassMethods)
       end
@@ -19,8 +17,6 @@ module ThreeScale
       end
 
       module ClassMethods
-        include StorageKeyHelpers
-      
         def storage
           Core.storage
         end
