@@ -137,11 +137,6 @@ module ThreeScale
         attrs
       end
 
-      # TODO: Remove once unused.
-      def self.storage_key(id, attribute)
-        encode_key("service/id:#{id}/#{attribute}")
-      end
-
       def user_add(username)
         Core.faraday.post "services/#{id}/users", {username: username}.to_json
       end
