@@ -2,39 +2,6 @@
 http_interactions:
 - request:
     method: get
-    uri: http://10.0.2.2:8081/internal/services/1999/applications/8011
-    body:
-      encoding: UTF-8
-      string: "{}"
-    headers:
-      Accept:
-      - application/json
-      Content-Type:
-      - application/json
-      Authorization:
-      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
-  response:
-    status:
-      code: 404
-      message: 
-    headers:
-      content-type:
-      - application/json
-      content-length:
-      - '54'
-      x-content-type-options:
-      - nosniff
-      connection:
-      - close
-      server:
-      - thin 1.5.0 codename Knife
-    body:
-      encoding: UTF-8
-      string: '{"status":"not_found","error":"application not found"}'
-    http_version: 
-  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
-- request:
-    method: get
     uri: http://localhost:3001/internal/services/1999/applications/8011
     body:
       encoding: UTF-8
@@ -60,10 +27,10 @@ http_interactions:
       connection:
       - keep-alive
       server:
-      - thin 1.5.0 codename Knife
+      - VCRFilteredSerializer
     body:
       encoding: UTF-8
       string: '{"status":"not_found","error":"application not found"}'
     http_version: 
   recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
-recorded_with: VCR 2.9.0
+recorded_with: VCR 2.9.3
