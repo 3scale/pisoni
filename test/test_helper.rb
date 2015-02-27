@@ -3,29 +3,8 @@ $:.unshift(File.dirname(__FILE__) + '/../lib')
 require 'bundler/setup'
 Bundler.require(:default, :development, :test)
 
-# Use the synchronous redis client here, for simplicity.
-module ThreeScale::Core
-  def self.storage
-    @storage ||= ::Redis.new(:db => 2)
-  end
-end
-
-module CoreTests
-
-  private
-
-  def storage
-    ThreeScale::Core.storage
-  end
-end
-
 class Test::Unit::TestCase
   include ThreeScale::Core
-  include CoreTests
-
-  def before_setup
-    storage.flushall
-  end
 end
 
 module VCRSerializerWOUserAgent
