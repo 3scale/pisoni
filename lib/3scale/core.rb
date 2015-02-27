@@ -16,10 +16,6 @@ module ThreeScale
   module Core
     extend self
 
-    def storage
-      raise 'You have to reimplement this method to return a storage instance.'
-    end
-
     def faraday
       return @faraday if @faraday
 
