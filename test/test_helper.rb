@@ -45,7 +45,7 @@ VCR.configure do |c|
   full_build = ENV['FULL_BUILD'] == '1'
   c.default_cassette_options = { allow_playback_repeats: true,
                                  record: full_build ? :all : :new_episodes,
-                                 serialize_with: :no_useragent
+                                 serialize_with: :no_useragent,
+                                 match_requests_on: [:method, :path, :query, :body]
                                }
-
 end
