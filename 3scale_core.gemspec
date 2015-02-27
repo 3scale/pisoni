@@ -22,8 +22,6 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'vcr', '2.9.0'
   s.add_development_dependency 'rake'
-  s.add_development_dependency 'redis', '3.0.7'
-  s.add_development_dependency 'hiredis', '0.4.5'
 
   s.files         = `git ls-files`.split($/)
   s.executables   = s.files.grep(%r{^bin/}) { |f| File.basename(f) }
