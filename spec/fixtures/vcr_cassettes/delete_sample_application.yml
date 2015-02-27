@@ -15,13 +15,13 @@ http_interactions:
       - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
   response:
     status:
-      code: 404
+      code: 200
       message: 
     headers:
       content-type:
       - application/json
       content-length:
-      - '54'
+      - '20'
       x-content-type-options:
       - nosniff
       connection:
@@ -30,7 +30,7 @@ http_interactions:
       - VCRFilteredSerializer
     body:
       encoding: UTF-8
-      string: '{"status":"not_found","error":"application not found"}'
+      string: '{"status":"deleted"}'
     http_version: 
   recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
 - request:

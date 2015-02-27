@@ -5,7 +5,7 @@ http_interactions:
     uri: http://localhost:3001/internal/services/2001/users/pancho
     body:
       encoding: UTF-8
-      string: '{"user":{"service_id":2001,"username":"pancho","plan_id":null,"plan_name":"plan_for_panchos"}}'
+      string: '{"user":{"service_id":2001,"username":"pancho","plan_id":6789,"plan_name":null}}'
     headers:
       Accept:
       - application/json
@@ -72,7 +72,7 @@ http_interactions:
     uri: http://localhost:3001/internal/services/2001/users/pancho
     body:
       encoding: UTF-8
-      string: '{"user":{"service_id":2001,"username":"pancho","plan_id":6789,"plan_name":null}}'
+      string: '{"user":{"service_id":2001,"username":"pancho","plan_id":null,"plan_name":"plan_for_panchos"}}'
     headers:
       Accept:
       - application/json

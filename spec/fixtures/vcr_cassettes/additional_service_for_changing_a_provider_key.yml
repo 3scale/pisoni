@@ -21,7 +21,7 @@ http_interactions:
       content-type:
       - application/json
       content-length:
-      - '229'
+      - '230'
       x-content-type-options:
       - nosniff
       connection:
@@ -30,7 +30,7 @@ http_interactions:
       - VCRFilteredSerializer
     body:
       encoding: UTF-8
-      string: '{"service":{"id":7002,"provider_key":"bar","backend_version":null,"referrer_filters_required":null,"user_registration_required":true,"default_user_plan_id":null,"default_user_plan_name":null,"default_service":true},"status":"ok"}'
+      string: '{"service":{"id":7002,"provider_key":"bar","backend_version":null,"referrer_filters_required":null,"user_registration_required":true,"default_user_plan_id":null,"default_user_plan_name":null,"default_service":false},"status":"ok"}'
     http_version: 
   recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
 recorded_with: VCR 2.9.3
