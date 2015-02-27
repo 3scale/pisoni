@@ -27,7 +27,7 @@ http_interactions:
       connection:
       - keep-alive
       server:
-      - thin 1.5.0 codename Knife
+      - VCRFilteredSerializer
     body:
       encoding: UTF-8
       string: '{"status":"modified","usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","eternity":10000000}}'
@@ -60,7 +60,7 @@ http_interactions:
       connection:
       - keep-alive
       server:
-      - thin 1.5.0 codename Knife
+      - VCRFilteredSerializer
     body:
       encoding: UTF-8
       string: '{"status":"modified","usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","year":2000000}}'
@@ -93,7 +93,7 @@ http_interactions:
       connection:
       - keep-alive
       server:
-      - thin 1.5.0 codename Knife
+      - VCRFilteredSerializer
     body:
       encoding: UTF-8
       string: '{"status":"modified","usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","month":700000}}'
@@ -126,7 +126,7 @@ http_interactions:
       connection:
       - keep-alive
       server:
-      - thin 1.5.0 codename Knife
+      - VCRFilteredSerializer
     body:
       encoding: UTF-8
       string: '{"status":"modified","usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","week":300000}}'
@@ -159,7 +159,7 @@ http_interactions:
       connection:
       - keep-alive
       server:
-      - thin 1.5.0 codename Knife
+      - VCRFilteredSerializer
     body:
       encoding: UTF-8
       string: '{"status":"modified","usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","hour":5000}}'
@@ -192,10 +192,1000 @@ http_interactions:
       connection:
       - keep-alive
       server:
-      - thin 1.5.0 codename Knife
+      - VCRFilteredSerializer
     body:
       encoding: UTF-8
       string: '{"status":"modified","usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","minute":200}}'
     http_version: 
   recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
-recorded_with: VCR 2.9.0
+- request:
+    method: put
+    uri: http://localhost:3001/internal/services/2001/plans/3001/usagelimits/4001/eternity
+    body:
+      encoding: UTF-8
+      string: '{"usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","eternity":10000000}}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      content-type:
+      - application/json
+      content-length:
+      - '112'
+      x-content-type-options:
+      - nosniff
+      connection:
+      - keep-alive
+      server:
+      - VCRFilteredSerializer
+    body:
+      encoding: UTF-8
+      string: '{"status":"modified","usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","eternity":10000000}}'
+    http_version: 
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
+- request:
+    method: put
+    uri: http://localhost:3001/internal/services/2001/plans/3001/usagelimits/4001/year
+    body:
+      encoding: UTF-8
+      string: '{"usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","year":2000000}}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      content-type:
+      - application/json
+      content-length:
+      - '107'
+      x-content-type-options:
+      - nosniff
+      connection:
+      - keep-alive
+      server:
+      - VCRFilteredSerializer
+    body:
+      encoding: UTF-8
+      string: '{"status":"modified","usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","year":2000000}}'
+    http_version: 
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
+- request:
+    method: put
+    uri: http://localhost:3001/internal/services/2001/plans/3001/usagelimits/4001/month
+    body:
+      encoding: UTF-8
+      string: '{"usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","month":700000}}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      content-type:
+      - application/json
+      content-length:
+      - '107'
+      x-content-type-options:
+      - nosniff
+      connection:
+      - keep-alive
+      server:
+      - VCRFilteredSerializer
+    body:
+      encoding: UTF-8
+      string: '{"status":"modified","usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","month":700000}}'
+    http_version: 
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
+- request:
+    method: put
+    uri: http://localhost:3001/internal/services/2001/plans/3001/usagelimits/4001/week
+    body:
+      encoding: UTF-8
+      string: '{"usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","week":300000}}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      content-type:
+      - application/json
+      content-length:
+      - '106'
+      x-content-type-options:
+      - nosniff
+      connection:
+      - keep-alive
+      server:
+      - VCRFilteredSerializer
+    body:
+      encoding: UTF-8
+      string: '{"status":"modified","usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","week":300000}}'
+    http_version: 
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
+- request:
+    method: put
+    uri: http://localhost:3001/internal/services/2001/plans/3001/usagelimits/4001/hour
+    body:
+      encoding: UTF-8
+      string: '{"usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","hour":5000}}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      content-type:
+      - application/json
+      content-length:
+      - '104'
+      x-content-type-options:
+      - nosniff
+      connection:
+      - keep-alive
+      server:
+      - VCRFilteredSerializer
+    body:
+      encoding: UTF-8
+      string: '{"status":"modified","usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","hour":5000}}'
+    http_version: 
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
+- request:
+    method: put
+    uri: http://localhost:3001/internal/services/2001/plans/3001/usagelimits/4001/minute
+    body:
+      encoding: UTF-8
+      string: '{"usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","minute":200}}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      content-type:
+      - application/json
+      content-length:
+      - '105'
+      x-content-type-options:
+      - nosniff
+      connection:
+      - keep-alive
+      server:
+      - VCRFilteredSerializer
+    body:
+      encoding: UTF-8
+      string: '{"status":"modified","usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","minute":200}}'
+    http_version: 
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
+- request:
+    method: put
+    uri: http://localhost:3001/internal/services/2001/plans/3001/usagelimits/4001/eternity
+    body:
+      encoding: UTF-8
+      string: '{"usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","eternity":10000000}}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      content-type:
+      - application/json
+      content-length:
+      - '112'
+      x-content-type-options:
+      - nosniff
+      connection:
+      - keep-alive
+      server:
+      - VCRFilteredSerializer
+    body:
+      encoding: UTF-8
+      string: '{"status":"modified","usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","eternity":10000000}}'
+    http_version: 
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
+- request:
+    method: put
+    uri: http://localhost:3001/internal/services/2001/plans/3001/usagelimits/4001/year
+    body:
+      encoding: UTF-8
+      string: '{"usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","year":2000000}}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      content-type:
+      - application/json
+      content-length:
+      - '107'
+      x-content-type-options:
+      - nosniff
+      connection:
+      - keep-alive
+      server:
+      - VCRFilteredSerializer
+    body:
+      encoding: UTF-8
+      string: '{"status":"modified","usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","year":2000000}}'
+    http_version: 
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
+- request:
+    method: put
+    uri: http://localhost:3001/internal/services/2001/plans/3001/usagelimits/4001/month
+    body:
+      encoding: UTF-8
+      string: '{"usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","month":700000}}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      content-type:
+      - application/json
+      content-length:
+      - '107'
+      x-content-type-options:
+      - nosniff
+      connection:
+      - keep-alive
+      server:
+      - VCRFilteredSerializer
+    body:
+      encoding: UTF-8
+      string: '{"status":"modified","usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","month":700000}}'
+    http_version: 
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
+- request:
+    method: put
+    uri: http://localhost:3001/internal/services/2001/plans/3001/usagelimits/4001/week
+    body:
+      encoding: UTF-8
+      string: '{"usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","week":300000}}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      content-type:
+      - application/json
+      content-length:
+      - '106'
+      x-content-type-options:
+      - nosniff
+      connection:
+      - keep-alive
+      server:
+      - VCRFilteredSerializer
+    body:
+      encoding: UTF-8
+      string: '{"status":"modified","usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","week":300000}}'
+    http_version: 
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
+- request:
+    method: put
+    uri: http://localhost:3001/internal/services/2001/plans/3001/usagelimits/4001/hour
+    body:
+      encoding: UTF-8
+      string: '{"usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","hour":5000}}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      content-type:
+      - application/json
+      content-length:
+      - '104'
+      x-content-type-options:
+      - nosniff
+      connection:
+      - keep-alive
+      server:
+      - VCRFilteredSerializer
+    body:
+      encoding: UTF-8
+      string: '{"status":"modified","usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","hour":5000}}'
+    http_version: 
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
+- request:
+    method: put
+    uri: http://localhost:3001/internal/services/2001/plans/3001/usagelimits/4001/minute
+    body:
+      encoding: UTF-8
+      string: '{"usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","minute":200}}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      content-type:
+      - application/json
+      content-length:
+      - '105'
+      x-content-type-options:
+      - nosniff
+      connection:
+      - keep-alive
+      server:
+      - VCRFilteredSerializer
+    body:
+      encoding: UTF-8
+      string: '{"status":"modified","usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","minute":200}}'
+    http_version: 
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
+- request:
+    method: put
+    uri: http://localhost:3001/internal/services/2001/plans/3001/usagelimits/4001/eternity
+    body:
+      encoding: UTF-8
+      string: '{"usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","eternity":10000000}}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      content-type:
+      - application/json
+      content-length:
+      - '112'
+      x-content-type-options:
+      - nosniff
+      connection:
+      - keep-alive
+      server:
+      - VCRFilteredSerializer
+    body:
+      encoding: UTF-8
+      string: '{"status":"modified","usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","eternity":10000000}}'
+    http_version: 
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
+- request:
+    method: put
+    uri: http://localhost:3001/internal/services/2001/plans/3001/usagelimits/4001/year
+    body:
+      encoding: UTF-8
+      string: '{"usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","year":2000000}}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      content-type:
+      - application/json
+      content-length:
+      - '107'
+      x-content-type-options:
+      - nosniff
+      connection:
+      - keep-alive
+      server:
+      - VCRFilteredSerializer
+    body:
+      encoding: UTF-8
+      string: '{"status":"modified","usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","year":2000000}}'
+    http_version: 
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
+- request:
+    method: put
+    uri: http://localhost:3001/internal/services/2001/plans/3001/usagelimits/4001/month
+    body:
+      encoding: UTF-8
+      string: '{"usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","month":700000}}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      content-type:
+      - application/json
+      content-length:
+      - '107'
+      x-content-type-options:
+      - nosniff
+      connection:
+      - keep-alive
+      server:
+      - VCRFilteredSerializer
+    body:
+      encoding: UTF-8
+      string: '{"status":"modified","usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","month":700000}}'
+    http_version: 
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
+- request:
+    method: put
+    uri: http://localhost:3001/internal/services/2001/plans/3001/usagelimits/4001/week
+    body:
+      encoding: UTF-8
+      string: '{"usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","week":300000}}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      content-type:
+      - application/json
+      content-length:
+      - '106'
+      x-content-type-options:
+      - nosniff
+      connection:
+      - keep-alive
+      server:
+      - VCRFilteredSerializer
+    body:
+      encoding: UTF-8
+      string: '{"status":"modified","usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","week":300000}}'
+    http_version: 
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
+- request:
+    method: put
+    uri: http://localhost:3001/internal/services/2001/plans/3001/usagelimits/4001/hour
+    body:
+      encoding: UTF-8
+      string: '{"usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","hour":5000}}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      content-type:
+      - application/json
+      content-length:
+      - '104'
+      x-content-type-options:
+      - nosniff
+      connection:
+      - keep-alive
+      server:
+      - VCRFilteredSerializer
+    body:
+      encoding: UTF-8
+      string: '{"status":"modified","usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","hour":5000}}'
+    http_version: 
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
+- request:
+    method: put
+    uri: http://localhost:3001/internal/services/2001/plans/3001/usagelimits/4001/minute
+    body:
+      encoding: UTF-8
+      string: '{"usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","minute":200}}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      content-type:
+      - application/json
+      content-length:
+      - '105'
+      x-content-type-options:
+      - nosniff
+      connection:
+      - keep-alive
+      server:
+      - VCRFilteredSerializer
+    body:
+      encoding: UTF-8
+      string: '{"status":"modified","usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","minute":200}}'
+    http_version: 
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
+- request:
+    method: put
+    uri: http://localhost:3001/internal/services/2001/plans/3001/usagelimits/4001/eternity
+    body:
+      encoding: UTF-8
+      string: '{"usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","eternity":10000000}}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      content-type:
+      - application/json
+      content-length:
+      - '112'
+      x-content-type-options:
+      - nosniff
+      connection:
+      - keep-alive
+      server:
+      - VCRFilteredSerializer
+    body:
+      encoding: UTF-8
+      string: '{"status":"modified","usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","eternity":10000000}}'
+    http_version: 
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
+- request:
+    method: put
+    uri: http://localhost:3001/internal/services/2001/plans/3001/usagelimits/4001/year
+    body:
+      encoding: UTF-8
+      string: '{"usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","year":2000000}}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      content-type:
+      - application/json
+      content-length:
+      - '107'
+      x-content-type-options:
+      - nosniff
+      connection:
+      - keep-alive
+      server:
+      - VCRFilteredSerializer
+    body:
+      encoding: UTF-8
+      string: '{"status":"modified","usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","year":2000000}}'
+    http_version: 
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
+- request:
+    method: put
+    uri: http://localhost:3001/internal/services/2001/plans/3001/usagelimits/4001/month
+    body:
+      encoding: UTF-8
+      string: '{"usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","month":700000}}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      content-type:
+      - application/json
+      content-length:
+      - '107'
+      x-content-type-options:
+      - nosniff
+      connection:
+      - keep-alive
+      server:
+      - VCRFilteredSerializer
+    body:
+      encoding: UTF-8
+      string: '{"status":"modified","usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","month":700000}}'
+    http_version: 
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
+- request:
+    method: put
+    uri: http://localhost:3001/internal/services/2001/plans/3001/usagelimits/4001/week
+    body:
+      encoding: UTF-8
+      string: '{"usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","week":300000}}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      content-type:
+      - application/json
+      content-length:
+      - '106'
+      x-content-type-options:
+      - nosniff
+      connection:
+      - keep-alive
+      server:
+      - VCRFilteredSerializer
+    body:
+      encoding: UTF-8
+      string: '{"status":"modified","usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","week":300000}}'
+    http_version: 
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
+- request:
+    method: put
+    uri: http://localhost:3001/internal/services/2001/plans/3001/usagelimits/4001/hour
+    body:
+      encoding: UTF-8
+      string: '{"usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","hour":5000}}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      content-type:
+      - application/json
+      content-length:
+      - '104'
+      x-content-type-options:
+      - nosniff
+      connection:
+      - keep-alive
+      server:
+      - VCRFilteredSerializer
+    body:
+      encoding: UTF-8
+      string: '{"status":"modified","usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","hour":5000}}'
+    http_version: 
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
+- request:
+    method: put
+    uri: http://localhost:3001/internal/services/2001/plans/3001/usagelimits/4001/minute
+    body:
+      encoding: UTF-8
+      string: '{"usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","minute":200}}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      content-type:
+      - application/json
+      content-length:
+      - '105'
+      x-content-type-options:
+      - nosniff
+      connection:
+      - keep-alive
+      server:
+      - VCRFilteredSerializer
+    body:
+      encoding: UTF-8
+      string: '{"status":"modified","usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","minute":200}}'
+    http_version: 
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
+- request:
+    method: put
+    uri: http://localhost:3001/internal/services/2001/plans/3001/usagelimits/4001/eternity
+    body:
+      encoding: UTF-8
+      string: '{"usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","eternity":10000000}}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      content-type:
+      - application/json
+      content-length:
+      - '112'
+      x-content-type-options:
+      - nosniff
+      connection:
+      - keep-alive
+      server:
+      - VCRFilteredSerializer
+    body:
+      encoding: UTF-8
+      string: '{"status":"modified","usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","eternity":10000000}}'
+    http_version: 
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
+- request:
+    method: put
+    uri: http://localhost:3001/internal/services/2001/plans/3001/usagelimits/4001/year
+    body:
+      encoding: UTF-8
+      string: '{"usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","year":2000000}}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      content-type:
+      - application/json
+      content-length:
+      - '107'
+      x-content-type-options:
+      - nosniff
+      connection:
+      - keep-alive
+      server:
+      - VCRFilteredSerializer
+    body:
+      encoding: UTF-8
+      string: '{"status":"modified","usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","year":2000000}}'
+    http_version: 
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
+- request:
+    method: put
+    uri: http://localhost:3001/internal/services/2001/plans/3001/usagelimits/4001/month
+    body:
+      encoding: UTF-8
+      string: '{"usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","month":700000}}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      content-type:
+      - application/json
+      content-length:
+      - '107'
+      x-content-type-options:
+      - nosniff
+      connection:
+      - keep-alive
+      server:
+      - VCRFilteredSerializer
+    body:
+      encoding: UTF-8
+      string: '{"status":"modified","usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","month":700000}}'
+    http_version: 
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
+- request:
+    method: put
+    uri: http://localhost:3001/internal/services/2001/plans/3001/usagelimits/4001/week
+    body:
+      encoding: UTF-8
+      string: '{"usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","week":300000}}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      content-type:
+      - application/json
+      content-length:
+      - '106'
+      x-content-type-options:
+      - nosniff
+      connection:
+      - keep-alive
+      server:
+      - VCRFilteredSerializer
+    body:
+      encoding: UTF-8
+      string: '{"status":"modified","usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","week":300000}}'
+    http_version: 
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
+- request:
+    method: put
+    uri: http://localhost:3001/internal/services/2001/plans/3001/usagelimits/4001/hour
+    body:
+      encoding: UTF-8
+      string: '{"usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","hour":5000}}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      content-type:
+      - application/json
+      content-length:
+      - '104'
+      x-content-type-options:
+      - nosniff
+      connection:
+      - keep-alive
+      server:
+      - VCRFilteredSerializer
+    body:
+      encoding: UTF-8
+      string: '{"status":"modified","usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","hour":5000}}'
+    http_version: 
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
+- request:
+    method: put
+    uri: http://localhost:3001/internal/services/2001/plans/3001/usagelimits/4001/minute
+    body:
+      encoding: UTF-8
+      string: '{"usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","minute":200}}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      content-type:
+      - application/json
+      content-length:
+      - '105'
+      x-content-type-options:
+      - nosniff
+      connection:
+      - keep-alive
+      server:
+      - VCRFilteredSerializer
+    body:
+      encoding: UTF-8
+      string: '{"status":"modified","usagelimit":{"service_id":"2001","plan_id":"3001","metric_id":"4001","minute":200}}'
+    http_version: 
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
+recorded_with: VCR 2.9.3

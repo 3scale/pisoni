@@ -2,39 +2,6 @@
 http_interactions:
 - request:
     method: get
-    uri: http://10.0.2.2:8081/internal/services/2001/applications/8011
-    body:
-      encoding: UTF-8
-      string: "{}"
-    headers:
-      Accept:
-      - application/json
-      Content-Type:
-      - application/json
-      Authorization:
-      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
-  response:
-    status:
-      code: 200
-      message: 
-    headers:
-      content-type:
-      - application/json
-      content-length:
-      - '182'
-      x-content-type-options:
-      - nosniff
-      connection:
-      - close
-      server:
-      - thin 1.5.0 codename Knife
-    body:
-      encoding: UTF-8
-      string: '{"status":"found","application":{"service_id":"2001","id":"8011","state":"suspended","plan_id":"3066","plan_name":"crappy","user_required":false,"redirect_url":"blah","version":"2"}}'
-    http_version: 
-  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
-- request:
-    method: get
     uri: http://localhost:3001/internal/services/2001/applications/8011
     body:
       encoding: UTF-8
@@ -60,10 +27,10 @@ http_interactions:
       connection:
       - keep-alive
       server:
-      - thin 1.5.0 codename Knife
+      - VCRFilteredSerializer
     body:
       encoding: UTF-8
       string: '{"status":"found","application":{"service_id":"2001","id":"8011","state":"suspended","plan_id":"3066","plan_name":"crappy","user_required":false,"redirect_url":"blah","version":"2"}}'
     http_version: 
   recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
-recorded_with: VCR 2.9.0
+recorded_with: VCR 2.9.3

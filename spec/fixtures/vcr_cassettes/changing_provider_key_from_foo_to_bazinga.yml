@@ -27,10 +27,10 @@ http_interactions:
       connection:
       - keep-alive
       server:
-      - thin 1.5.0 codename Knife
+      - VCRFilteredSerializer
     body:
       encoding: UTF-8
       string: '{"status":"ok"}'
     http_version: 
   recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
-recorded_with: VCR 2.9.0
+recorded_with: VCR 2.9.3
