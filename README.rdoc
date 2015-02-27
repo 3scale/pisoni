@@ -30,7 +30,9 @@ Note that this relies on a local backend gem, which may or may not be what you
 need for testing. Use the environment variable THREESCALE_CORE_INTERNAL_API to
 point the tests to your running backend instance:
 
-    $ THREESCALE_CORE_INTERNAL_API=http://10.0.2.2:8081/internal bundle exec rake ci
+    $ THREESCALE_CORE_INTERNAL_API=http://172.17.42.1:8081/internal bundle exec rake ci
+
+> Note: the external IP address depends on the provider. Docker uses 172.17.42.1 while VirtualBox uses 10.0.2.2.
 
 === Setting up the environment for testing
 
