@@ -157,6 +157,7 @@ module ThreeScale
           # attributes - HTTP request body parameters
           # options:
           #   :prefix => string/symbol - an attribute prefix, '' for none, else default_prefix
+          #   :rprefix => string/symbol - same as above, but for parsing responses
           #   :uri => string - sets the uri for this particular request
           #   :raise => boolean - raise APIError on error, defaults to true
           #   :build => boolean - create a new object with response's JSON if response is ok, defaults to false
@@ -202,6 +203,7 @@ module ThreeScale
             end
 
             if ok
+              prefix = options.fetch(:rprefix, prefix)
               attributes = attributes.fetch(prefix, nil) unless prefix.empty?
 
               ret[:object] = if attributes and options[:build]
