@@ -5,3 +5,8 @@ export CI=jenkins
 echo ThreeScale::Backend.configure { \|c\| c.redis.proxy=\'localhost:6379\' } > ~/.3scale_backend.conf
 
 bundle exec rake ci
+RESULT=$?
+
+kill -TERM `pidof redis-server`
+
+exit $RESULT
