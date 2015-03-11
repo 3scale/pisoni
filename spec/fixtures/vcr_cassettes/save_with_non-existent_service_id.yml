@@ -2,39 +2,6 @@
 http_interactions:
 - request:
     method: put
-    uri: http://localhost:3001/internal/services/2001/users/pancho
-    body:
-      encoding: UTF-8
-      string: '{"user":{"service_id":2001,"username":"pancho","plan_id":6789,"plan_name":null}}'
-    headers:
-      Accept:
-      - application/json
-      Content-Type:
-      - application/json
-      Authorization:
-      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
-  response:
-    status:
-      code: 400
-      message: 
-    headers:
-      content-type:
-      - application/json
-      content-length:
-      - '57'
-      x-content-type-options:
-      - nosniff
-      connection:
-      - keep-alive
-      server:
-      - VCRFilteredSerializer
-    body:
-      encoding: UTF-8
-      string: '{"status":"error","error":"User requires a defined plan"}'
-    http_version: 
-  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
-- request:
-    method: put
     uri: http://localhost:3001/internal/services/2002/users/pancho
     body:
       encoding: UTF-8
@@ -65,6 +32,39 @@ http_interactions:
       encoding: UTF-8
       string: '{"status":"error","error":"User requires a valid service, the service
         does not exist"}'
+    http_version: 
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
+- request:
+    method: put
+    uri: http://localhost:3001/internal/services/2001/users/pancho
+    body:
+      encoding: UTF-8
+      string: '{"user":{"service_id":2001,"username":"pancho","plan_id":6789,"plan_name":null}}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 400
+      message: 
+    headers:
+      content-type:
+      - application/json
+      content-length:
+      - '57'
+      x-content-type-options:
+      - nosniff
+      connection:
+      - keep-alive
+      server:
+      - VCRFilteredSerializer
+    body:
+      encoding: UTF-8
+      string: '{"status":"error","error":"User requires a defined plan"}'
     http_version: 
   recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
 - request:

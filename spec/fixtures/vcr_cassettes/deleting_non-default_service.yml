@@ -37,8 +37,8 @@ http_interactions:
     method: delete
     uri: http://localhost:3001/internal/services/7002
     body:
-      encoding: US-ASCII
-      string: ''
+      encoding: UTF-8
+      string: "{}"
     headers:
       Accept:
       - application/json
