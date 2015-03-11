@@ -72,15 +72,6 @@ module ThreeScale
       def save!
         self.class.save! attributes
       end
-
-      def user_add(username)
-        Core.faraday.post "services/#{id}/users", {username: username}.to_json
-      end
-
-      def user_delete(username)
-        Core.faraday.delete "services/#{id}/users/#{username}"
-      end
-
     end
   end
 end
