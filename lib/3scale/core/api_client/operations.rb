@@ -156,6 +156,8 @@ module ThreeScale
           # method - HTTP method to use
           # attributes - HTTP request body parameters
           # options:
+          #   :prefix => string/symbol - an attribute prefix, '' for none, else default_prefix
+          #   :rprefix => string/symbol - same as above, but for parsing responses
           #   :uri => string - sets the uri for this particular request
           #   :raise => boolean - raise APIError on error, defaults to true
           #   :build => boolean - create a new object with response's JSON if response is ok, defaults to false
@@ -171,8 +173,8 @@ module ThreeScale
           #     :attributes - JSON parsed attributes of the response's body
 
           def api(method, attributes, options = {})
-            prefix = default_prefix
-            attributes = { prefix => attributes } unless attributes.empty?
+            prefix = options.fetch(:prefix, default_prefix)
+            attributes = { prefix => attributes } unless prefix.empty? or attributes.empty?
             uri = options.fetch(:uri, default_uri)
 
             logger.debug do
@@ -201,7 +203,8 @@ module ThreeScale
             end
 
             if ok
-              attributes = attributes.fetch(prefix, nil)
+              prefix = options.fetch(:rprefix, prefix)
+              attributes = attributes.fetch(prefix, nil) unless prefix.empty?
 
               ret[:object] = if attributes and options[:build]
                                new attributes
