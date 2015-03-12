@@ -14,6 +14,26 @@ where x.y.z is the version you aim for
 
 ## Development
 
+### Environment set up
+
+You will want to run tests in an isolated environment. We rely on Vagrant to
+manage such an environment, and on Docker to provide it (in the past we also
+used VirtualBox, but we no longer support it).
+
+The way to get you started is to visit the root of the project and type:
+
+    $ vagrant up
+
+This will probably fail if you haven't set up your `${HOME}/.dockercfg` file
+with quay.io credentials. Ask someone to set up your account there and then
+download your credentials and retry.
+
+Once that command finishes, you can enter the testing environment with:
+
+    $ vagrant ssh
+
+From now on, all commands should be entered within the environment you just entered.
+
 ### Running tests
 
 You can run both tests & specs using API responses cached with VCR:
