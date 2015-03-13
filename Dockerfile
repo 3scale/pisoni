@@ -9,6 +9,8 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 136221EE52
 WORKDIR /tmp/core/
 
 ADD Gemfile /tmp/core/
+ADD .git /tmp/core/.git/
+ADD .mailmap /tmp/core/
 ADD lib/3scale/core/version.rb /tmp/core/lib/3scale/core/
 ADD 3scale_core.gemspec /tmp/core/
 

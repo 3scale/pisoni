@@ -4,20 +4,22 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require '3scale/core/version'
 
 Gem::Specification.new do |s|
-  s.name = %q{3scale_core}
+  s.name = '3scale_core'
   s.version = ThreeScale::Core::VERSION
-  s.date = %q{2011-09-27}
+  s.date = Date.today.to_s
 
   s.platform = Gem::Platform::RUBY
-  s.authors = ["Adam Ciganek", "Tiago Macedo", "Josep M. Pujol", "Wojciech Ogrodowczyk"]
-  s.email = %q{wojciech@3scale.net}
-  s.homepage = %q{http://www.3scale.net}
-  s.summary = %q{3scale web service management system core libraries}
-  s.description = %q{This gem provides core libraries for 3scale systems.}
+  s.authors = `git log | git shortlog -nse --no-merges`.force_encoding('UTF-8').
+    split(/\n|\t/).lazy.each_slice(2).map(&:last).first 4
+  s.email = s.authors.lazy.select { |m| m =~ /\@3scale\.net>\z/ }.
+    map { |a| a.split.last }.first || s.authors.first.split.last
+  s.homepage = 'http://www.3scale.net'
+  s.summary = '3scale web service management system core libraries'
+  s.description = 'This gem provides core libraries for 3scale systems.'
 
   s.add_dependency 'faraday', '~> 0.8.9'
   s.add_dependency 'json', '~> 1.8.1'
-  s.add_dependency 'injectedlogger', '~> 0.0.12'
+  s.add_dependency 'injectedlogger', '~> 0.0.13'
   s.add_dependency 'net-http-persistent'
 
   s.add_development_dependency 'vcr', '~> 2.9.0'
