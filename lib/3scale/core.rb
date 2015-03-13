@@ -2,7 +2,6 @@ require 'json'
 
 require '3scale/core/version'
 require '3scale/core/logger'
-require '3scale/core/storable'
 
 require '3scale/core/api_client'
 require '3scale/core/application'
