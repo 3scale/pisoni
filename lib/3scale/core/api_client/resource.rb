@@ -13,6 +13,16 @@ module ThreeScale
         end
       end
 
+      class APIServerError < APIError
+        def initialize(method, uri, response, attributes = {})
+          super
+        end
+      end
+
+      APIInternalServerError = Class.new APIServerError
+      APIBadGatewayError = Class.new APIServerError
+      APIServiceUnavailableError = Class.new APIServerError
+
       class ConnectionError < Error
         def initialize(error)
           super "#{self.class}: #{error.message}"
