@@ -7,7 +7,10 @@ module ThreeScale
         end
 
         module ClassMethods
-          def status_ok?(method, status)
+          def status_ok?(method, uri, response)
+            status = response.status
+            # handle server errors here, since we will not be expecting JSON
+            raise internal_api_error(status).new(method, uri, response) if status >= 500
             case method
               when :post then [200, 201]
               when :put then [200, 204, 202]
@@ -33,6 +36,17 @@ module ThreeScale
           def default_prefix(prefix = nil)
             return @default_prefix ||= self.to_s.split(':').last.downcase.to_sym unless prefix
             @default_prefix = prefix
+          end
+
+          private
+
+          def internal_api_error(status)
+            case status
+              when 503 then APIServiceUnavailableError
+              when 502 then APIBadGatewayError
+              when 500 then APIInternalServerError
+              else APIServerError
+            end
           end
         end
       end

@@ -185,7 +185,7 @@ module ThreeScale
             response = api_http method, uri, attributes
             after = Time.now
 
-            ok = status_ok? method, response.status
+            ok = status_ok? method, uri, response
 
             attributes = begin
                            api_parse_json(response)
