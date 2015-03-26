@@ -24,4 +24,9 @@ ADD . /opt/core
 ADD docker/ssh /home/ruby/.ssh
 RUN chown -R ruby:ruby /home/ruby/.ssh
 
-CMD script/ci
+# The line below will NOT be executed by Vagrant, so it is safe to assume
+# it means we're being executed in Jenkins. This is needed because we want to
+# do some extra things when in the real CI server, such as reporting coverage
+# to CodeClimate. At the same time, we want to be able to run the ci script
+# locally, which we would do without the extra argument.
+CMD ["script/ci", "jenkins"]

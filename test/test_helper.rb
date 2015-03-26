@@ -1,14 +1,12 @@
-require 'codeclimate-test-reporter'
-CodeClimate::TestReporter.configure do |c|
-  # report coverage for 'master' only
-  c.branch = 'master'
-end
-SimpleCov.start do
-  formatter ENV['CODECLIMATE_REPO_TOKEN'] ?
-    CodeClimate::TestReporter::Formatter :
-    SimpleCov::Formatter::HTMLFormatter
-  add_filter '/test/'
-  add_filter '/spec/'
+unless ENV['NO_COVERAGE']
+  require 'codeclimate-test-reporter'
+  SimpleCov.start do
+    formatter ENV['CODECLIMATE_REPO_TOKEN'] ?
+      CodeClimate::TestReporter::Formatter :
+      SimpleCov::Formatter::HTMLFormatter
+    add_filter '/test/'
+    add_filter '/spec/'
+  end
 end
 
 $:.unshift(File.dirname(__FILE__) + '/../lib')
