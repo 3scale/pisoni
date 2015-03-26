@@ -1,3 +1,6 @@
+[![Code Climate](https://codeclimate.com/repos/5332be496956802e3c007d1a/badges/b4f1c55f9ff033c5f0d8/gpa.svg)](https://codeclimate.com/repos/5332be496956802e3c007d1a/feed)
+[![Test Coverage](https://codeclimate.com/repos/5332be496956802e3c007d1a/badges/b4f1c55f9ff033c5f0d8/coverage.svg)](https://codeclimate.com/repos/5332be496956802e3c007d1a/feed)
+
 # 3scale API Management System Core Libraries
 
 Core libraries for 3scale systems.
