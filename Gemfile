@@ -8,6 +8,8 @@ group :test do
   gem 'minitest'
   # specify a backend version that no longer depends on us
   gem '3scale_backend', '~> 2.25.0'
+  # codeclimate coverage reports
+  gem "codeclimate-test-reporter", require: nil
 end
 
 group :development, :test do

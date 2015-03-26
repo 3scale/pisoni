@@ -1,3 +1,16 @@
+require 'codeclimate-test-reporter'
+CodeClimate::TestReporter.configure do |c|
+  # report coverage for 'master' only
+  c.branch = 'master'
+end
+SimpleCov.start do
+  formatter ENV['CODECLIMATE_REPO_TOKEN'] ?
+    CodeClimate::TestReporter::Formatter :
+    SimpleCov::Formatter::HTMLFormatter
+  add_filter '/test/'
+  add_filter '/spec/'
+end
+
 $:.unshift(File.dirname(__FILE__) + '/../lib')
 
 require 'bundler/setup'
@@ -21,4 +34,6 @@ VCR.configure do |c|
                                  serialize_with: :filtered,
                                  match_requests_on: [:method, :path, :query, :body]
                                }
+  # ignore requests to CodeClimate
+  c.ignore_hosts 'codeclimate.com'
 end
