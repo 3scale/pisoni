@@ -22,7 +22,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'injectedlogger', '~> 0.0.13'
   s.add_dependency 'net-http-persistent'
 
-  s.add_development_dependency 'vcr', '~> 2.9.0'
   s.add_development_dependency 'rake'
 
   s.files         = `git ls-files`.split($/)
