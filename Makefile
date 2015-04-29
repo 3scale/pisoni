@@ -18,7 +18,7 @@ bash:
 	$(RUN) -t -i $(PROJECT) bash
 
 build: pull
-	docker build -t $(PROJECT) .
+	docker build -f Dockerfile.ci -t $(PROJECT) .
 
 clean:
 	- docker rm --force $(NAME)
