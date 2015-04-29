@@ -11,13 +11,10 @@ all: clean build test
 test:
 	$(RUN) --name $(NAME) $(PROJECT)
 
-pull:
-	- docker pull 3scale/docker:dev-2.1.5
-
 bash:
 	$(RUN) -t -i $(PROJECT) bash
 
-build: pull
+build:
 	docker build -f Dockerfile.ci -t $(PROJECT) .
 
 clean:
