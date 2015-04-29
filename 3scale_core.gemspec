@@ -9,10 +9,10 @@ Gem::Specification.new do |s|
   s.date = Date.today.to_s
 
   s.platform = Gem::Platform::RUBY
-  s.authors = `git log | git shortlog -nse --no-merges`.force_encoding('UTF-8').
-    split(/\n|\t/).lazy.each_slice(2).map(&:last).first 4
-  s.email = s.authors.lazy.select { |m| m =~ /\@3scale\.net>\z/ }.
-    map { |a| a.split.last }.first || s.authors.first.split.last
+
+  s.authors = ['Alejandro Martinez Ruiz']
+  s.email = %w[alex@3scale.net]
+
   s.homepage = 'http://www.3scale.net'
   s.summary = '3scale web service management system core libraries'
   s.description = 'This gem provides core libraries for 3scale systems.'
