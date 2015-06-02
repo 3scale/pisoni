@@ -9,6 +9,7 @@ require '3scale/core/metric'
 require '3scale/core/service'
 require '3scale/core/usage_limit'
 require '3scale/core/user'
+require '3scale/core/event'
 require '3scale/core/errors'
 
 module ThreeScale
