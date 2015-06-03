@@ -6,16 +6,12 @@ module ThreeScale
                  :default_user_plan_name, :version, :default_service
 
       class << self
-        def base_uri
-          '/internal/services'
-        end
-
         def load_by_id(service_id)
-          api_read({}, uri: "#{base_uri}/#{service_id}", rprefix: '')
+          api_read({}, uri: service_uri(service_id), rprefix: '')
         end
 
         def delete_by_id!(service_id)
-          api_delete({}, uri: "#{base_uri}/#{service_id}")
+          api_delete({}, uri: service_uri(service_id))
         rescue APIClient::APIError => e
           raise ServiceIsDefaultService, service_id if e.response.status == 400
           raise
@@ -23,7 +19,7 @@ module ThreeScale
 
         def save!(attributes)
           id = attributes.fetch(:id)
-          api_update(attributes, uri: "#{base_uri}/#{id}")
+          api_update(attributes, uri: service_uri(id))
         rescue APIClient::APIError => e
           raise ServiceRequiresDefaultUserPlan if e.response.status == 400
           raise
@@ -31,7 +27,7 @@ module ThreeScale
 
         def change_provider_key!(old_key, new_key)
           ret = api_do_put({ new_key: new_key },
-                     uri: "#{base_uri}/change_provider_key/#{old_key}",
+                     uri: "#{default_uri}change_provider_key/#{old_key}",
                      prefix: '')
           ret[:ok]
         rescue APIClient::APIError => e
@@ -46,6 +42,10 @@ module ThreeScale
         end
 
         private
+
+        def service_uri(id)
+          "#{default_uri}#{id}"
+        end
 
         def provider_key_exception(error, old_key, new_key)
           case error

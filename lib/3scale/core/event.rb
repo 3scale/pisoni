@@ -3,27 +3,24 @@ module ThreeScale
     class Event < APIClient::Resource
       attributes :id, :type, :timestamp, :object
 
-      def self.base_uri
-        '/internal/events'
-      end
-
-      def base_uri
-        self.class.base_uri
-      end
-
       def self.load_all
-        results = api_do_get({}, rprefix: :events, build: false, uri: "#{base_uri}/")
+        results = api_do_get({}, rprefix: :events)
         results[:attributes].map { |attrs| new attrs }
       end
 
       def self.delete(id)
-        api_delete({}, uri: "#{base_uri}/#{id}")
+        api_delete({}, uri: event_uri(id))
       end
 
       def self.delete_upto(id)
-        results = api_do_delete({ upto_id: id }, prefix: '', uri: "#{base_uri}/")
+        results = api_do_delete({ upto_id: id }, prefix: '')
         results[:attributes][:num_events]
       end
+
+      def self.event_uri(id)
+        "#{default_uri}#{id}"
+      end
+      private_class_method :event_uri
     end
   end
 end

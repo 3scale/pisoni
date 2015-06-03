@@ -5,9 +5,12 @@ module ThreeScale
 
       attributes :service_id, :plan_id, :metric_id, :value, *PERIODS
 
+      default_uri '/internal/services/'
+
       def self.base_uri(service_id, plan_id, metric_id, period)
-        "/internal/services/#{service_id}/plans/#{plan_id}/usagelimits/#{metric_id}/#{period}"
+        "#{default_uri}#{service_id}/plans/#{plan_id}/usagelimits/#{metric_id}/#{period}"
       end
+      private_class_method :base_uri
 
       def self.load_value(service_id, plan_id, metric_id, period)
         obj = api_read({}, uri: base_uri(service_id, plan_id, metric_id, period))
