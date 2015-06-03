@@ -3,32 +3,29 @@ module ThreeScale
     class Metric < APIClient::Resource
       attributes :service_id, :id, :parent_id, :name
 
-      def self.base_uri
-        '/internal/services'
-      end
+      default_uri '/internal/services/'
 
-      def base_uri
-        self.class.base_uri
+      def self.base_uri(service_id)
+        "#{default_uri}#{service_id}/metrics/"
       end
+      private_class_method :base_uri
+
+      def self.metric_uri(service_id, id)
+        "#{base_uri(service_id)}#{id}"
+      end
+      private_class_method :metric_uri
 
       def self.load(service_id, id)
-        api_read({}, uri: "#{base_uri}/#{service_id}/metrics/#{id}")
+        api_read({}, uri: metric_uri(service_id, id))
       end
 
       def self.save(attributes)
         service_id, id = attributes.fetch(:service_id), attributes.fetch(:id)
-        api_update attributes, uri: "#{base_uri}/#{service_id}/metrics/#{id}"
+        api_update attributes, uri: metric_uri(service_id, id)
       end
 
       def self.delete(service_id, id)
-        api_delete({}, uri: "#{base_uri}/#{service_id}/metrics/#{id}")
-      end
-
-      private
-
-      def self.load_metric_api(service_id, attr, uri)
-        ret = api_do_get({}, uri: "#{base_uri}/#{service_id}/metrics/#{uri}")
-        ret[:attributes][attr] if ret[:ok]
+        api_delete({}, uri: metric_uri(service_id, id))
       end
     end
   end

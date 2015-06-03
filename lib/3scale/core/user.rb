@@ -3,6 +3,19 @@ module ThreeScale
     class User < APIClient::Resource
       attributes :service_id, :username, :state, :plan_id, :plan_name, :version
 
+      default_uri '/internal/services/'
+
+      def self.base_uri(service_id, username)
+        "#{default_uri}#{service_id}/users/#{username}"
+      end
+      private_class_method :base_uri
+
+      def self.check_params(service_id, username)
+        raise UserRequiresUsername if username.nil?
+        raise UserRequiresServiceId if service_id.nil?
+      end
+      private_class_method :check_params
+
       def self.load(service_id, username)
         check_params service_id, username
         api_read({}, uri: base_uri(service_id, username))
@@ -29,18 +42,6 @@ module ThreeScale
         check_params service_id, username
         api_delete({}, uri: base_uri(service_id, username))
       end
-
-      private
-
-      def self.base_uri(service_id, username)
-        "/internal/services/#{service_id}/users/#{username}"
-      end
-
-      def self.check_params(service_id, username)
-        raise UserRequiresUsername if username.nil?
-        raise UserRequiresServiceId if service_id.nil?
-      end
-
     end
   end
 end
