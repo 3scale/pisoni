@@ -24,8 +24,8 @@ module ThreeScale
           end
 
           def default_uri(uri = nil)
-            return @default_uri ||= "/internal/#{self.to_s.split(':').last.downcase!}s" unless uri
-            @defalt_uri = uri
+            return @default_uri ||= "/internal/#{self.to_s.split(':').last.downcase!}s/" unless uri
+            @default_uri = uri
           end
 
           def default_http_error_exception(exception = nil)
