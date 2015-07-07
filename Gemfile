@@ -7,7 +7,7 @@ group :test do
   gem 'turn', '~> 0.9.7'
   gem 'minitest'
   # specify a backend version that no longer depends on us (>= 2.25.0)
-  gem '3scale_backend', '~> 2.35.0'
+  gem '3scale_backend', '~> 2.38.0'
   # codeclimate coverage reports
   gem "codeclimate-test-reporter", require: nil
 end
