@@ -6,7 +6,6 @@ unless ENV['NO_COVERAGE']
     formatter ENV['CODECLIMATE_REPO_TOKEN'] ?
       CodeClimate::TestReporter::Formatter :
       SimpleCov::Formatter::HTMLFormatter
-    add_filter '/test/'
     add_filter '/spec/'
   end
 end
@@ -17,10 +16,6 @@ require 'bundler/setup'
 require_relative 'vcr_filtered_serializer'
 
 Bundler.require(:default, :development, :test)
-
-class Test::Unit::TestCase
-  include ThreeScale::Core
-end
 
 VCR.configure do |c|
   c.cassette_library_dir = 'spec/fixtures/vcr_cassettes'
