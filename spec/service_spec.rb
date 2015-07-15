@@ -203,6 +203,14 @@ module ThreeScale
         end
       end
 
+      describe '.clear_log_bucket' do
+        it 'returns true' do
+          VCR.use_cassette "clearing log bucket" do
+            Service.clear_log_bucket(default_service_id).must_equal true
+          end
+        end
+      end
+
     end
   end
 end

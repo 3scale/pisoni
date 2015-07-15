@@ -54,6 +54,11 @@ module ThreeScale
           end
         end
 
+        def clear_log_bucket(id)
+          ret = api_do_delete({}, uri: "#{service_uri(id)}/logs_bucket", prefix: '')
+          ret[:ok]
+        end
+
         private
 
         def service_uri(id)
