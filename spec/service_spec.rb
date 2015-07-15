@@ -185,6 +185,32 @@ module ThreeScale
         end
       end
 
+      describe '.set_log_bucket' do
+        let(:bucket){ 'foobar' }
+
+        it 'returns true' do
+          VCR.use_cassette "setting log bucket as #{bucket}" do
+            Service.set_log_bucket(default_service_id, bucket).must_equal true
+          end
+        end
+
+        it 'raises exception when no bucket specified' do
+          VCR.use_cassette "setting log bucket as ''" do
+            lambda do
+              Service.set_log_bucket(default_service_id, '').must_equal false
+            end.must_raise InvalidBucket
+          end
+        end
+      end
+
+      describe '.clear_log_bucket' do
+        it 'returns true' do
+          VCR.use_cassette "clearing log bucket" do
+            Service.clear_log_bucket(default_service_id).must_equal true
+          end
+        end
+      end
+
     end
   end
 end

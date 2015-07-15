@@ -12,7 +12,7 @@ test:
 	$(RUN) --name $(NAME) $(PROJECT)
 
 bash:
-	$(RUN) -t -i $(PROJECT) bash
+	$(RUN) -t -i -v $(PROJECT_PATH):/tmp/core $(PROJECT) bash
 
 build:
 	docker build -f Dockerfile.ci -t $(PROJECT) .

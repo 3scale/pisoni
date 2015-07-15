@@ -85,6 +85,12 @@ module ThreeScale
       end
     end
 
+    class InvalidBucket < Error
+      def initialize
+        super %(Bucket is not valid, must be not nil nor empty)
+      end
+    end
+
     class ProviderKeyExists < Error
       def initialize(key)
         super %(Provider key="#{key}" already exists)
