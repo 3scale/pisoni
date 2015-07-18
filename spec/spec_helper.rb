@@ -1,5 +1,3 @@
-require 'minitest/autorun'
-
 unless ENV['NO_COVERAGE']
   require 'codeclimate-test-reporter'
   SimpleCov.start do
@@ -12,6 +10,7 @@ end
 
 $:.unshift(File.dirname(__FILE__) + '/../lib')
 
+require 'minitest/autorun'
 require 'bundler/setup'
 require_relative 'vcr_filtered_serializer'
 
@@ -32,4 +31,3 @@ VCR.configure do |c|
   # ignore requests to CodeClimate
   c.ignore_hosts 'codeclimate.com'
 end
-
