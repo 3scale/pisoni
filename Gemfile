@@ -6,7 +6,7 @@ gemspec
 group :test do
   gem 'turn', '~> 0.9.7'
   gem 'minitest'
-  gem '3scale_backend', '~> 2.39.0'
+  gem '3scale_backend', '~> 2.40.0'
   gem "codeclimate-test-reporter", require: nil
 end
 
