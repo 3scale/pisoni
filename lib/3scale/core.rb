@@ -13,6 +13,7 @@ require '3scale/core/user'
 require '3scale/core/event'
 require '3scale/core/alert_limit'
 require '3scale/core/errors'
+require '3scale/core/application_key'
 
 module ThreeScale
   module Core
