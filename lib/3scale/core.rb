@@ -1,4 +1,5 @@
 require 'json'
+require 'faraday'
 
 require '3scale/core/version'
 require '3scale/core/logger'
