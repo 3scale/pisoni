@@ -28,6 +28,10 @@ VCR.configure do |c|
                                  serialize_with: :filtered,
                                  match_requests_on: [:method, :path, :query, :body]
                                }
+  c.ignore_request do |request|
+    !(URI(request.uri).path =~ /\A\/internal\/events/)
+  end
+
   # ignore requests to CodeClimate
   c.ignore_hosts 'codeclimate.com'
 end

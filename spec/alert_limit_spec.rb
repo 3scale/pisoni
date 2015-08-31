@@ -7,19 +7,12 @@ module ThreeScale
           let(:service_id) { 100 }
           let(:values)     { [50, 100] }
           before do
-            VCR.use_cassette 'delete sample alert limit' do
-              values.map { |value| AlertLimit.delete(service_id, value) }
-            end
-
-            VCR.use_cassette 'save sample alert_limit' do
-              values.map { |value| AlertLimit.save(service_id, value) }
-            end
+            values.map { |value| AlertLimit.delete(service_id, value) }
+            values.map { |value| AlertLimit.save(service_id, value) }
           end
 
           it 'returns a list of alert limits' do
-            alert_limits = VCR.use_cassette 'load sample alert limits' do
-              AlertLimit.load_all(service_id)
-            end
+            alert_limits = AlertLimit.load_all(service_id)
 
             alert_limits.size.must_equal 2
             alert_limits.map(&:value).must_equal values
@@ -30,9 +23,7 @@ module ThreeScale
           let(:service_id) { 200 }
 
           it 'returns an empty list' do
-            VCR.use_cassette 'load sample missing alerts' do
-              AlertLimit.load_all(service_id)
-            end.must_equal []
+            AlertLimit.load_all(service_id).must_equal []
           end
         end
       end
@@ -42,15 +33,11 @@ module ThreeScale
         let(:value)      { 100 }
 
         before do
-          VCR.use_cassette 'delete sample alert limit' do
-            AlertLimit.delete(service_id, value)
-          end
+          AlertLimit.delete(service_id, value)
         end
 
         it 'returns a AlertLimit object' do
-          alert_limit = VCR.use_cassette 'save sample alert limit' do
-            AlertLimit.save(service_id, value)
-          end
+          alert_limit = AlertLimit.save(service_id, value)
 
           alert_limit.must_be_kind_of AlertLimit
           alert_limit.value.must_equal value
@@ -63,15 +50,11 @@ module ThreeScale
           let(:value)      { 50 }
 
           before do
-            VCR.use_cassette 'save sample alert_limit' do
-              AlertLimit.save(service_id, value)
-            end
+            AlertLimit.save(service_id, value)
           end
 
           it 'returns true' do
-            VCR.use_cassette 'delete sample alert limit' do
-              AlertLimit.delete(service_id, value)
-            end.must_equal true
+            AlertLimit.delete(service_id, value).must_equal true
           end
         end
 
@@ -80,9 +63,7 @@ module ThreeScale
           let(:value)      { 75  }
 
           it 'returns true' do
-            VCR.use_cassette 'delete missing sample alert limit' do
-              AlertLimit.delete(service_id, value)
-            end.must_equal false
+            AlertLimit.delete(service_id, value).must_equal false
           end
         end
       end

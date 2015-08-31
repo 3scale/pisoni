@@ -20,33 +20,22 @@ module ThreeScale
       let(:plan_name) { 'plan_for_panchos' }
 
       before do
-        VCR.use_cassette 'ensure we have a service available' do
-          Service.save! provider_key: provider_key,
-            id: service_id, default_service: true
-        end
-        VCR.use_cassette 'ensure we have a non-existent service id' do
-          Service.delete_by_id! nonexistent_service_id rescue nil
-        end
-        VCR.use_cassette 'ensure we have a non-existent username' do
-          User.delete! service_id, nonexistent_username
-        end
-        @user = VCR.use_cassette 'save sample user' do
-          User.save! service_id: service_id, username: username, state: state,
-            plan_id: plan_id, plan_name: plan_name
-        end
+        Service.save! provider_key: provider_key,
+                      id: service_id, default_service: true
+
+        Service.delete_by_id! nonexistent_service_id rescue nil
+        User.delete! service_id, nonexistent_username
+        @user = User.save! service_id: service_id, username: username, state: state,
+                           plan_id: plan_id, plan_name: plan_name
       end
 
       describe '.load' do
         it 'returns a User object' do
-          VCR.use_cassette 'user load' do
-            User.load(service_id, username)
-          end.class.must_equal User
+          User.load(service_id, username).class.must_equal User
         end
 
         it 'parses data from received JSON' do
-          user = VCR.use_cassette 'user load' do
-            User.load(service_id, username)
-          end
+          user = User.load(service_id, username)
 
           user.wont_be_nil
           user.service_id.must_equal service_id.to_s
@@ -68,23 +57,17 @@ module ThreeScale
         end
 
         it 'returns nil when a non-existent service id is used' do
-          VCR.use_cassette 'load with non-existent service id' do
-            User.load nonexistent_service_id, username
-          end.must_be_nil
+          User.load(nonexistent_service_id, username).must_be_nil
         end
 
         it 'returns nil when a non-existent user name is used' do
-          VCR.use_cassette 'load with non-existent user name' do
-            User.load service_id, nonexistent_username
-          end.must_be_nil
+           User.load(service_id, nonexistent_username).must_be_nil
         end
       end
 
       describe '.save!' do
         before do
-          VCR.use_cassette 'ensure we have a non-existent username' do
-            User.delete! service_id, nonexistent_username
-          end
+          User.delete! service_id, nonexistent_username
         end
 
         it 'returns a User object' do
@@ -117,42 +100,32 @@ module ThreeScale
 
         it 'raises when a non-existent service id is used' do
           lambda do
-            VCR.use_cassette 'save with non-existent service id' do
-              User.save! service_id: nonexistent_service_id, username: username,
-                plan_id: plan_id, plan_name: plan_name
-            end
+            User.save! service_id: nonexistent_service_id, username: username,
+                       plan_id: plan_id, plan_name: plan_name
           end.must_raise UserRequiresValidServiceId
         end
 
         it 'raises when plan_id is nil' do
           lambda do
-            VCR.use_cassette 'save with non-existent service id' do
-              User.save! service_id: service_id, username: username,
-                plan_id: nil, plan_name: plan_name
-            end
+            User.save! service_id: service_id, username: username,
+                       plan_id: nil, plan_name: plan_name
           end.must_raise UserRequiresDefinedPlan
         end
 
         it 'raises when plan_name is nil' do
           lambda do
-            VCR.use_cassette 'save with non-existent service id' do
-              User.save! service_id: service_id, username: username,
-                plan_id: plan_id, plan_name: nil
-            end
+            User.save! service_id: service_id, username: username,
+                       plan_id: plan_id, plan_name: nil
           end.must_raise UserRequiresDefinedPlan
         end
 
         it 'returns a new user when a non-existent user name is used' do
           nothing_raised do
-            VCR.use_cassette 'save with a non-existent user name' do
-              User.save! service_id: service_id, username: nonexistent_username,
-                plan_id: plan_id, plan_name: plan_name
-            end
+            User.save! service_id: service_id, username: nonexistent_username,
+                       plan_id: plan_id, plan_name: plan_name
           end.must_equal true
 
-          user = VCR.use_cassette 'load a previously non-existent user name' do
-            User.load service_id, nonexistent_username
-          end
+          user = User.load service_id, nonexistent_username
 
           user.wont_be_nil
           user.service_id.must_equal service_id.to_s
@@ -165,26 +138,19 @@ module ThreeScale
 
       describe '.delete!' do
         before do
-          VCR.use_cassette 'save sample user' do
-            User.save! service_id: service_id, username: username, state: state,
-              plan_id: plan_id, plan_name: plan_name
-          end
+          User.save! service_id: service_id, username: username, state: state,
+                     plan_id: plan_id, plan_name: plan_name
         end
 
         it 'deletes the user' do
           nothing_raised do
-            VCR.use_cassette 'delete sample user' do
-              User.delete! service_id, username
-            end
+            User.delete! service_id, username
           end.must_equal true
 
-          VCR.use_cassette 'save sample user' do
-            User.save! service_id: service_id, username: username, state: state,
-              plan_id: plan_id, plan_name: plan_name
-          end
+          User.save! service_id: service_id, username: username, state: state,
+                     plan_id: plan_id, plan_name: plan_name
         end
       end
-
     end
   end
 end
