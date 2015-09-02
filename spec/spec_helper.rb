@@ -1,4 +1,4 @@
-unless ENV['NO_COVERAGE']
+if ENV['COVERAGE'] && !ENV['COVERAGE'].empty?
   require 'codeclimate-test-reporter'
   SimpleCov.start do
     formatter ENV['CODECLIMATE_REPO_TOKEN'] ?
