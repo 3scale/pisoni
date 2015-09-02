@@ -1,0 +1,20 @@
+test:
+  build: .
+  volumes:
+    - .:/home/ruby/core
+  links:
+    - backend
+  command:
+    - "bundle"
+    - "exec"
+    - "rake"
+
+backend:
+  build: ../backend
+  volumes:
+    - ../backend/:/home/ruby/backend/
+  tty: true
+  expose:
+    - "3000"
+  command:
+    - "script/test_external"
