@@ -81,3 +81,33 @@ to `<core>/vendor/cache/3scale_backend-2.26.0.gem`.
 This way you don't need to set environment variables nor launch additional VMs,
 but it is more error-prone than just using the facilities in backend to let it
 listen for requests on its own VM and using the environment variable here.
+
+#### Update the version of this gem
+
+Modify the version number in lib/3scale/core/version.rb. For this instructions we are going to assume version 1.12.1
+
+Specify the version number in the commit message
+
+    $ git commit -m "core: release 1.12.1"
+
+Create a tag with the version number and a message. The first line of the message should be the version number
+
+    $ git tag -a v1.12.1 -m "v1.12.1"
+
+Push directly to master
+
+    $ git push origin master v1.12.1
+
+Build the gem
+
+    $ bundle exec rake build
+
+Apart from 'build', there are other tasks available. You can list them with:
+
+    $ bundle exec rake -T
+
+Push the new version of the gem to our repo
+
+    $ bundle exec gem inabox pkg/3scale_core-1.12.1.gem
+
+Introduce the host with the appropriate user and password like this: https://user:pass@host
