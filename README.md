@@ -41,6 +41,7 @@ From now on, all commands should be entered within the environment you just ente
 
 You can run both tests & specs using API responses cached with VCR:
 
+    $ bundle install
     $ bundle exec rake
 
 If you want to generate new ones (or responses changed), you need to have a
