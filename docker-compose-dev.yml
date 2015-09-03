@@ -8,6 +8,11 @@ test:
     - "bundle"
     - "exec"
     - "rake"
+  entrypoint:
+    "script/wait_for_start"
+  environment:
+    - WAIT_FOR=backend
+    - WAIT_TIMEOUT=10
 
 backend:
   build: ../backend

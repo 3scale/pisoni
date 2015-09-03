@@ -6,7 +6,11 @@ test:
     - "bundle"
     - "exec"
     - "rake"
+  entrypoint:
+    "script/wait_for_start"
   environment:
+    - WAIT_FOR=backend
+    - WAIT_TIMEOUT=30
     - CODECLIMATE_REPO_TOKEN="xxxxx"
 
 backend:
