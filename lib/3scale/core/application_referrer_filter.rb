@@ -13,21 +13,17 @@ module ThreeScale
         results[:attributes]
       end
 
-      def self.create service_id, application_id, value
-        api_create(
+      def self.save service_id, application_id, value
+        api_save(
           {referrer_filter: value},
           uri: base_uri(service_id, application_id),
           prefix: '',
         )
       end
 
-      def self.remove service_id, application_id, value
+      def self.delete service_id, application_id, value
         encoded_value = Base64.urlsafe_encode64(value)
-        api_do_delete(
-          {},
-          uri: base_uri(service_id, application_id) + "/#{encoded_value}",
-          prefix: ''
-        )
+        api_delete({}, uri: base_uri(service_id, application_id) + "/#{encoded_value}")
       end
 
       def self.base_uri service_id, application_id
@@ -38,4 +34,3 @@ module ThreeScale
     end
   end
 end
-

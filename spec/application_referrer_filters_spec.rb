@@ -15,15 +15,11 @@ module ThreeScale
           let(:values)     { ["foo", "bar"] }
 
           before do
-            VCR.use_cassette '[referrer filters] create multiple filters' do
-              values.map { |value| ApplicationReferrerFilter.create service_id, app_id, value }
-            end
+            values.map { |value| ApplicationReferrerFilter.save service_id, app_id, value }
           end
 
           it 'returns a sorted list of filters' do
-            filters = VCR.use_cassette '[referrer filters] get filters' do
-              ApplicationReferrerFilter.load_all service_id, app_id
-            end
+            filters = ApplicationReferrerFilter.load_all service_id, app_id
 
             filters.must_equal values.sort
           end
@@ -36,11 +32,11 @@ module ThreeScale
         end
       end
 
-      describe '.create' do
+      describe '.save' do
         let(:value) { "doopah" }
 
         it 'returns an ApplicationReferrerFilter object' do
-          filter = ApplicationReferrerFilter.create(service_id, app_id, value)
+          filter = ApplicationReferrerFilter.save(service_id, app_id, value)
 
           filter.must_be_kind_of ApplicationReferrerFilter
           filter = ApplicationReferrerFilter.load_all(service_id, app_id).must_equal(['doopah'])
@@ -51,7 +47,7 @@ module ThreeScale
 
       def cleanup_application_fixtures
         ['foo', 'bar', 'doopah'].map do |filter|
-          ApplicationReferrerFilter.remove 10, 100, filter
+          ApplicationReferrerFilter.delete 10, 100, filter
         end
         Application.delete 10, 100
       end
