@@ -1,3 +1,5 @@
+require 'base64'
+
 module ThreeScale
   module Core
     class ApplicationReferrerFilter < APIClient::Resource
