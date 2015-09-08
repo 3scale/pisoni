@@ -1,0 +1,21 @@
+test:
+  build: .
+  links:
+    - backend
+  command:
+    - "bundle"
+    - "exec"
+    - "rake"
+  entrypoint:
+    "script/wait_for_start"
+  environment:
+    - WAIT_FOR=backend
+    - WAIT_TIMEOUT=30
+    - CODECLIMATE_REPO_TOKEN="xxxxx"
+
+backend:
+  image: 3scale/backend:latest
+  expose:
+    - "3000"
+  command:
+    - "script/test_external"

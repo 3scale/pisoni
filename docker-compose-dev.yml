@@ -1,0 +1,25 @@
+test:
+  build: .
+  volumes:
+    - .:/home/ruby/core
+  links:
+    - backend
+  command:
+    - "bundle"
+    - "exec"
+    - "rake"
+  entrypoint:
+    "script/wait_for_start"
+  environment:
+    - WAIT_FOR=backend
+    - WAIT_TIMEOUT=10
+
+backend:
+  build: ../backend
+  volumes:
+    - ../backend/:/home/ruby/backend/
+  tty: true
+  expose:
+    - "3000"
+  command:
+    - "script/test_external"

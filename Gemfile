@@ -1,12 +1,10 @@
-source "http://rubygems.org"
-source 'https://localhost'
+source "https://rubygems.org"
 
 gemspec
 
 group :test do
   gem 'turn', '~> 0.9.7'
   gem 'minitest'
-  gem '3scale_backend', '~> 2.40.0'
   gem "codeclimate-test-reporter", require: nil
 end
 
