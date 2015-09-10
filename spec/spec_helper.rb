@@ -16,6 +16,8 @@ require_relative 'vcr_filtered_serializer'
 
 Bundler.require(:default, :development, :test)
 
+SERVICE_ID_IN_VCR = '1111'
+
 VCR.configure do |c|
   c.cassette_library_dir = 'spec/fixtures/vcr_cassettes'
   c.hook_into :faraday
@@ -27,7 +29,10 @@ VCR.configure do |c|
                                  match_requests_on: [:method, :path, :query, :body]
                                }
   c.ignore_request do |request|
-    !(URI(request.uri).path =~ /\A\/internal\/events/)
+    events_uri_regex = /\A\/internal\/events/
+    errors_uri_regex = /\/internal\/services\/#{SERVICE_ID_IN_VCR}\/errors\//
+    !((URI(request.uri).path =~ events_uri_regex) ||
+        (URI(request.uri).path =~ errors_uri_regex))
   end
 
   # ignore requests to CodeClimate
