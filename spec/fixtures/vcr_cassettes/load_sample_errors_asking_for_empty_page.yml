@@ -1,0 +1,36 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://localhost:3001/internal/services/1111/errors/
+    body:
+      encoding: UTF-8
+      string: '{"page":2,"per_page":4}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic bXVsdGl0ZW5hbnQ6NlpvWmF6RHQ3aFVZTWtSdWZRcE8=
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      content-type:
+      - application/json
+      content-length:
+      - '40'
+      x-content-type-options:
+      - nosniff
+      connection:
+      - keep-alive
+      server:
+      - VCRFilteredSerializer
+    body:
+      encoding: UTF-8
+      string: '{"status":"found","errors":[],"count":4}'
+    http_version: 
+  recorded_at: Wed, 10 Sep 1980 15:00:00 GMT
+recorded_with: VCR 2.9.3
