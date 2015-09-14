@@ -5,7 +5,7 @@ COMPOSE_VERSION = 1.4.0
 
 .PHONY: test
 
-all: clean build test
+all: clean pull build test
 
 test: compose
 	$(COMPOSE_CI) run --rm -e COVERAGE=$(COVERAGE) test
@@ -15,6 +15,9 @@ bash: compose
 
 build: compose
 	$(COMPOSE_CI) build
+
+pull: compose
+	$(COMPOSE_CI) pull
 
 clean: compose
 	- $(COMPOSE_CI) stop

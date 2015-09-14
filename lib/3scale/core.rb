@@ -15,6 +15,7 @@ require '3scale/core/alert_limit'
 require '3scale/core/errors'
 require '3scale/core/application_key'
 require '3scale/core/application_referrer_filter'
+require '3scale/core/service_error'
 
 module ThreeScale
   module Core
