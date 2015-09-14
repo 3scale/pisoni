@@ -108,5 +108,11 @@ module ThreeScale
         super %(UsageLimit invalid periods #{periods})
       end
     end
+
+    class InvalidPerPage < Error
+      def initialize
+        super %(per_page is not valid, must be positive)
+      end
+    end
   end
 end
