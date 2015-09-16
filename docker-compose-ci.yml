@@ -15,6 +15,7 @@ test:
 
 backend:
   image: 3scale/backend:latest
+  user: ruby
   expose:
     - "3000"
   command:

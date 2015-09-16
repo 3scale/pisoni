@@ -16,6 +16,7 @@ test:
 
 backend:
   build: ../backend
+  user: ruby
   volumes:
     - ../backend/:/home/ruby/backend/
   tty: true
