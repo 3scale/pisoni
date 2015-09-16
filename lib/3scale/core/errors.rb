@@ -114,5 +114,11 @@ module ThreeScale
         super %(per_page is not valid, must be positive)
       end
     end
+
+    class ServiceNotFound < Error
+      def initialize(id)
+        super %(service with id="#{id}" does not exist)
+      end
+    end
   end
 end
