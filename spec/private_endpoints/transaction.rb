@@ -6,7 +6,7 @@ module PrivateEndpoints
                    prefix: :transactions })
     end
 
-    def delete(service_id)
+    def delete_all(service_id)
       api_delete({}, uri: transactions_uri(service_id))
     end
   end

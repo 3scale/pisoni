@@ -25,7 +25,7 @@ module ThreeScale
         end
       end
 
-      def self.delete(service_id)
+      def self.delete_all(service_id)
         api_delete({}, uri: service_errors_uri(service_id))
       end
     end
