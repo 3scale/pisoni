@@ -18,7 +18,7 @@ module ThreeScale
         before do
           Service.delete_by_id!(service_id)
           Service.save!(provider_key: 'foo', id: service_id)
-          ServiceError.delete(service_id)
+          ServiceError.delete_all(service_id)
           ServiceError.save(service_id, error_messages)
         end
 
@@ -94,16 +94,16 @@ module ThreeScale
         end
       end
 
-      describe '.delete' do
+      describe '.delete_all' do
         before do
           Service.delete_by_id!(service_id)
           Service.save!(provider_key: 'foo', id: service_id)
-          ServiceError.delete(service_id)
+          ServiceError.delete_all(service_id)
         end
 
         describe 'with an existing service' do
           it 'returns true' do
-            ServiceError.delete(service_id).must_equal true
+            ServiceError.delete_all(service_id).must_equal true
           end
 
           it 'deletes the errors' do
@@ -116,7 +116,7 @@ module ThreeScale
 
         describe 'with a non-existing service' do
           it 'returns false' do
-            ServiceError.delete(non_existing_service_id).must_equal false
+            ServiceError.delete_all(non_existing_service_id).must_equal false
           end
         end
       end

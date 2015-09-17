@@ -14,7 +14,7 @@ module ThreeScale
         let(:non_existing_service_id) { service_id.to_i.succ.to_s }
 
         before do
-          Transaction.delete(service_id)
+          Transaction.delete_all(service_id)
         end
 
         describe 'when there are transactions' do
