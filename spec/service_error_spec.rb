@@ -50,7 +50,9 @@ module ThreeScale
             service_errors.total.must_equal error_messages.size
 
             service_errors[0].message.must_equal first_err_in_page
+            service_errors[0].timestamp.must_be_instance_of Time
             service_errors[1].message.must_equal second_err_in_page
+            service_errors[1].timestamp.must_be_instance_of Time
           end
         end
 
@@ -90,6 +92,7 @@ module ThreeScale
             service_errors.total.must_equal error_messages.size
 
             service_errors[0].message.must_equal oldest_error
+            service_errors[0].timestamp.must_be_instance_of Time
           end
         end
       end
