@@ -39,7 +39,7 @@ From now on, all commands should be entered within the environment you just ente
 
 ### Running tests
 
-You can run both tests & specs using API responses cached with VCR:
+You can run both tests & specs with:
 
     $ bundle install
     $ bundle exec rake
@@ -61,14 +61,6 @@ point the tests to your running backend instance:
     $ THREESCALE_CORE_INTERNAL_API=http://172.17.42.1:8081/internal bundle exec rake ci
 
 > Note: the external IP address depends on the provider. Docker uses `172.17.42.1` while VirtualBox uses `10.0.2.2`.
-
-#### VCR and modified cassettes
-
-Note that sometimes, when you run a full CI test, the cassettes will contain some
-differences even if nothing changed in the tests or the API. This is due to VCR
-adding what it thinks are different responses to the same requests. If you take a
-closer look, you'll see VCR just switched order between existing pairs of requests
-and responses.
 
 #### Setting up the environment for testing
 
