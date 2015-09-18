@@ -27,7 +27,7 @@ VCR.configure do |c|
                                  match_requests_on: [:method, :path, :query, :body]
                                }
   c.ignore_request do |request|
-    !(URI(request.uri).path =~ /\A\/internal\/events/)
+    (URI(request.uri).path =~ /.*/)
   end
 
   # ignore requests to CodeClimate
