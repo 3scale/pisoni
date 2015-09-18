@@ -16,14 +16,6 @@ module ThreeScale
         Event.delete_upto(last_event.id) if last_event
       end
 
-      # There are tests that do not delete all the events.
-      # We need to define this 'after' in case the last test we execute
-      # is one of those.
-      after do
-        last_event = Event.load_all.last
-        Event.delete_upto(last_event.id) if last_event
-      end
-
       describe '.load_all' do
         before do
           Event.save(example_events)
@@ -35,15 +27,15 @@ module ThreeScale
 
           events[0].type.must_equal example_events[0][:type]
           events[0].object.must_equal example_events[0][:object]
-          events[0].timestamp.wont_be_nil
+          events[0].timestamp.must_be_instance_of Time
 
           events[1].type.must_equal example_events[1][:type]
           events[1].object.must_equal example_events[1][:object]
-          events[1].timestamp.wont_be_nil
+          events[1].timestamp.must_be_instance_of Time
 
           events[2].type.must_equal example_events[2][:type]
           events[2].object.must_equal example_events[2][:object]
-          events[2].timestamp.wont_be_nil
+          events[2].timestamp.must_be_instance_of Time
         end
       end
 
