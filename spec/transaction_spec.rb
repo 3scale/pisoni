@@ -43,12 +43,12 @@ module ThreeScale
             latest_transaction = transactions[0]
             latest_transaction.application_id.must_equal test_transactions[1][:application_id]
             latest_transaction.usage.must_equal test_transactions[1][:usage]
-            latest_transaction.timestamp.must_equal test_transactions[1][:timestamp]
+            latest_transaction.timestamp.must_equal second_transaction_time
 
             previous_transaction = transactions[1]
             previous_transaction.application_id.must_equal test_transactions[0][:application_id]
             previous_transaction.usage.must_equal test_transactions[0][:usage]
-            previous_transaction.timestamp.must_equal test_transactions[0][:timestamp]
+            previous_transaction.timestamp.must_equal first_transaction_time
           end
         end
 
