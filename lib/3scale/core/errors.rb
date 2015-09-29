@@ -120,5 +120,11 @@ module ThreeScale
         super %(service with id="#{id}" does not exist)
       end
     end
+
+    class ApplicationNotFound < Error
+      def initialize(id)
+        super %(application with id="#{id}" does not exist)
+      end
+    end
   end
 end

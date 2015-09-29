@@ -17,6 +17,7 @@ require '3scale/core/application_key'
 require '3scale/core/application_referrer_filter'
 require '3scale/core/service_error'
 require '3scale/core/transaction'
+require '3scale/core/utilization'
 
 module ThreeScale
   module Core
