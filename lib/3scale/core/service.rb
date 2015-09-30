@@ -11,30 +11,31 @@ module ThreeScale
         end
 
         def delete_by_id!(service_id)
-          api_delete({}, uri: service_uri(service_id))
-        rescue APIClient::APIError => e
-          raise ServiceIsDefaultService, service_id if e.response.status == 400
-          raise
+          api_delete({}, uri: service_uri(service_id)) do |response, _|
+            raise ServiceIsDefaultService, service_id if response.status == 400
+          end
         end
 
         def save!(attributes)
           id = attributes.fetch(:id)
-          api_update(attributes, uri: service_uri(id))
-        rescue APIClient::APIError => e
-          raise ServiceRequiresDefaultUserPlan if e.response.status == 400
-          raise
+          api_update(attributes, uri: service_uri(id)) do |response, _|
+            raise ServiceRequiresDefaultUserPlan if response.status == 400
+            [true, nil]
+          end
         end
 
         def change_provider_key!(old_key, new_key)
           ret = api_do_put({ new_key: new_key },
-                     uri: "#{default_uri}change_provider_key/#{old_key}",
-                     prefix: '')
+                           uri: "#{default_uri}change_provider_key/#{old_key}",
+                           prefix: '') do |response, _|
+            if response.status == 400
+              error_msg = parse_json(response.body)[:error]
+              exception = provider_key_exception(error_msg, old_key, new_key)
+              raise exception if exception
+            end
+            [true, nil]
+          end
           ret[:ok]
-        rescue APIClient::APIError => e
-          ex = if e.response.status == 400 && e.attributes[:error]
-                 provider_key_exception(e.attributes[:error], old_key, new_key)
-               end
-          raise ex || e
         end
 
         def make_default(service_id)
@@ -43,15 +44,15 @@ module ThreeScale
 
         def set_log_bucket(id, bucket)
           ret = api_do_put({ bucket: bucket },
-            uri: "#{service_uri(id)}/logs_bucket",
-            prefix: '')
-          ret[:ok]
-        rescue APIClient::APIError => e
-          if e.response.status == 400 && e.attributes[:error] == 'bucket is missing'
-            raise InvalidBucket.new
-          else
-            raise e
+                           uri: "#{service_uri(id)}/logs_bucket",
+                           prefix: '') do |response, _|
+            error_msg = parse_json(response.body)[:error]
+            if response.status == 400 && error_msg == 'bucket is missing'
+              raise InvalidBucket.new
+            end
+            [true, nil]
           end
+          ret[:ok]
         end
 
         def clear_log_bucket(id)

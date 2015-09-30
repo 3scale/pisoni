@@ -14,15 +14,16 @@ module ThreeScale
         result = api_do_get(options,
                             { uri: service_errors_uri(service_id),
                               prefix: '',
-                              rprefix: :errors })
+                              rprefix: :errors }) do |response, _|
+          error_msg = parse_json(response.body)[:error]
+          if response.status == 400 && error_msg == 'per_page needs to be > 0'
+            raise InvalidPerPage.new
+          end
+          [true, nil]
+        end
+
         APIClient::Collection.new(result[:attributes].map { |attrs| new attrs },
                                   parse_json(result[:response].body)[:count])
-      rescue APIClient::APIError => e
-        if e.response.status == 400 && e.attributes[:error] == 'per_page needs to be > 0'
-          raise InvalidPerPage.new
-        else
-          raise e
-        end
       end
 
       def self.delete_all(service_id)

@@ -24,18 +24,19 @@ module ThreeScale
       def self.save!(attributes)
         service_id, username = attributes[:service_id], attributes[:username]
         check_params service_id, username
-        api_update attributes, uri: base_uri(service_id, username)
-      rescue APIClient::APIError => e
-        if e.response.status == 400
-          errmsg = e.attributes[:error]
-          if errmsg =~ /requires a valid service/
-            raise UserRequiresValidServiceId.new(service_id)
-          elsif errmsg =~ /requires a defined plan/
-            plan_id, plan_name = attributes[:plan_id], attributes[:plan_name]
-            raise UserRequiresDefinedPlan.new(plan_id, plan_name)
+        api_update(attributes,
+                   uri: base_uri(service_id, username)) do |response, _|
+          if response.status == 400
+            error_msg = parse_json(response.body)[:error]
+            if error_msg =~ /requires a valid service/
+              raise UserRequiresValidServiceId.new(service_id)
+            elsif error_msg =~ /requires a defined plan/
+              raise UserRequiresDefinedPlan.new(attributes[:plan_id],
+                                                attributes[:plan_name])
+            end
           end
+          [true, nil]
         end
-        raise e
       end
 
       def self.delete!(service_id, username)
