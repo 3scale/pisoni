@@ -27,10 +27,9 @@ module ThreeScale
         def change_provider_key!(old_key, new_key)
           ret = api_do_put({ new_key: new_key },
                            uri: "#{default_uri}change_provider_key/#{old_key}",
-                           prefix: '') do |response, _|
+                           prefix: '') do |response, attrs|
             if response.status == 400
-              error_msg = parse_json(response.body)[:error]
-              exception = provider_key_exception(error_msg, old_key, new_key)
+              exception = provider_key_exception(attrs[:error], old_key, new_key)
               raise exception if exception
             end
             [true, nil]
@@ -45,9 +44,8 @@ module ThreeScale
         def set_log_bucket(id, bucket)
           ret = api_do_put({ bucket: bucket },
                            uri: "#{service_uri(id)}/logs_bucket",
-                           prefix: '') do |response, _|
-            error_msg = parse_json(response.body)[:error]
-            if response.status == 400 && error_msg == 'bucket is missing'
+                           prefix: '') do |response, attrs|
+            if response.status == 400 && attrs[:error] == 'bucket is missing'
               raise InvalidBucket.new
             end
             [true, nil]
