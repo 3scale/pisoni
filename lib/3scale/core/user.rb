@@ -25,16 +25,16 @@ module ThreeScale
         service_id, username = attributes[:service_id], attributes[:username]
         check_params service_id, username
         api_update(attributes,
-                   uri: base_uri(service_id, username)) do |response, attrs|
-          if response.status == 400
-            if attrs[:error] =~ /requires a valid service/
+                   uri: base_uri(service_id, username)) do |result|
+          if result[:response].status == 400
+            if result[:response_json][:error] =~ /requires a valid service/
               raise UserRequiresValidServiceId.new(service_id)
-            elsif attrs[:error] =~ /requires a defined plan/
+            elsif result[:response_json][:error] =~ /requires a defined plan/
               raise UserRequiresDefinedPlan.new(attributes[:plan_id],
                                                 attributes[:plan_name])
             end
           end
-          [true, nil]
+          true
         end
       end
 

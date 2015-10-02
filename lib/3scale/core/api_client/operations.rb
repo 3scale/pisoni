@@ -90,8 +90,8 @@ module ThreeScale
           end
 
           def filter_404
-            @filter_404_proc ||= proc do |response, _|
-              response.status != 404
+            @filter_404_proc ||= proc do |result|
+              result[:response].status != 404
             end
           end
           private :filter_404
@@ -215,11 +215,11 @@ module ThreeScale
             else
               # something went wrong. let's either let the user fix it, and ask him to provide us
               # with directions returned from block or just use :raise
-              do_raise, ret[:object] = if block_given?
-                                         yield(response, response_json)
-                                       else
-                                         [options.fetch(:raise, true), nil]
-                                       end
+              do_raise = if block_given?
+                           yield(ret)
+                         else
+                           [options.fetch(:raise, true), nil]
+                         end
               raise APIError.new(method, uri, response, response_json) if do_raise
             end
 

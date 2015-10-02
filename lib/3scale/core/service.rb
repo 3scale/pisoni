@@ -18,28 +18,33 @@ module ThreeScale
         end
 
         def delete_by_id!(service_id)
-          api_delete({}, uri: service_uri(service_id)) do |response, _|
-            raise ServiceIsDefaultService, service_id if response.status == 400
+          api_delete({}, uri: service_uri(service_id)) do |result|
+            if result[:response].status == 400
+              raise ServiceIsDefaultService, service_id
+            end
           end
         end
 
         def save!(attributes)
           id = attributes.fetch(:id)
-          api_update(attributes, uri: service_uri(id)) do |response, _|
-            raise ServiceRequiresDefaultUserPlan if response.status == 400
-            [true, nil]
+          api_update(attributes, uri: service_uri(id)) do |result|
+            if result[:response].status == 400
+              raise ServiceRequiresDefaultUserPlan
+            end
+            true
           end
         end
 
         def change_provider_key!(old_key, new_key)
           ret = api_do_put({ new_key: new_key },
                            uri: "#{default_uri}change_provider_key/#{old_key}",
-                           prefix: '') do |response, attrs|
-            if response.status == 400
-              exception = provider_key_exception(attrs[:error], old_key, new_key)
+                           prefix: '') do |result|
+            if result[:response].status == 400
+              exception = provider_key_exception(
+                  result[:response_json][:error], old_key, new_key)
               raise exception if exception
             end
-            [true, nil]
+            true
           end
           ret[:ok]
         end
@@ -51,11 +56,12 @@ module ThreeScale
         def set_log_bucket(id, bucket)
           ret = api_do_put({ bucket: bucket },
                            uri: "#{service_uri(id)}/logs_bucket",
-                           prefix: '') do |response, attrs|
-            if response.status == 400 && attrs[:error] == 'bucket is missing'
+                           prefix: '') do |result|
+            if result[:response].status == 400 &&
+                result[:response_json][:error] == 'bucket is missing'
               raise InvalidBucket.new
             end
-            [true, nil]
+            true
           end
           ret[:ok]
         end

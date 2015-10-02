@@ -12,10 +12,12 @@ module ThreeScale
 
       def self.load_all(service_id)
         result = api_do_get({}, { uri: transactions_uri(service_id),
-                                  rprefix: :transactions })  do |response, attrs|
-          if response.status == 404 && attrs[:error] == 'service not found'
+                                  rprefix: :transactions })  do |result|
+          if result[:response].status == 404 &&
+              result[:response_json][:error] == 'service not found'
             raise ServiceNotFound.new(service_id)
           end
+          true
         end
 
         APIClient::Collection.new(result[:attributes].map { |attrs| new attrs })
