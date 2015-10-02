@@ -7,34 +7,46 @@ module ThreeScale
 
       class << self
         def load_by_id(service_id)
-          api_read({}, uri: service_uri(service_id), rprefix: '')
+          # Backend response is a bit different than in other cases.
+          # The response contains directly the attributes of the service like:
+          # { :provider_key => 'X', :id => 'Y', ... }.
+          # In the rest of the cases backend returns the object with a prefix:
+          # { :service => { :provider_key => 'X', :id => 'Y', ... } }
+          response_json = api_do_get(
+              {}, uri: service_uri(service_id), rprefix: '')[:response_json]
+          response_json[:error] ? nil : new(response_json)
         end
 
         def delete_by_id!(service_id)
-          api_delete({}, uri: service_uri(service_id))
-        rescue APIClient::APIError => e
-          raise ServiceIsDefaultService, service_id if e.response.status == 400
-          raise
+          api_delete({}, uri: service_uri(service_id)) do |result|
+            if result[:response].status == 400
+              raise ServiceIsDefaultService, service_id
+            end
+          end
         end
 
         def save!(attributes)
           id = attributes.fetch(:id)
-          api_update(attributes, uri: service_uri(id))
-        rescue APIClient::APIError => e
-          raise ServiceRequiresDefaultUserPlan if e.response.status == 400
-          raise
+          api_update(attributes, uri: service_uri(id)) do |result|
+            if result[:response].status == 400
+              raise ServiceRequiresDefaultUserPlan
+            end
+            true
+          end
         end
 
         def change_provider_key!(old_key, new_key)
           ret = api_do_put({ new_key: new_key },
-                     uri: "#{default_uri}change_provider_key/#{old_key}",
-                     prefix: '')
+                           uri: "#{default_uri}change_provider_key/#{old_key}",
+                           prefix: '') do |result|
+            if result[:response].status == 400
+              exception = provider_key_exception(
+                  result[:response_json][:error], old_key, new_key)
+              raise exception if exception
+            end
+            true
+          end
           ret[:ok]
-        rescue APIClient::APIError => e
-          ex = if e.response.status == 400 && e.attributes[:error]
-                 provider_key_exception(e.attributes[:error], old_key, new_key)
-               end
-          raise ex || e
         end
 
         def make_default(service_id)
@@ -43,15 +55,15 @@ module ThreeScale
 
         def set_log_bucket(id, bucket)
           ret = api_do_put({ bucket: bucket },
-            uri: "#{service_uri(id)}/logs_bucket",
-            prefix: '')
-          ret[:ok]
-        rescue APIClient::APIError => e
-          if e.response.status == 400 && e.attributes[:error] == 'bucket is missing'
-            raise InvalidBucket.new
-          else
-            raise e
+                           uri: "#{service_uri(id)}/logs_bucket",
+                           prefix: '') do |result|
+            if result[:response].status == 400 &&
+                result[:response_json][:error] == 'bucket is missing'
+              raise InvalidBucket.new
+            end
+            true
           end
+          ret[:ok]
         end
 
         def clear_log_bucket(id)

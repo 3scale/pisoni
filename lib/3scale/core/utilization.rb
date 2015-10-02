@@ -13,9 +13,9 @@ module ThreeScale
       def self.load(service_id, app_id)
         result = api_do_get({},
                             uri: utilization_uri(service_id, app_id),
-                            rprefix: :utilization) do |response, _|
-          if response.status == 404
-            case parse_json(response.body)[:error]
+                            rprefix: :utilization) do |result|
+          if result[:response].status == 404
+            case result[:response_json][:error]
               when 'service not found'
                 raise ServiceNotFound.new(service_id)
               when 'application not found'
@@ -24,7 +24,7 @@ module ThreeScale
                 raise Error.new('Unknown error')
             end
           end
-          [true, nil] # error != 404, raise APIError
+          true
         end
 
         usage_reports = result[:attributes].map { |attrs| new attrs }

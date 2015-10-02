@@ -90,8 +90,8 @@ module ThreeScale
           end
 
           def filter_404
-            @filter_404_proc ||= proc do |response, _|
-              response.status != 404
+            @filter_404_proc ||= proc do |result|
+              result[:response].status != 404
             end
           end
           private :filter_404
@@ -168,6 +168,7 @@ module ThreeScale
           # returns:
           #   a hash consisting of:
           #     :response - http response
+          #     :response_json - http response parsed JSON
           #     :ok - whether the response code was ok when related to the http method
           #     :object - nil or the object created if applicable
           #     :attributes - JSON parsed attributes of the response's body
@@ -187,24 +188,24 @@ module ThreeScale
 
             ok = status_ok? method, uri, response
 
-            attributes = begin
-                           api_parse_json(response)
-                         rescue JSONError => e
-                           logger.error do
-                             "#{api_response_inspect(method, uri, response, '', after, before)} - #{e.message}"
-                           end
-                           raise e
-                         end
+            response_json = begin
+              api_parse_json(response)
+            rescue JSONError => e
+              logger.error do
+                "#{api_response_inspect(method, uri, response, '', after, before)} - #{e.message}"
+              end
+              raise e
+            end
 
-            ret = { response: response, ok: ok }
+            ret = { response: response, response_json: response_json, ok: ok }
 
             logger.debug do
-              api_response_inspect(method, uri, response, attributes, after, before)
+              api_response_inspect(method, uri, response, response_json, after, before)
             end
 
             if ok
               prefix = options.fetch(:rprefix, prefix)
-              attributes = attributes.fetch(prefix, nil) unless prefix.empty?
+              attributes = response_json.fetch(prefix, nil) unless prefix.empty?
 
               ret[:object] = if attributes and options[:build]
                                new attributes
@@ -214,14 +215,17 @@ module ThreeScale
             else
               # something went wrong. let's either let the user fix it, and ask him to provide us
               # with directions returned from block or just use :raise
-              do_raise, ret[:object] = block_given? ? yield(response, attributes) : [options.fetch(:raise, true), nil]
-              raise APIError.new(method, uri, response, attributes) if do_raise
+              do_raise = if block_given?
+                           yield(ret)
+                         else
+                           [options.fetch(:raise, true), nil]
+                         end
+              raise APIError.new(method, uri, response, response_json) if do_raise
             end
 
             ret[:attributes] = attributes
             ret
           end
-
         end
       end
     end
