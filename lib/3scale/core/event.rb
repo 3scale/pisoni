@@ -14,7 +14,7 @@ module ThreeScale
 
       def self.delete_upto(id)
         results = api_do_delete({ upto_id: id }, prefix: '')
-        results[:attributes][:num_events]
+        results[:response_json][:num_events]
       end
 
       def self.event_uri(id)

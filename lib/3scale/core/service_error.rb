@@ -22,7 +22,7 @@ module ThreeScale
         end
 
         APIClient::Collection.new(result[:attributes].map { |attrs| new attrs },
-                                  parse_json(result[:response].body)[:count])
+                                  result[:response_json][:count])
       end
 
       def self.delete_all(service_id)
