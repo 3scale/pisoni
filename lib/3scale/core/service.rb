@@ -7,7 +7,14 @@ module ThreeScale
 
       class << self
         def load_by_id(service_id)
-          api_read({}, uri: service_uri(service_id), rprefix: '')
+          # Backend response is a bit different than in other cases.
+          # The response contains directly the attributes of the service like:
+          # { :provider_key => 'X', :id => 'Y', ... }.
+          # In the rest of the cases backend returns the object with a prefix:
+          # { :service => { :provider_key => 'X', :id => 'Y', ... } }
+          response_json = api_do_get(
+              {}, uri: service_uri(service_id), rprefix: '')[:response_json]
+          response_json[:error] ? nil : new(response_json)
         end
 
         def delete_by_id!(service_id)
