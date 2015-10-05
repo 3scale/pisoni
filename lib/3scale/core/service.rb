@@ -7,13 +7,28 @@ module ThreeScale
 
       class << self
         def load_by_id(service_id)
-          # Backend response is a bit different than in other cases.
-          # The response contains directly the attributes of the service like:
-          # { :provider_key => 'X', :id => 'Y', ... }.
-          # In the rest of the cases backend returns the object with a prefix:
-          # { :service => { :provider_key => 'X', :id => 'Y', ... } }
-          response_json = api_do_get(
-              {}, uri: service_uri(service_id), rprefix: '')[:response_json]
+          # This function needs to be compatible with two versions of backend.
+          # The new one returns the service in a hash and we need to use a
+          # prefix to extract it. In the old version, the service was returned
+          # directly in the response like:
+          # { :provider_key => 'X', :id => 'Y', ... }
+
+          # Compatible with the new version of backend
+          result = api_read({}, uri: service_uri(service_id), rprefix: :service)
+          return result unless result.nil?
+
+          # If result is nil, it might be because there was an error (the
+          # service does not exist) or because the code is using the old
+          # version of backend. If the response is nil using and empty prefix,
+          # it means that we are using the new version
+          response_without_prefix = api_do_get(
+              {}, uri: service_uri(service_id), rprefix: '')
+
+          # Using new backend version
+          return nil if response_without_prefix.nil?
+
+          # Using old backend version
+          response_json = response_without_prefix[:response_json]
           response_json[:error] ? nil : new(response_json)
         end
 
