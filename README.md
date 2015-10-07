@@ -19,23 +19,18 @@ where x.y.z is the version you aim for
 
 ### Environment set up
 
-You will want to run tests in an isolated environment. We rely on Vagrant to
-manage such an environment, and on Docker to provide it (in the past we also
-used VirtualBox, but we no longer support it).
+We are using [Docker Compose](https://docs.docker.com/compose/) to run the tests in an isolated
+environment. First, you need to make sure that the core and backend projects are under the same 
+directory. Then, from the root of the core project, run:
+    
+    $ make bash
+    
+This will create two containers: one with core and all its dependencies, and another one
+with backend (using the code that you have under `../backend`). This way, we can test core against
+the backend container. When the command above finishes, you'll get a shell in the core container. 
 
-The way to get you started is to visit the root of the project and type:
-
-    $ vagrant up
-
-This will probably fail if you haven't set up your `${HOME}/.dockercfg` file
-with quay.io credentials. Ask someone to set up your account there and then
-download your credentials and retry.
-
-Once that command finishes, you can enter the testing environment with:
-
-    $ vagrant ssh
-
-From now on, all commands should be entered within the environment you just entered.
+If the command above fails, make sure to include your quay.io credentials in your 
+`${HOME}/.dockercfg` file with quay.io credentials.
 
 ### Running tests
 
@@ -44,23 +39,19 @@ You can run both tests & specs with:
     $ bundle install
     $ bundle exec rake
 
-If you want to generate new ones (or responses changed), you need to have a
-working instance of backend server with a freshly cleared database and you can
-run it like this:
+You can also test core against a different backend instance. Use the environment variable 
+`THREESCALE_CORE_INTERNAL_API` to point the tests to your running backend instance:
 
-    $ bundle exec rake ci
+    $ THREESCALE_CORE_INTERNAL_API=http://172.17.42.1:8081/internal bundle exec rake
+                                                             
+> Note: the external IP address depends on the provider. Docker uses `172.17.42.1` 
+while VirtualBox uses `10.0.2.2`.
 
-You will need to start backend's database beforehand. If you don't want to take
-care of those details, just use the `script/ci` script to have everything set up
-for you (including cleaning up).
+You can also test core against the latest backend image available in quay.io, instead of testing
+against the code under `../backend`. Instead of creating the containers like described above,
+you just need to run:
 
-Note that this relies on a local backend gem, which may or may not be what you
-need for testing. Use the environment variable `THREESCALE_CORE_INTERNAL_API` to
-point the tests to your running backend instance:
-
-    $ THREESCALE_CORE_INTERNAL_API=http://172.17.42.1:8081/internal bundle exec rake ci
-
-> Note: the external IP address depends on the provider. Docker uses `172.17.42.1` while VirtualBox uses `10.0.2.2`.
+    $ make test
 
 #### Setting up the environment for testing
 
