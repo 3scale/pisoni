@@ -3,15 +3,19 @@ COMPOSE_CI = $(COMPOSE) -f docker-compose-ci.yml
 COMPOSE_DEV = $(COMPOSE) -f docker-compose-dev.yml
 COMPOSE_VERSION = 1.4.0
 
-.PHONY: test
+.PHONY: test bash run run_test build pull clean clean_test compose
 
-all: clean pull build test
+all: clean_test pull build test
 
-test: compose
-	$(COMPOSE_CI) run --rm -e COVERAGE=$(COVERAGE) test
+test: run_test clean_test
 
-bash: compose
+bash: run clean
+
+run: compose
 	$(COMPOSE_DEV) run --rm test bash
+
+run_test: compose
+	$(COMPOSE_CI) run --rm -e COVERAGE=$(COVERAGE) test
 
 build: compose
 	$(COMPOSE_CI) build
@@ -20,6 +24,10 @@ pull: compose
 	$(COMPOSE_CI) pull
 
 clean: compose
+	- $(COMPOSE_DEV) stop
+	- $(COMPOSE_DEV) rm -f -v
+
+clean_test: compose
 	- $(COMPOSE_CI) stop
 	- $(COMPOSE_CI) rm -f -v
 
