@@ -37,8 +37,6 @@ module ThreeScale
 
         it 'returns an ApplicationReferrerFilter object' do
           filter = ApplicationReferrerFilter.save(service_id, app_id, value)
-
-          filter.must_be_kind_of ApplicationReferrerFilter
           filter = ApplicationReferrerFilter.load_all(service_id, app_id).must_equal(['doopah'])
         end
       end
