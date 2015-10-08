@@ -218,7 +218,7 @@ module ThreeScale
               do_raise = if block_given?
                            yield(ret)
                          else
-                           [options.fetch(:raise, true), nil]
+                           options.fetch(:raise, true)
                          end
               raise APIError.new(method, uri, response, response_json) if do_raise
             end
