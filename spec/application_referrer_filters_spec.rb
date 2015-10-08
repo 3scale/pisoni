@@ -4,23 +4,36 @@ module ThreeScale
     describe ApplicationReferrerFilter do
       let(:service_id) { 10 }
       let(:app_id)     { 100 }
+      let(:filters) { %w(foo bar doopah) }
+      let(:application) do
+        { service_id: service_id,
+          id: app_id,
+          state: 'suspended',
+          plan_id: '3066',
+          plan_name: 'crappy',
+          redirect_url: 'blah',
+          version: '666' }
+      end
 
       before do
-        cleanup_application_fixtures
-        create_sample_app
+        filters.map do |filter|
+          ApplicationReferrerFilter.delete(service_id, app_id, filter)
+        end
+
+        Application.delete(service_id, app_id)
+        Application.save(application)
       end
 
       describe '.load_all' do
         describe 'Getting all referrer filters' do
-          let(:values)     { ["foo", "bar"] }
+          let(:values)     { %w(foo bar) }
 
           before do
-            values.map { |value| ApplicationReferrerFilter.save service_id, app_id, value }
+            values.map { |value| ApplicationReferrerFilter.save(service_id, app_id, value) }
           end
 
           it 'returns a sorted list of filters' do
-            filters = ApplicationReferrerFilter.load_all service_id, app_id
-
+            filters = ApplicationReferrerFilter.load_all(service_id, app_id)
             filters.must_equal values.sort
           end
         end
@@ -33,27 +46,12 @@ module ThreeScale
       end
 
       describe '.save' do
-        let(:value) { "doopah" }
+        let(:filter) { 'doopah' }
 
-        it 'returns an ApplicationReferrerFilter object' do
-          ApplicationReferrerFilter.save(service_id, app_id, value)
-          ApplicationReferrerFilter.load_all(service_id, app_id).must_equal(['doopah'])
+        it 'saves the filter' do
+          ApplicationReferrerFilter.save(service_id, app_id, filter)
+          ApplicationReferrerFilter.load_all(service_id, app_id).must_equal([filter])
         end
-      end
-
-      private
-
-      def cleanup_application_fixtures
-        ['foo', 'bar', 'doopah'].map do |filter|
-          ApplicationReferrerFilter.delete 10, 100, filter
-        end
-        Application.delete 10, 100
-      end
-
-      def create_sample_app
-        Application.save service_id: service_id, id: app_id, state: 'suspended',
-                         plan_id: '3066', plan_name: 'crappy', redirect_url: 'blah',
-                         version: '666'
       end
     end
   end
