@@ -36,8 +36,8 @@ module ThreeScale
         let(:value) { "doopah" }
 
         it 'returns an ApplicationReferrerFilter object' do
-          filter = ApplicationReferrerFilter.save(service_id, app_id, value)
-          filter = ApplicationReferrerFilter.load_all(service_id, app_id).must_equal(['doopah'])
+          ApplicationReferrerFilter.save(service_id, app_id, value)
+          ApplicationReferrerFilter.load_all(service_id, app_id).must_equal(['doopah'])
         end
       end
 
