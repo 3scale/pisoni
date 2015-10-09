@@ -97,18 +97,14 @@ module ThreeScale
         end
 
         describe 'with an invalid service ID' do
-          it 'raises ServiceNotFound exception' do
-            lambda do
-              Utilization.load(non_existing_service_id, app_id)
-            end.must_raise ServiceNotFound
+          it 'returns nil' do
+            Utilization.load(non_existing_service_id, app_id).must_be_nil
           end
         end
 
         describe 'with an invalid application ID' do
-          it 'raises ApplicationNotFound exception' do
-            lambda do
-              Utilization.load(service_id, non_existing_app_id)
-            end.must_raise ApplicationNotFound
+          it 'returns nil' do
+            Utilization.load(service_id, non_existing_app_id).must_be_nil
           end
         end
       end
