@@ -14,18 +14,11 @@ module ThreeScale
         result = api_do_get({},
                             uri: utilization_uri(service_id, app_id),
                             rprefix: :utilization) do |result|
-          if result[:response].status == 404
-            case result[:response_json][:error]
-              when 'service not found'
-                raise ServiceNotFound.new(service_id)
-              when 'application not found'
-                raise ApplicationNotFound.new(app_id)
-              else
-                raise Error.new('Unknown error')
-            end
-          end
+          return nil if result[:response].status == 404
           true
         end
+
+        return nil if result.nil?
 
         usage_reports = result[:attributes].map { |attrs| new attrs }
         APIClient::Collection.new(usage_reports)
