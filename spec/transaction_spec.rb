@@ -61,10 +61,8 @@ module ThreeScale
         end
 
         describe 'with an invalid service ID' do
-          it 'raises ServiceNotFound exception' do
-            lambda {
-              Transaction.load_all(non_existing_service_id)
-            }.must_raise ServiceNotFound
+          it 'returns nil' do
+            Transaction.load_all(non_existing_service_id).must_be_nil
           end
         end
       end
