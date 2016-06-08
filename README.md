@@ -7,7 +7,7 @@ Core libraries for 3scale systems.
 
 ## Install
 
-    $ rvm use ruby-2.1.1
+    $ rvm use ruby-2.1.2
 
     $ gem build 3scale_core.gemspec
 
