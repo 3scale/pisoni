@@ -114,5 +114,23 @@ module ThreeScale
         super %(per_page is not valid, must be positive)
       end
     end
+
+    class ServiceTokenRequiresServiceId < Error
+      def initialize
+        super 'ServiceToken is invalid, service ID cannot be blank'
+      end
+    end
+
+    class ServiceTokenRequiresToken < Error
+      def initialize
+        super 'ServiceToken is invalid, token cannot be blank'
+      end
+    end
+
+    class ServiceTokenMissingParameter < Error
+      def initialize(error_text)
+        super %(ServiceToken is invalid, #{error_text})
+      end
+    end
   end
 end
