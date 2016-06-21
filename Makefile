@@ -1,7 +1,7 @@
 COMPOSE = .bin/docker-compose-$(COMPOSE_VERSION)
 COMPOSE_CI = $(COMPOSE) -f docker-compose-ci.yml
 COMPOSE_DEV = $(COMPOSE) -f docker-compose-dev.yml
-COMPOSE_VERSION = 1.4.0
+COMPOSE_VERSION = 1.7.1
 
 .PHONY: test bash run run_test build pull clean clean_test compose
 
