@@ -11,8 +11,8 @@ module ThreeScale
       private_class_method :base_uri
 
       def self.check_params(service_id, username)
-        raise UserRequiresUsername if username.nil?
-        raise UserRequiresServiceId if service_id.nil?
+        raise UserRequiresUsername if username.nil? || username == ''.freeze
+        raise UserRequiresServiceId if service_id.nil? || service_id == ''.freeze
       end
       private_class_method :check_params
 
