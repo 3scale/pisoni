@@ -44,16 +44,20 @@ module ThreeScale
           user.plan_name.must_equal plan_name
         end
 
-        it 'raises when the service id is missing' do
-          lambda do
-            User.load nil, username
-          end.must_raise UserRequiresServiceId
+        it 'raises when the service id is missing or empty' do
+          ['', nil].each do |service_id|
+            lambda do
+              User.load service_id, username
+            end.must_raise UserRequiresServiceId
+          end
         end
 
-        it 'raises when the user name is missing' do
-          lambda do
-            User.load service_id, nil
-          end.must_raise UserRequiresUsername
+        it 'raises when the user name is missing or empty' do
+          ['', nil].each do |user_name|
+            lambda do
+              User.load service_id, user_name
+            end.must_raise UserRequiresUsername
+          end
         end
 
         it 'returns nil when a non-existent service id is used' do
@@ -84,18 +88,22 @@ module ThreeScale
           @user.plan_name.must_equal plan_name
         end
 
-        it 'raises when the service id is missing' do
-          lambda do
-            User.save! service_id: nil, username: username, plan_id: plan_id,
-              plan_name: plan_name
-          end.must_raise UserRequiresServiceId
+        it 'raises when the service id is missing or empty' do
+          ['', nil].each do |service_id|
+            lambda do
+              User.save! service_id: service_id, username: username, plan_id: plan_id,
+                plan_name: plan_name
+            end.must_raise UserRequiresServiceId
+          end
         end
 
-        it 'raises when the user name is missing' do
-          lambda do
-            User.save! service_id: service_id, username: nil, plan_id: plan_id,
-              plan_name: plan_name
-          end.must_raise UserRequiresUsername
+        it 'raises when the user name is missing or empty' do
+          ['', nil].each do |user_name|
+            lambda do
+              User.save! service_id: service_id, username: user_name, plan_id: plan_id,
+                plan_name: plan_name
+            end.must_raise UserRequiresUsername
+          end
         end
 
         it 'raises when a non-existent service id is used' do
