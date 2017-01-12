@@ -24,6 +24,8 @@ module ThreeScale
   module Core
     extend self
 
+    attr_accessor :donbot_username, :donbot_password
+
     def faraday
       return @faraday if @faraday
 
@@ -35,16 +37,8 @@ module ThreeScale
         'Accept' => 'application/json',
         'Content-Type' => 'application/json'
       }
-      @faraday.basic_auth(donbot_username, donbot_password)
+      @faraday.basic_auth(@donbot_username, @donbot_password)
       @faraday
-    end
-
-    def donbot_password
-      'xxxxx'
-    end
-
-    def donbot_username
-      'xxxxx'
     end
 
     def donbot_url=(url)
