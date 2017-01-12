@@ -1,6 +1,6 @@
 module ThreeScale
   module Core
-    class UnknownDonbotAPIEndpoint < RuntimeError; end
+    class UnknownAPIEndpoint < RuntimeError; end
 
     class Error < RuntimeError
       def to_xml(options = {})

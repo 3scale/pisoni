@@ -24,10 +24,13 @@ module ThreeScale
   module Core
     extend self
 
+    attr_accessor :username, :password
+    attr_writer :url
+
     def faraday
       return @faraday if @faraday
 
-      @faraday = Faraday.new(:url => donbot_url) do |f|
+      @faraday = Faraday.new(url: url) do |f|
         f.adapter :net_http_persistent
       end
       @faraday.headers = {
@@ -35,25 +38,13 @@ module ThreeScale
         'Accept' => 'application/json',
         'Content-Type' => 'application/json'
       }
-      @faraday.basic_auth(donbot_username, donbot_password)
+      @faraday.basic_auth(@username, @password)
       @faraday
     end
 
-    def donbot_password
-      'xxxxx'
-    end
-
-    def donbot_username
-      'xxxxx'
-    end
-
-    def donbot_url=(url)
-      @donbot_url = url
-    end
-
-    def donbot_url
-      ENV['THREESCALE_CORE_INTERNAL_API'] || @donbot_url ||
-        raise(UnknownDonbotAPIEndpoint)
+    def url
+      ENV['THREESCALE_CORE_INTERNAL_API'] || @url ||
+        raise(UnknownAPIEndpoint)
     end
 
   end
