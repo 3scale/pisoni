@@ -16,6 +16,7 @@ Gem::Specification.new do |s|
   s.homepage = 'http://www.3scale.net'
   s.summary = '3scale web service management system core libraries'
   s.description = 'This gem provides core libraries for 3scale systems.'
+  s.license     = 'Nonstandard'
 
   s.add_dependency 'faraday', '~> 0.9.1'
   s.add_dependency 'json', '~> 1.8.1'
