@@ -46,24 +46,6 @@ module ThreeScale
           save! id: service_id, default_service: true
         end
 
-        def set_log_bucket(id, bucket)
-          ret = api_do_put({ bucket: bucket },
-                           uri: "#{service_uri(id)}/logs_bucket",
-                           prefix: '') do |result|
-            if result[:response].status == 400 &&
-                result[:response_json][:error] == 'bucket is missing'
-              raise InvalidBucket.new
-            end
-            true
-          end
-          ret[:ok]
-        end
-
-        def clear_log_bucket(id)
-          ret = api_do_delete({}, uri: "#{service_uri(id)}/logs_bucket", prefix: '')
-          ret[:ok]
-        end
-
         private
 
         def service_uri(id)
