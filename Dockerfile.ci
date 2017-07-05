@@ -12,8 +12,6 @@ ADD Gemfile /tmp/core/
 ADD lib/3scale/core/version.rb /tmp/core/lib/3scale/core/
 ADD 3scale_core.gemspec /tmp/core/
 
-RUN bundle config --global without ''
-
 RUN bundle install
 
 ADD . /tmp/core

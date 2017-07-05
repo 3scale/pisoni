@@ -10,7 +10,6 @@ ADD 3scale_core.gemspec /tmp/core/
 RUN chown -R ruby: /tmp/core/
 
 USER ruby
-RUN bundle config --global without ''
 RUN bundle install
 
 USER root
