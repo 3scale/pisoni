@@ -6,7 +6,7 @@ require '3scale/core/version'
 Gem::Specification.new do |s|
   s.name = '3scale_core'
   s.version = ThreeScale::Core::VERSION
-  s.date = Date.today.to_s
+  s.date = Time.now.utc.strftime('%Y-%m-%d')
 
   s.platform = Gem::Platform::RUBY
 

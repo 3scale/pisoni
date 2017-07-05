@@ -1,4 +1,4 @@
-FROM 3scale/docker:dev-2.1.6
+FROM 3scale/docker:dev-2.3.1
 MAINTAINER Toni Reina <toni@3scale>
 
 WORKDIR /tmp/core/
@@ -10,7 +10,6 @@ ADD 3scale_core.gemspec /tmp/core/
 RUN chown -R ruby: /tmp/core/
 
 USER ruby
-RUN bundle config --global without ''
 RUN bundle install
 
 USER root
