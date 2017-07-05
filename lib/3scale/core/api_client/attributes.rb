@@ -1,3 +1,5 @@
+require 'time'
+
 module ThreeScale
   module Core
     module APIClient
