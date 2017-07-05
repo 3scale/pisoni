@@ -154,26 +154,6 @@ module ThreeScale
           end.must_raise InvalidProviderKeys
         end
       end
-
-      describe '.set_log_bucket' do
-        let(:bucket){ 'foobar' }
-
-        it 'returns true' do
-          Service.set_log_bucket(default_service_id, bucket).must_equal true
-        end
-
-        it 'raises exception when no bucket specified' do
-          lambda do
-            Service.set_log_bucket(default_service_id, '').must_equal false
-          end.must_raise InvalidBucket
-        end
-      end
-
-      describe '.clear_log_bucket' do
-        it 'returns true' do
-          Service.clear_log_bucket(default_service_id).must_equal true
-        end
-      end
     end
   end
 end
