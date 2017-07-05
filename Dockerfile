@@ -1,4 +1,4 @@
-FROM 3scale/docker:dev-2.1.6
+FROM 3scale/docker:dev-2.3.1
 MAINTAINER Toni Reina <toni@3scale>
 
 WORKDIR /tmp/core/
