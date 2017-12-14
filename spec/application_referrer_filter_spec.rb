@@ -11,8 +11,7 @@ module ThreeScale
           state: 'suspended',
           plan_id: '3066',
           plan_name: 'crappy',
-          redirect_url: 'blah',
-          version: '666' }
+          redirect_url: 'blah' }
       end
 
       before do
