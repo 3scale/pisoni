@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.description = 'This gem provides core libraries for 3scale systems.'
   s.license     = 'Nonstandard'
 
-  s.add_dependency 'faraday', '~> 0.9.1'
+  s.add_dependency 'faraday', '~> 0.13.1'
   s.add_dependency 'json', '~> 1.8.1'
   s.add_dependency 'injectedlogger', '~> 0.0.13'
   s.add_dependency 'net-http-persistent'
