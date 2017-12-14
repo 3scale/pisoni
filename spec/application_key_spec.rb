@@ -10,10 +10,8 @@ module ThreeScale
           before do
             values.map { |value| ApplicationKey.delete(service_id, app_id, value) }
 
-            # note that version: 666 should not be saved!
             Application.save service_id: service_id, id: app_id, state: 'suspended',
-                             plan_id: '3066', plan_name: 'crappy', redirect_url: 'blah',
-                             version: '666'
+                             plan_id: '3066', plan_name: 'crappy', redirect_url: 'blah'
 
             values.map { |value| ApplicationKey.save(service_id, app_id, value) }
           end
@@ -31,10 +29,8 @@ module ThreeScale
           let(:app_id)     { 300 }
 
           before do
-            # note that version: 666 should not be saved!
             Application.save service_id: service_id, id: app_id, state: 'suspended',
-                             plan_id: '3066', plan_name: 'crappy', redirect_url: 'blah',
-                             version: '666'
+                             plan_id: '3066', plan_name: 'crappy', redirect_url: 'blah'
           end
 
           it 'returns an empty list' do
@@ -51,10 +47,8 @@ module ThreeScale
         before do
           ApplicationKey.delete(service_id, app_id, value)
 
-          # note that version: 666 should not be saved!
           Application.save service_id: service_id, id: app_id, state: 'suspended',
-                           plan_id: '3066', plan_name: 'crappy', redirect_url: 'blah',
-                           version: '666'
+                           plan_id: '3066', plan_name: 'crappy', redirect_url: 'blah'
         end
 
         it 'returns an ApplicationKey object' do
@@ -72,10 +66,8 @@ module ThreeScale
           let(:value)      { "foo" }
 
           before do
-            # note that version: 666 should not be saved!
             Application.save service_id: service_id, id: app_id, state: 'suspended',
-                             plan_id: '3066', plan_name: 'crappy', redirect_url: 'blah',
-                             version: '666'
+                             plan_id: '3066', plan_name: 'crappy', redirect_url: 'blah'
 
             ApplicationKey.save(service_id, app_id, value)
           end
@@ -91,10 +83,8 @@ module ThreeScale
           let(:value)      { "nonexistingkey" }
 
           before do
-            # note that version: 666 should not be saved!
             Application.save service_id: service_id, id: app_id, state: 'suspended',
-                             plan_id: '3066', plan_name: 'crappy', redirect_url: 'blah',
-                             version: '666'
+                             plan_id: '3066', plan_name: 'crappy', redirect_url: 'blah'
           end
 
           it 'returns true' do

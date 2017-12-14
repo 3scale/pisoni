@@ -7,10 +7,8 @@ module ThreeScale
         describe 'with an existing application' do
           before do
             Application.delete(2001, 8011)
-            # note that version: 666 should not be saved!
             Application.save service_id: 2001, id: 8011, state: 'suspended',
-                             plan_id: '3066', plan_name: 'crappy', redirect_url: 'blah',
-                             version: '666'
+                             plan_id: '3066', plan_name: 'crappy', redirect_url: 'blah'
           end
 
           it 'returns an Application object' do
@@ -26,7 +24,6 @@ module ThreeScale
             application.plan_id.must_equal '3066'
             application.plan_name.must_equal 'crappy'
             application.redirect_url.must_equal 'blah'
-            application.version.must_equal 1
           end
         end
 
@@ -52,10 +49,8 @@ module ThreeScale
       describe '.delete' do
         before do
           Application.delete(2001, 8011)
-          # note that version: 666 should not be saved!
           Application.save service_id: 2001, id: 8011, state: 'suspended',
-                           plan_id: '3066', plan_name: 'crappy', redirect_url: 'blah',
-                           version: '666'
+                           plan_id: '3066', plan_name: 'crappy', redirect_url: 'blah'
         end
 
         describe 'with an existing application' do
@@ -83,10 +78,8 @@ module ThreeScale
       describe '.save' do
         before do
           Application.delete(2001, 8011)
-          # note that version: 666 should not be saved!
           @app = Application.save service_id: 2001, id: 8011, state: 'suspended',
-                                  plan_id: '3066', plan_name: 'crappy', redirect_url: 'blah',
-                                  version: '666'
+                                  plan_id: '3066', plan_name: 'crappy', redirect_url: 'blah'
         end
 
         it 'exists' do
@@ -104,13 +97,11 @@ module ThreeScale
           @app.plan_id.must_equal '3066'
           @app.plan_name.must_equal 'crappy'
           @app.redirect_url.must_equal 'blah'
-          @app.version.must_equal 1
         end
 
         it 'modifies the application when saving an existing one' do
           new_app = Application.save service_id: @app.service_id, id: @app.id, state: @app.state,
-                                     plan_id: @app.plan_id, plan_name: @app.plan_name, redirect_url: 'someurl',
-                                     version: '665'
+                                     plan_id: @app.plan_id, plan_name: @app.plan_name, redirect_url: 'someurl'
 
           new_app.id.must_equal(@app.id)
           new_app.service_id.must_equal(@app.service_id)
@@ -118,12 +109,10 @@ module ThreeScale
           new_app.plan_id.must_equal(@app.plan_id)
           new_app.plan_name.must_equal(@app.plan_name)
           new_app.redirect_url.must_equal 'someurl'
-          new_app.version.must_equal(@app.version + 1)
 
           reloaded_app = Application.load(@app.service_id, @app.id)
 
           new_app.redirect_url.must_equal(reloaded_app.redirect_url)
-          new_app.version.must_equal(reloaded_app.version)
         end
 
         it 'raises a client-side error when missing mandatory attributes' do
@@ -131,7 +120,7 @@ module ThreeScale
             attrs = attrs.to_h
             # note missing service_id, id
             attrs.merge!(state: 'suspended', plan_id: '3066',
-              plan_name: 'crappy', redirect_url: 'blah', version: '666')
+              plan_name: 'crappy', redirect_url: 'blah')
             lambda do
               Application.save(attrs)
             end.must_raise KeyError # minitest wont catch parent exceptions :/
@@ -142,10 +131,8 @@ module ThreeScale
       describe '#save' do
         before do
           Application.delete(2001, 8011)
-          # note that version: 666 should not be saved!
           @app = Application.save service_id: 2001, id: 8011, state: 'suspended',
-                                  plan_id: '3066', plan_name: 'crappy', redirect_url: 'blah',
-                                  version: '666'
+                                  plan_id: '3066', plan_name: 'crappy', redirect_url: 'blah'
         end
 
         it 'exists' do
@@ -163,16 +150,8 @@ module ThreeScale
           newapp.plan_id.must_equal @app.plan_id
           newapp.redirect_url.must_equal @app.redirect_url
           newapp.plan_name.must_equal 'some_other_plan'
-          newapp.version.must_equal @app.version
         end
 
-        it 'increases the version' do
-          old_version = @app.version
-          @app.save
-          @app.version.must_equal(old_version + 1)
-          newapp = Application.load @app.service_id, @app.id
-          newapp.version.must_equal @app.version
-        end
       end
 
       describe 'by_key' do
