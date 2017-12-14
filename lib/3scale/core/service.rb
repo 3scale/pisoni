@@ -3,7 +3,7 @@ module ThreeScale
     class Service < APIClient::Resource
       attributes :provider_key, :id, :backend_version, :referrer_filters_required,
                  :user_registration_required, :default_user_plan_id,
-                 :default_user_plan_name, :version, :default_service
+                 :default_user_plan_name, :default_service
 
       class << self
         def load_by_id(service_id)

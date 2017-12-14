@@ -1,7 +1,7 @@
 module ThreeScale
   module Core
     class User < APIClient::Resource
-      attributes :service_id, :username, :state, :plan_id, :plan_name, :version
+      attributes :service_id, :username, :state, :plan_id, :plan_name
 
       default_uri '/internal/services/'
 

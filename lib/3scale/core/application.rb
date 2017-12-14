@@ -6,7 +6,7 @@ module ThreeScale
       ## true, the user_id must be defined + the user of the service (service_id#user_id),
       ## user_id is typically the UUID of a cellphone, or the twitter account
       attributes :service_id, :id, :state, :plan_id, :plan_name,
-                    :redirect_url, :user_required, :version
+                 :redirect_url, :user_required
 
       default_uri '/internal/services/'
 
@@ -36,10 +36,6 @@ module ThreeScale
 
       def self.delete(service_id, id)
         api_delete({}, uri: app_uri(service_id, id))
-      end
-
-      def version=(version)
-        @version = version.to_i
       end
 
       def save
