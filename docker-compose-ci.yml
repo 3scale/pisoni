@@ -20,3 +20,5 @@ backend:
     - "3000"
   command:
     - "script/test_external"
+  environment:
+    - PUMA_WORKERS=1
