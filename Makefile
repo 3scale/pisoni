@@ -1,67 +1,73 @@
 MKFILE_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
 PROJECT_PATH := $(patsubst %/,%,$(dir $(MKFILE_PATH)))
 
-COMPOSE_VERSION := 1.17.1
-VENDORED_COMPOSE_PATH := $(PROJECT_PATH)/.bin/docker-compose-$(COMPOSE_VERSION)
+include $(PROJECT_PATH)/.env
 
-# determine whether we want a system-based docker-compose or a vendored one.
-# Make will ensure the COMPOSE variable has the right target and if it's
-# a vendored one, it will install it if not available.
-ifeq ($(VENDORED_COMPOSE),0)
-	COMPOSE := $(shell which docker-compose 2> /dev/null | tail -n 1)
-	ifneq ($(COMPOSE),)
-		ifneq ($(shell $(COMPOSE) --version | grep -o "version $(COMPOSE_VERSION)"),version $(COMPOSE_VERSION))
-$(warning WARNING: $(shell $(COMPOSE) --version) does not match required version $(COMPOSE_VERSION), use VENDORED_COMPOSE=1 to force usage of a vendored version)
-		endif
-	else
-		COMPOSE :=
-	endif
-endif
+include $(PROJECT_PATH)/mk/compose.mk
+COMPOSE := $(COMPOSE_BIN) -f $(PROJECT_PATH)/docker/docker-compose.yml
 
-ifeq ($(COMPOSE),)
-	COMPOSE := $(VENDORED_COMPOSE_PATH)
-endif
+CI_IMAGE_REPO ?= quay.io/3scale
+CI_IMAGE_NAME ?= pisoni-ci
+CI_IMAGE ?= $(CI_IMAGE_REPO)/$(CI_IMAGE_NAME)
+CI_DOCKERFILE ?= $(PROJECT_PATH)/docker/Dockerfile.ci
 
-COMPOSE_CI = $(COMPOSE) -f docker-compose-ci.yml
-COMPOSE_DEV = $(COMPOSE) -f docker-compose-dev.yml
+include $(PROJECT_PATH)/mk/ci-image.mk
 
-.PHONY: test bash run run_test build pull clean clean_test compose
+all: clean pull build test
 
-all: clean_test pull build test
+.PHONY: compose-config
+compose-config: compose
+	$(COMPOSE) config
 
-test: run_test clean_test
+.PHONY: test
+test: run_test clean
 
+.PHONY: bash
 bash: run clean
 
+.PHONY: dev
+dev: run
+
+.PHONY: run
 run: compose
-	$(COMPOSE_DEV) run --rm test bash
+	$(COMPOSE) run --rm test /bin/bash
 
+.PHONY: run_test
 run_test: compose
-	$(COMPOSE_CI) run --rm -e COVERAGE=$(COVERAGE) test
+	$(COMPOSE) run --rm -e COVERAGE=$(COVERAGE) test
 
+.PHONY: license_finder
 license_finder: compose
-	$(COMPOSE_CI) run --rm -e COVERAGE=$(COVERAGE) test bundle exec rake license_finder:check
+	$(COMPOSE) run --rm -e COVERAGE=$(COVERAGE) test bundle exec rake license_finder:check
 
+.PHONY: build
 build: compose
-	$(COMPOSE_CI) build
+	$(COMPOSE) build
 
+.PHONY: pull
 pull: compose
-	$(COMPOSE_CI) pull
+	$(COMPOSE) pull
 
-clean: compose
-	- $(COMPOSE_DEV) stop
-	- $(COMPOSE_DEV) rm -f -v
+.PHONY: stop
+stop: compose
+	$(COMPOSE) stop
 
-clean_test: compose
-	- $(COMPOSE_CI) stop
-	- $(COMPOSE_CI) rm -f -v
+.PHONY: clean
+clean: stop
+	- $(COMPOSE) rm -f -v
 
-$(PROJECT_PATH)/.bin:
-	mkdir -p $(PROJECT_PATH)/.bin
+.PHONY: up
+up: compose
+	$(COMPOSE) up --abort-on-container-exit --exit-code-from test -t 2 --remove-orphans
 
-compose: $(COMPOSE)
+.PHONY: down
+down: clean
+	- $(COMPOSE) down
 
-$(VENDORED_COMPOSE_PATH): $(PROJECT_PATH)/.bin
-	@echo "Vendoring docker-compose $(COMPOSE_VERSION)..."
-	curl -f -L https://github.com/docker/compose/releases/download/$(COMPOSE_VERSION)/docker-compose-`uname -s`-`uname -m` > $@
-	chmod +x $@
+.PHONY: destroy
+destroy: clean
+	$(COMPOSE) down -v --remove-orphans --rmi local
+
+.PHONY: destroy-all
+destroy-all: clean
+	$(COMPOSE) down -v --remove-orphans --rmi all
