@@ -1,0 +1,37 @@
+#!/bin/bash
+
+SCRIPT_DIR=$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")
+
+if test -r ${SCRIPT_DIR}/lib/rbenv/ruby_versions; then
+    . ${SCRIPT_DIR}/lib/rbenv/ruby_versions
+    . ${SCRIPT_DIR}/lib/rbenv/bundle_install_gemfiles
+elif test -r ~/.local/bin/ruby_versions; then
+    . ~/.local/bin/ruby_versions
+    . ~/.local/bin/bundle_install_gemfiles
+else
+    echo >&2 "WARNING: rbenv helpers not found"
+fi
+
+function rm_lockfile()
+{
+    rm -f "${SCRIPT_DIR}"/../Gemfile.lock
+}
+
+function do_license_check()
+{
+    rb_bundle_exec rake license_finder:check
+}
+
+function do_test()
+{
+    rb_bundle_exec rake "$@"
+}
+
+function run_tests()
+{
+    export RACK_ENV=test
+
+    rm_lockfile && do_license_check && do_test
+}
+
+rb_with_rubies_do ${TEST_RUBIES:-all} run_tests
