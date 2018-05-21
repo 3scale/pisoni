@@ -1,3 +1,4 @@
+require 'uri'
 require 'json'
 require 'faraday'
 
@@ -30,6 +31,7 @@ module ThreeScale
     def faraday
       return @faraday if @faraday
 
+      url = self.url
       @faraday = Faraday.new(url: url) do |f|
         f.adapter :net_http_persistent
       end
@@ -38,7 +40,17 @@ module ThreeScale
         'Accept' => 'application/json',
         'Content-Type' => 'application/json'
       }
-      @faraday.basic_auth(@username, @password)
+
+      if @username.nil? && @password.nil?
+        # even though the url may contain the user info, turns out Faraday is
+        # not really picking it up, so must fill it in if present in the URL and
+        # no previous setting was done (ie. assigning username or password).
+        uri = URI.parse url
+        @username = uri.user
+        @password = uri.password
+      end
+
+      @faraday.basic_auth(@username, @password) if @username || @password
       @faraday
     end
 
