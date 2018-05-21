@@ -9,9 +9,9 @@ Core libraries for 3scale systems.
 
     $ rvm use ruby-2.2.4
 
-    $ gem build 3scale_core.gemspec
+    $ gem build pisoni.gemspec
 
-    $ gem install 3scale_core-x.y.z.gem
+    $ gem install pisoni-x.y.z.gem
 
 where x.y.z is the version you aim for
 
@@ -92,6 +92,6 @@ Apart from 'build', there are other tasks available. You can list them with:
 
 Push the new version of the gem to our repo
 
-    $ bundle exec gem inabox pkg/3scale_core-1.12.1.gem
+    $ bundle exec gem inabox pkg/pisoni-1.23.0.gem
 
 Introduce the host with the appropriate user and password like this: https://user:pass@host

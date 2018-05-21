@@ -25,7 +25,7 @@
     :versions: []
     :when: 2016-08-18 15:16:38.712225384 Z
 - - :approve
-  - 3scale_core
+  - pisoni
   - :who: 3scale Engineering
     :why: It's this project.
     :versions: []

@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require '3scale/core/version'
 
 Gem::Specification.new do |s|
-  s.name = '3scale_core'
+  s.name = 'pisoni'
   s.version = ThreeScale::Core::VERSION
   s.date = Time.now.utc.strftime('%Y-%m-%d')
 
