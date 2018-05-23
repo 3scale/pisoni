@@ -1,8 +1,9 @@
 #!/usr/bin/env ruby
 require 'timeout'
+require 'uri'
 
-def abort!
-  puts "\nABORT: Some of your services don't boot correctly."
+def abort!(msg = 'ABORT: Some of your services don\'t boot correctly.')
+  puts "\n#{msg}"
   exit 1
 end
 
@@ -10,17 +11,24 @@ def wait_for(ip, port)
   "while ! timeout 1 bash -c 'cat < /dev/null > /dev/tcp/#{ip}/#{port}' 2> /dev/null; do echo \"Waiting for tcp://#{ip}:#{port}\"; sleep 1; done; echo \"tcp://#{ip}:#{port} is opened\""
 end
 
+def parse_uri(uri, prefix = true)
+  u = URI.parse uri
+  u.host.nil? && prefix ? parse_uri("http://" + uri, false) : u
+end
+
 def boot(service)
-  service_tcp_uri = ENV.fetch("#{service.upcase}_PORT") { abort! }
-  ip, port = service_tcp_uri.split("//").last.split(":")
-  puts "Booting #{service} -> #{ip}:#{port}"
-  system(wait_for(ip, port))
+  puts "Waiting for #{service}..."
+  service_tcp_uri = ENV.fetch("WAIT_FOR_#{service.upcase}_URI") { abort! }
+  uri = parse_uri service_tcp_uri
+  abort! "malformed URI, specify host and port #{service_tcp_uri}" unless uri.host && uri.port
+  puts "Booting #{service} -> #{uri.hostname}:#{uri.port}"
+  system(wait_for(uri.hostname, uri.port))
 end
 
 begin
-  services = ENV["WAIT_FOR"].split(":")
+  services = ENV["WAIT_FOR"].split ':'
   services.each do |service|
-    Timeout.timeout(ENV.fetch('WAIT_TIMEOUT', 10).to_i) { boot(service) }
+    Timeout.timeout(ENV.fetch('WAIT_FOR_TIMEOUT', 10).to_i) { boot(service) }
   end
   exec(*ARGV)
 rescue Timeout::Error
