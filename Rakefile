@@ -25,3 +25,15 @@ task geminabox: :release do
     exec('gem', 'inabox', gem)
   end
 end
+
+namespace :license_finder do
+  desc 'Check license compliance of dependencies'
+  task :check do
+    STDOUT.puts "Checking license compliance\n"
+    unless system("license_finder --decisions-file=#{File.dirname(__FILE__)}" \
+                  "/.dependency_decisions.yml")
+      STDERR.puts "\n*** License compliance test failed  ***\n"
+      exit 1
+    end
+  end
+end

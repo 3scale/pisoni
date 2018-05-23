@@ -39,6 +39,9 @@ run: compose
 run_test: compose
 	$(COMPOSE_CI) run --rm -e COVERAGE=$(COVERAGE) test
 
+license_finder: compose
+	$(COMPOSE_CI) run --rm -e COVERAGE=$(COVERAGE) test bundle exec rake license_finder:check
+
 build: compose
 	$(COMPOSE_CI) build
 
