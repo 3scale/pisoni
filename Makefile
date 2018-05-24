@@ -4,10 +4,10 @@ PROJECT_PATH := $(patsubst %/,%,$(dir $(MKFILE_PATH)))
 COMPOSE_VERSION := 1.17.1
 VENDORED_COMPOSE_PATH := $(PROJECT_PATH)/.bin/docker-compose-$(COMPOSE_VERSION)
 
-# determine whether we have a system-based docker-compose or a vendored one.
+# determine whether we want a system-based docker-compose or a vendored one.
 # Make will ensure the COMPOSE variable has the right target and if it's
 # a vendored one, it will install it if not available.
-ifneq ($(VENDORED_COMPOSE),1)
+ifeq ($(VENDORED_COMPOSE),0)
 	COMPOSE := $(shell which docker-compose 2> /dev/null | tail -n 1)
 	ifneq ($(COMPOSE),)
 		ifneq ($(shell $(COMPOSE) --version | grep -o "version $(COMPOSE_VERSION)"),version $(COMPOSE_VERSION))
