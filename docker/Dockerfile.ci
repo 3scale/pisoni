@@ -1,0 +1,28 @@
+FROM quay.io/unleashed/rbenv4ci-container:v0.1.0-centos
+MAINTAINER Alejandro Martinez Ruiz <amr@redhat.com>
+
+RUN sudo yum upgrade -y \
+    && sudo yum distro-sync -y \
+    && sudo yum autoremove -y \
+    && sudo yum -y clean all \
+    && sudo rm -rf /var/cache/yum
+
+# specify all versions to be installed, partial versions also understood
+ARG RUBY_VERSIONS="2.2 2.3"
+RUN ruby_versions ${RUBY_VERSIONS}
+
+ARG APP_RUNTIME_DEPS
+ARG APP_BUILD_DEPS
+# license_finder requires "which"
+ARG APP_TEST_DEPS="which"
+RUN test "x${APP_RUNTIME_DEPS}${APP_BUILD_DEPS}${APP_TEST_DEPS}" = "x" \
+    || (sudo yum install -y ${APP_RUNTIME_DEPS} ${APP_BUILD_DEPS} \
+          ${APP_TEST_DEPS} \
+        && sudo yum clean all)
+
+COPY Gemfile *.gemspec .ruby-* /tmp/app/
+COPY lib/3scale/core/version.rb /tmp/app/lib/3scale/core/
+RUN sudo chown -R "$(id -un)": /tmp/app \
+    && cd /tmp/app \
+    && bundle_install_rubies \
+    && rm -rf /tmp/app
