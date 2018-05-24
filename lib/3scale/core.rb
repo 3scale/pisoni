@@ -36,7 +36,7 @@ module ThreeScale
         f.adapter :net_http_persistent
       end
       @faraday.headers = {
-        'User-Agent' => "3scale_core v#{ThreeScale::Core::VERSION}",
+        'User-Agent' => "pisoni v#{ThreeScale::Core::VERSION}",
         'Accept' => 'application/json',
         'Content-Type' => 'application/json'
       }
