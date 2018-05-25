@@ -25,7 +25,13 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'rake'
 
-  s.files         = `git ls-files`.split($/)
+  s.files         = `git ls-files`.split($/).reject do |f| [
+                        %r{^\.[^\/]},
+                        %r{^script/},
+                        %r{^docker/},
+                        %r{^mk/},
+                      ].any? { |r| r.match f }
+                    end
   s.executables   = s.files.grep(%r{^bin/}) { |f| File.basename(f) }
   s.test_files    = s.files.grep(%r{^(test|spec|features)/})
 

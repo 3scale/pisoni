@@ -1,4 +1,5 @@
 .bundle
+.env
 .vagrant
 pkg
 Gemfile.lock

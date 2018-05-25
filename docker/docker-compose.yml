@@ -1,0 +1,61 @@
+version: '3'
+services:
+
+  test:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile${DF_EXT}
+      args:
+        RUBY_VERSIONS: ${RUBY_VERSIONS}
+    volumes:
+      - ..:/home/ruby/app:z
+    stdin_open: true
+    tty: true
+    environment:
+      THREESCALE_CORE_INTERNAL_API: "http://${APISONATOR_IAPI_USER}:${APISONATOR_IAPI_PASSWORD}@apisonator-listener:3000/internal"
+      WAIT_FOR: apisonator
+      WAIT_FOR_TIMEOUT: 10
+      WAIT_FOR_APISONATOR_URI: apisonator-listener:3000
+      TEST_ALL_RUBIES: 1
+    working_dir: /home/ruby/app
+    depends_on:
+      - apisonator-listener
+
+  apisonator-listener:
+    image: "quay.io/3scale/apisonator:${APISONATOR_REL}"
+    volumes:
+      - ./3scale_backend.conf:/etc/3scale_backend.conf:z
+    expose:
+      - 3000
+    ports:
+      - 3000
+    command:
+      3scale_backend start -p 3000 -l "${APISONATOR_LOGFILE}"
+    environment:
+      RACK_ENV: development
+      APISONATOR_IAPI_USER: "${APISONATOR_IAPI_USER}"
+      APISONATOR_IAPI_PASSWORD: "${APISONATOR_IAPI_PASSWORD}"
+      APISONATOR_REDIS_URL: redis://redis:6379
+      APISONATOR_QUEUES_URL: redis://redis:6379
+      PUMA_WORKERS: 1
+    depends_on:
+      - redis
+      - apisonator-worker
+
+  apisonator-worker:
+    image: "quay.io/3scale/apisonator:${APISONATOR_REL}"
+    volumes:
+      - ./3scale_backend.conf:/etc/3scale_backend.conf:z
+    command:
+      3scale_backend_worker start --ontop
+    environment:
+      # as of 2.86.0 the worker will force queues url to be localhost in
+      # non-production mode, so use that until this gets changed
+      RACK_ENV: production
+      APISONATOR_REDIS_URL: redis://redis:6379
+      APISONATOR_QUEUES_URL: redis://redis:6379
+    depends_on:
+      - redis
+
+  redis:
+    image: redis
