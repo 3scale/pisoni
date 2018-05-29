@@ -13,9 +13,9 @@ Gem::Specification.new do |s|
   s.authors = ['Alejandro Martinez Ruiz']
   s.email = %w[alex@3scale.net]
 
-  s.homepage = 'http://www.3scale.net'
-  s.summary = '3scale web service management system core libraries'
-  s.description = 'This gem provides core libraries for 3scale systems.'
+  s.homepage = 'https://github.com/3scale/pisoni'
+  s.summary = 'Client for the Apisonator internal API for model data'
+  s.description = 'Client for the Apisonator internal API for model data.'
   s.license     = 'Apache-2.0'
 
   s.add_dependency 'faraday', '~> 0.13.1'
