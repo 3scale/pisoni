@@ -16,7 +16,7 @@ services:
       WAIT_FOR: apisonator
       WAIT_FOR_TIMEOUT: 10
       WAIT_FOR_APISONATOR_URI: apisonator-listener:3000
-      TEST_ALL_RUBIES: 1
+      TEST_RUBIES: ${TEST_RUBIES}
     working_dir: /home/ruby/app
     depends_on:
       - apisonator-listener
