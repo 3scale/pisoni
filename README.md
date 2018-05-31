@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/3scale/pisoni.svg?style=shield)](https://circleci.com/gh/3scale/pisoni)
+
 # Pisoni
 
 Pisoni is a Ruby client for the internal API of the
