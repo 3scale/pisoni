@@ -11,4 +11,4 @@ RUN sudo chown -R "$(id -un)": /tmp/app \
     && bundle_install_rubies \
     && rm -rf /tmp/app
 
-CMD ["/bin/bash", "-c", "bundle_install_rubies && script/wait_for_start script/test"]
+CMD ["/bin/bash", "-c", "bundle_install_rubies ${TEST_RUBIES} && script/wait_for_start script/test"]

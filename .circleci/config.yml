@@ -1,0 +1,43 @@
+version: 2
+jobs:
+  build:
+    branches:
+      #only:
+      #  # This is where pull requests from "bors r+" are built.
+      #  - staging
+      #  # This is where pull requests from "bors try" are built.
+      #  - trying
+      #  # Uncomment this to enable building pull requests.
+      #  - master
+      ignore:
+        # never run CI on staging.tmp
+        - staging.tmp
+        # or any other tmp branch
+        - /.*\.tmp/
+
+    machine: true
+
+    steps:
+      - checkout
+
+      - run:
+          name: make compose
+          command: |
+            make compose
+
+      - run:
+          name: make pull
+          command: |
+            make pull
+
+      - run:
+          name: make build
+          command: |
+            make build
+
+      - run:
+          name: make test
+          command: |
+            # make the checkout directory writable by us
+            sudo chown -R 1000:1000 .
+            make test

@@ -34,4 +34,4 @@ function run_tests()
     rm_lockfile && do_license_check && do_test
 }
 
-rb_with_rubies_do ${TEST_RUBIES:-all} run_tests
+rb_with_rubies_do "${TEST_RUBIES:-all}" run_tests
