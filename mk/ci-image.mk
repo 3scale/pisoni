@@ -38,6 +38,7 @@ ci-flatten:
 		$(CI_IMAGE):$(CI_REL)-layered echo
 	(docker export dummy-export-$(CI_CONTAINER_NAME)-$(CI_REL)-layered | \
 		docker import -c "USER $(CI_USER)" -c "ENV PATH $(CI_PATH)" \
+		-c 'ONBUILD SHELL ["/bin/bash", "-c"]' \
 		$(CI_DF_EXTRA_CMDS) - $(CI_IMAGE):$(CI_REL)) || \
 		(echo Failed to flatten image && \
 		docker rm dummy-export-$(CI_CONTAINER_NAME)-$(CI_REL)-layered && false)
