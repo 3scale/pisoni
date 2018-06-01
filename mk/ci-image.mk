@@ -31,13 +31,14 @@ ci-flatten: CI_REL?=$(RELEASE)$(DF_CIEXT)
 ci-flatten: CI_CONTAINER_NAME?=$(shell echo $(CI_IMAGE) | sed -E -e 's/\//_/g')
 ci-flatten: CI_USER?=$(shell docker run --rm $(CI_IMAGE):$(CI_REL)-layered whoami)
 ci-flatten: CI_PATH?=$(shell docker run --rm $(CI_IMAGE):$(CI_REL)-layered /bin/bash -c "echo \$${PATH}")
+ci-flatten: CI_DF_EXTRA_CMDS=$(shell cat $(CI_DOCKERFILE) | grep -E "^(CMD|ENTRYPOINT)\s+" | sed -E -e "s/^(.*)$$/-c '\1'/g")
 ci-flatten:
 	-docker rm dummy-export-$(CI_CONTAINER_NAME)-$(CI_REL)-layered
 	docker run --name dummy-export-$(CI_CONTAINER_NAME)-$(CI_REL)-layered \
 		$(CI_IMAGE):$(CI_REL)-layered echo
 	(docker export dummy-export-$(CI_CONTAINER_NAME)-$(CI_REL)-layered | \
-		docker import -c "USER $(CI_USER)" -c "ENV PATH $(CI_PATH)" - \
-		$(CI_IMAGE):$(CI_REL)) || \
+		docker import -c "USER $(CI_USER)" -c "ENV PATH $(CI_PATH)" \
+		$(CI_DF_EXTRA_CMDS) - $(CI_IMAGE):$(CI_REL)) || \
 		(echo Failed to flatten image && \
 		docker rm dummy-export-$(CI_CONTAINER_NAME)-$(CI_REL)-layered && false)
 	-docker rm dummy-export-$(CI_CONTAINER_NAME)-$(CI_REL)-layered
