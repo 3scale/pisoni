@@ -7,7 +7,7 @@ include $(PROJECT_PATH)/mk/compose.mk
 COMPOSE ?= $(COMPOSE_BIN) -f $(PROJECT_PATH)/docker/docker-compose.yml -f $(PROJECT_PATH)/docker/docker-compose.apisonator.yml
 
 CI_IMAGE_REPO ?= quay.io/3scale
-CI_IMAGE_NAME ?= pisoni-ci
+CI_IMAGE_NAME ?= pisoni-ci:latest-alpine
 CI_IMAGE ?= $(CI_IMAGE_REPO)/$(CI_IMAGE_NAME)
 CI_DOCKERFILE ?= $(PROJECT_PATH)/docker/Dockerfile.ci
 
