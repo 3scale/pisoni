@@ -1,0 +1,18 @@
+version: '3'
+services:
+
+  test:
+    image: ${CI_IMAGE}
+    volumes:
+      - ..:/home/ruby/app:z
+    stdin_open: true
+    tty: true
+    environment:
+      THREESCALE_CORE_INTERNAL_API: "http://${APISONATOR_IAPI_USER}:${APISONATOR_IAPI_PASSWORD}@apisonator-listener:3000/internal"
+      WAIT_FOR: apisonator
+      WAIT_FOR_TIMEOUT: 10
+      WAIT_FOR_APISONATOR_URI: apisonator-listener:3000
+      TEST_RUBIES: ${TEST_RUBIES}
+    working_dir: /home/ruby/app
+    depends_on:
+      - apisonator-listener
