@@ -18,7 +18,8 @@ ARG APP_TEST_DEPS="which"
 RUN test "x${APP_RUNTIME_DEPS}${APP_BUILD_DEPS}${APP_TEST_DEPS}" = "x" \
     || (sudo yum install -y ${APP_RUNTIME_DEPS} ${APP_BUILD_DEPS} \
           ${APP_TEST_DEPS} \
-        && sudo yum clean all)
+        && sudo yum clean all \
+        && sudo rm -rf /var/cache/yum)
 
 COPY Gemfile *.gemspec .ruby-* /tmp/app/
 COPY lib/3scale/core/version.rb /tmp/app/lib/3scale/core/
