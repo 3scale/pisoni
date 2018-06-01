@@ -12,8 +12,13 @@ CI_IMAGE ?= $(CI_IMAGE_REPO)/$(CI_IMAGE_NAME)
 CI_DOCKERFILE ?= $(PROJECT_PATH)/docker/Dockerfile.ci
 
 include $(PROJECT_PATH)/mk/ci-image.mk
+include $(PROJECT_PATH)/mk/ci.mk
 
 all: clean pull build test
+
+$(call ci_build_target,ci-pull,pull)
+$(call ci_build_target,ci-test,test)
+$(call ci_build_target,ci-compose-config,compose-config)
 
 .PHONY: compose-config
 compose-config: compose
