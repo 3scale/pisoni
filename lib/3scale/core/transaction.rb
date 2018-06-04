@@ -12,8 +12,8 @@ module ThreeScale
 
       def self.load_all(service_id)
         result = api_do_get({}, { uri: transactions_uri(service_id),
-                                  rprefix: :transactions })  do |result|
-          return nil if result[:response].status == 404
+                                  rprefix: :transactions })  do |res|
+          return nil if res[:response].status == 404
           true
         end
 

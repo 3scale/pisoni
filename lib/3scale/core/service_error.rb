@@ -14,9 +14,9 @@ module ThreeScale
         result = api_do_get(options,
                             { uri: service_errors_uri(service_id),
                               prefix: '',
-                              rprefix: :errors }) do |result|
-          if result[:response].status == 400 &&
-              result[:response_json][:error] == 'per_page needs to be > 0'
+                              rprefix: :errors }) do |res|
+          if res[:response].status == 400 &&
+              res[:response_json][:error] == 'per_page needs to be > 0'
             raise InvalidPerPage.new
           end
           true
