@@ -13,8 +13,8 @@ module ThreeScale
       def self.load(service_id, app_id)
         result = api_do_get({},
                             uri: utilization_uri(service_id, app_id),
-                            rprefix: :utilization) do |result|
-          return nil if result[:response].status == 404
+                            rprefix: :utilization) do |res|
+          return nil if res[:response].status == 404
           true
         end
 
