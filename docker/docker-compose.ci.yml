@@ -2,11 +2,7 @@ version: '3'
 services:
 
   test:
-    build:
-      context: ..
-      dockerfile: docker/Dockerfile${DF_EXT}
-      args:
-        RUBY_VERSIONS: ${RUBY_VERSIONS}
+    image: ${CI_IMAGE}
     volumes:
       - ..:/home/ruby/app:z
     stdin_open: true

@@ -26,18 +26,13 @@ jobs:
             make compose
 
       - run:
-          name: make pull
+          name: make ci-pull
           command: |
-            make pull
+            make ci-pull
 
       - run:
-          name: make build
-          command: |
-            make build
-
-      - run:
-          name: make test
+          name: make ci-test
           command: |
             # make the checkout directory writable by us
             sudo chown -R 1000:1000 .
-            make test
+            make ci-test

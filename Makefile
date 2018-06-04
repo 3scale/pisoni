@@ -4,7 +4,7 @@ PROJECT_PATH := $(patsubst %/,%,$(dir $(MKFILE_PATH)))
 include $(PROJECT_PATH)/.env
 
 include $(PROJECT_PATH)/mk/compose.mk
-COMPOSE := $(COMPOSE_BIN) -f $(PROJECT_PATH)/docker/docker-compose.yml
+COMPOSE ?= $(COMPOSE_BIN) -f $(PROJECT_PATH)/docker/docker-compose.yml -f $(PROJECT_PATH)/docker/docker-compose.apisonator.yml
 
 CI_IMAGE_REPO ?= quay.io/3scale
 CI_IMAGE_NAME ?= pisoni-ci
@@ -12,8 +12,13 @@ CI_IMAGE ?= $(CI_IMAGE_REPO)/$(CI_IMAGE_NAME)
 CI_DOCKERFILE ?= $(PROJECT_PATH)/docker/Dockerfile.ci
 
 include $(PROJECT_PATH)/mk/ci-image.mk
+include $(PROJECT_PATH)/mk/ci.mk
 
 all: clean pull build test
+
+$(call ci_build_target,ci-pull,pull)
+$(call ci_build_target,ci-test,test)
+$(call ci_build_target,ci-compose-config,compose-config)
 
 .PHONY: compose-config
 compose-config: compose
