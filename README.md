@@ -1,4 +1,5 @@
 [![CircleCI](https://circleci.com/gh/3scale/pisoni.svg?style=shield)](https://circleci.com/gh/3scale/pisoni)
+[![Maintainability](https://api.codeclimate.com/v1/badges/4b18ae93abefdba17e0b/maintainability)](https://codeclimate.com/github/3scale/pisoni/maintainability)
 
 # Pisoni
 
