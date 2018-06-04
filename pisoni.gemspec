@@ -18,9 +18,9 @@ Gem::Specification.new do |s|
   s.description = 'Client for the Apisonator internal API for model data.'
   s.license     = 'Apache-2.0'
 
-  s.add_dependency 'faraday', '~> 0.13.1'
-  s.add_dependency 'json', '~> 1.8.1'
-  s.add_dependency 'injectedlogger', '~> 0.0.13'
+  s.add_dependency 'faraday', '>= 0.9.1'
+  s.add_dependency 'json', '>= 1.8.1'
+  s.add_dependency 'injectedlogger', '>= 0.0.13'
   s.add_dependency 'net-http-persistent'
 
   s.add_development_dependency 'rake'

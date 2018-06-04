@@ -1,6 +1,14 @@
 require 'uri'
 require 'json'
 require 'faraday'
+require 'net/http/persistent'
+
+# Warn that Faraday < 0.13 and Net::HTTP::Persistent >= 3.0.0 don't mix well
+if Faraday::VERSION =~ /0\.([0-9]|1[012])\.\d+/ &&
+    Net::HTTP::Persistent::VERSION =~ /^[^012]\.\d+\.\d+/
+  warn 'The combination of faraday < 0.13 and net-http-persistent 3.0+ is ' \
+    'known to have issues. See https://github.com/lostisland/faraday/issues/617'
+end
 
 require '3scale/core/version'
 require '3scale/core/logger'
