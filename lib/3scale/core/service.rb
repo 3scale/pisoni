@@ -66,6 +66,19 @@ module ThreeScale
         end
       end
 
+      def initialize(attributes = {})
+        @state = :active
+        super(attributes)
+      end
+
+      def activate
+        self.state = :active
+      end
+
+      def deactivate
+        self.state = :suspended
+      end
+
       def referrer_filters_required?
         @referrer_filters_required
       end
@@ -74,8 +87,19 @@ module ThreeScale
         @user_registration_required
       end
 
+      def active?
+        state == :active
+      end
+
       def save!
         self.class.save! attributes
+      end
+
+      private
+
+      def state=(value)
+        # only :active or nil will be considered as :active
+        @state = value.nil? || value.to_sym == :active ? :active : :suspended
       end
     end
   end
