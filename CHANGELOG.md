@@ -2,6 +2,13 @@
 
 Notable changes to Pisoni will be tracked in this document.
 
+## 1.24.0 - 2018-06-29
+
+### Added
+
+- Services can now be activated/deactivated based on the `state` attribute.
+  ([#7](https://github.com/3scale/pisoni/pull/7))
+
 ## 1.23.2 - 2018-06-04
 
 ### Changed
