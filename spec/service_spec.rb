@@ -105,6 +105,28 @@ module ThreeScale
             Service.save!(@service_params)
           end.must_raise ServiceRequiresDefaultUserPlan
         end
+
+        it 'save active service' do
+          service = Service.new(@service_params)
+          service.wont_be_nil
+          service.activate
+          service.active?.must_equal true
+          service.save!
+          loaded_service = Service.load_by_id(@service_params[:id])
+          loaded_service.wont_be_nil
+          loaded_service.active?.must_equal true
+        end
+
+        it 'save disable service' do
+          service = Service.new(@service_params)
+          service.wont_be_nil
+          service.deactivate
+          service.active?.must_equal false
+          service.save!
+          loaded_service = Service.load_by_id(@service_params[:id])
+          loaded_service.wont_be_nil
+          loaded_service.active?.must_equal false
+        end
       end
 
       describe '.make_default' do
@@ -152,6 +174,51 @@ module ThreeScale
           lambda do
             with_changed_provider_key(default_provider_key, '') { }
           end.must_raise InvalidProviderKeys
+        end
+      end
+
+      describe '.active?' do
+        it 'should be active when service is initialized as active' do
+          [
+            { state: :active },
+            { state: 'active' },
+            # even when state is not set
+            {},
+            # even when state is intentionally set as nil
+            { state: nil }
+          ].each do |svc_attrs|
+            Service.new(svc_attrs).active?.must_equal true
+          end
+        end
+
+        it 'should be inactive when service is initialized as disabled' do
+          [
+            { state: :suspended },
+            { state: 'suspended' },
+            { state: :something },
+            { state: :disable },
+            { state: :disabled },
+            { state: '1' },
+            { state: '0' },
+            { state: 'true' },
+            { state: 'false' }
+          ].each do |svc_attrs|
+            Service.new(svc_attrs).active?.must_equal false
+          end
+        end
+
+        it 'should be active when the service is activated' do
+          s = Service.new(state: :disable)
+          s.active?.must_equal false
+          s.activate
+          s.active?.must_equal true
+        end
+
+        it 'should be disabled when the service is deactivated' do
+          s = Service.new(state: :active)
+          s.active?.must_equal true
+          s.deactivate
+          s.active?.must_equal false
         end
       end
     end

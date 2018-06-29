@@ -3,7 +3,7 @@ module ThreeScale
     class Service < APIClient::Resource
       attributes :provider_key, :id, :backend_version, :referrer_filters_required,
                  :user_registration_required, :default_user_plan_id,
-                 :default_user_plan_name, :default_service
+                 :default_user_plan_name, :default_service, :state
 
       class << self
         def load_by_id(service_id)
@@ -66,6 +66,19 @@ module ThreeScale
         end
       end
 
+      def initialize(attributes = {})
+        @state = :active
+        super(attributes)
+      end
+
+      def activate
+        self.state = :active
+      end
+
+      def deactivate
+        self.state = :suspended
+      end
+
       def referrer_filters_required?
         @referrer_filters_required
       end
@@ -74,8 +87,19 @@ module ThreeScale
         @user_registration_required
       end
 
+      def active?
+        state == :active
+      end
+
       def save!
         self.class.save! attributes
+      end
+
+      private
+
+      def state=(value)
+        # only :active or nil will be considered as :active
+        @state = value.nil? || value.to_sym == :active ? :active : :suspended
       end
     end
   end
