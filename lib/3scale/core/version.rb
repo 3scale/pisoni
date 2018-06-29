@@ -1,5 +1,5 @@
 module ThreeScale
   module Core
-    VERSION = '1.23.2'
+    VERSION = '1.24.0'
   end
 end
