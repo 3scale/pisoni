@@ -20,7 +20,7 @@ module ThreeScale
 
             application.service_id.must_equal '2001'
             application.id.must_equal '8011'
-            application.state.must_equal 'suspended'
+            application.active?.must_equal false
             application.plan_id.must_equal '3066'
             application.plan_name.must_equal 'crappy'
             application.redirect_url.must_equal 'blah'
@@ -93,7 +93,7 @@ module ThreeScale
         it 'returns an Application object with correct fields' do
           @app.id.must_equal '8011'
           @app.service_id.must_equal '2001'
-          @app.state.must_equal 'suspended'
+          @app.active?.must_equal false
           @app.plan_id.must_equal '3066'
           @app.plan_name.must_equal 'crappy'
           @app.redirect_url.must_equal 'blah'
@@ -152,6 +152,77 @@ module ThreeScale
           newapp.plan_name.must_equal 'some_other_plan'
         end
 
+        it 'save active application' do
+          @app.activate
+          @app.save
+          newapp = Application.load @app.service_id, @app.id
+          newapp.active?.must_equal true
+        end
+
+        it 'save inactive application' do
+          @app.deactivate
+          @app.save
+          newapp = Application.load @app.service_id, @app.id
+          newapp.active?.must_equal false
+        end
+
+        it 'save application with no explicit state' do
+          svc_id = 2001
+          app_id = 9011
+          # Make sure there is nothing in db
+          Application.delete(svc_id, app_id)
+          Application.load(svc_id, app_id).must_be_nil
+          app_def_state = Application.new service_id: svc_id, id: app_id
+          app_def_state.save
+          newapp = Application.load app_def_state.service_id, app_def_state.id
+          newapp.wont_be_nil
+          newapp.active?.must_equal true
+        end
+      end
+
+      describe '.active?' do
+        it 'should be active when application is initialized as active' do
+          [
+            { state: :active },
+            { state: 'active' },
+            # even when state is not set
+            {},
+            # even when state is intentionally set as nil
+            { state: nil }
+          ].each do |app_attrs|
+            Application.new(app_attrs).active?.must_equal true
+          end
+        end
+
+        it 'should be inactive when application is initialized as disabled' do
+          [
+            { state: :suspended },
+            { state: 'suspended' },
+            { state: :something },
+            { state: :disable },
+            { state: :disabled },
+            { state: '1' },
+            { state: '0' },
+            { state: 'true' },
+            { state: 'false' }
+          ].each do |app_attrs|
+            Application.new(app_attrs).active?.must_equal false
+          end
+        end
+
+        it 'should be active when the application is activated' do
+          app = Application.new(state: :disable)
+          app.active?.must_equal false
+          app.activate
+          app.active?.must_equal true
+        end
+
+        it 'should be inactive when the application is deactivated' do
+          app = Application.new(state: :active)
+          app.active?.must_equal true
+          app.deactivate
+          app.active?.must_equal false
+        end
       end
 
       describe 'by_key' do
