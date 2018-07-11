@@ -38,6 +38,23 @@ module ThreeScale
         api_delete({}, uri: app_uri(service_id, id))
       end
 
+      def initialize(attributes = {})
+        @state = :active
+        super(attributes)
+      end
+
+      def activate
+        self.state = :active
+      end
+
+      def deactivate
+        self.state = :suspended
+      end
+
+      def active?
+        state == :active
+      end
+
       def save
         api_save uri: self.class.send(:app_uri, service_id, id)
       end
@@ -62,6 +79,12 @@ module ThreeScale
         api_delete({}, uri: key_uri(service_id, user_key))
       end
 
+      private
+
+      def state=(value)
+        # only :active or nil will be considered as :active
+        @state = value.nil? || value.to_sym == :active ? :active : :suspended
+      end
     end
   end
 end
