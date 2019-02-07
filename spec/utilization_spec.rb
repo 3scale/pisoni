@@ -3,9 +3,9 @@ require_relative './spec_helper'
 module ThreeScale
   module Core
     describe Utilization do
-      let(:service_id) { '1001' }
+      let(:service_id) { '1001_utilization_spec' }
       let(:non_existing_service_id) { service_id.to_i.succ.to_s }
-      let(:provider_key) { 'foo' }
+      let(:provider_key) { 'foo_utilization_spec' }
 
       let(:app_id) { '2001' }
       let(:non_existing_app_id) { app_id.to_i.succ.to_s }

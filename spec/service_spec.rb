@@ -6,10 +6,10 @@ module ThreeScale
       let(:default_service_id) { 7001 }
       let(:non_default_service_id) { default_service_id.succ }
       let(:non_existent_service_id) { non_default_service_id.succ }
-      let(:default_provider_key) { 'foo' }
-      let(:other_provider_key) { 'bazinga' }
-      let(:another_provider_key) { 'bar' }
-      let(:non_existent_provider_key) { 'bunga' }
+      let(:default_provider_key) { 'foo_service_spec' }
+      let(:other_provider_key) { 'bazinga_service_spec' }
+      let(:another_provider_key) { 'bar_service_spec' }
+      let(:non_existent_provider_key) { 'bunga_service_spec' }
 
       before do
         # We create a new service for our provider as the default, then
@@ -62,22 +62,21 @@ module ThreeScale
       end
 
       describe '.delete_by_id!' do
-        before do
-          Service.save! provider_key: default_provider_key,
-                        id: default_service_id,
-                        default_service: true
-        end
-
         it 'returns true if deleting a non-default service' do
           Service.save! provider_key: default_provider_key,
                         id: non_default_service_id
           Service.delete_by_id!(non_default_service_id).must_equal true
         end
 
-        it 'raises an exception when deleting a default service' do
+        it 'raises an exception when deleting a default service and not unique' do
+          Service.save! provider_key: default_provider_key, id: non_default_service_id
           lambda do
             Service.delete_by_id! default_service_id
           end.must_raise ServiceIsDefaultService
+        end
+
+        it 'returns true when deleting a default service and is unique for the provider' do
+          Service.delete_by_id!(default_service_id).must_equal true
         end
       end
 

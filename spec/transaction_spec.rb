@@ -6,11 +6,11 @@ module ThreeScale
     describe Transaction do
       before do
         Service.delete_by_id!(service_id)
-        Service.save!(provider_key: 'foo', id: service_id)
+        Service.save!(provider_key: 'foo_transaction_spec', id: service_id)
       end
 
       describe '.load_all' do
-        let(:service_id) { '7575' }
+        let(:service_id) { '7575_transaction_spec' }
         let(:non_existing_service_id) { service_id.to_i.succ.to_s }
 
         before do
