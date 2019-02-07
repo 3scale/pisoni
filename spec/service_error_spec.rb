@@ -4,7 +4,8 @@ require_relative './private_endpoints/service_error'
 module ThreeScale
   module Core
     describe ServiceError do
-      let(:service_id) { '7575' }
+      let(:service_id) { '7575_service_error_spec' }
+      let(:provider_key) { 'foo_service_error_spec' }
       let(:non_existing_service_id) { service_id.to_i.succ.to_s }
 
       describe '.load_all' do
@@ -17,7 +18,7 @@ module ThreeScale
 
         before do
           Service.delete_by_id!(service_id)
-          Service.save!(provider_key: 'foo', id: service_id)
+          Service.save!(provider_key: provider_key, id: service_id)
           ServiceError.delete_all(service_id)
           ServiceError.save(service_id, error_messages)
         end
@@ -100,7 +101,7 @@ module ThreeScale
       describe '.delete_all' do
         before do
           Service.delete_by_id!(service_id)
-          Service.save!(provider_key: 'foo', id: service_id)
+          Service.save!(provider_key: provider_key, id: service_id)
           ServiceError.delete_all(service_id)
         end
 
