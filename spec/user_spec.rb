@@ -159,6 +159,34 @@ module ThreeScale
                      plan_id: plan_id, plan_name: plan_name
         end
       end
+
+      describe '.delete_all_for_service' do
+        let(:service_id) { '2001_delete_all_for_service' }
+        let(:provider_key) { 'provider_for_delete_all_for_service' }
+        let(:state) { :active }
+
+        before do
+          Service.save! provider_key: provider_key, id: service_id, default_service: true
+        end
+
+        it 'deletes all users' do
+          user01 = User.save!(service_id: service_id, username: 'username01', state: :active,
+                              plan_id: 'plan_id_01', plan_name: 'plan_01')
+          user02 = User.save!(service_id: service_id, username: 'username02', state: :active,
+                              plan_id: 'plan_id_02', plan_name: 'plan_02')
+          User.delete_all_for_service(service_id).must_equal true
+          User.load(service_id, user01.username).must_be_nil
+          User.load(service_id, user02.username).must_be_nil
+        end
+
+        it 'raises error on empty service' do
+          proc { User.delete_all_for_service('') }.must_raise UserRequiresServiceId
+        end
+
+        it 'raises error on nil service' do
+          proc { User.delete_all_for_service(nil) }.must_raise UserRequiresServiceId
+        end
+      end
     end
   end
 end
