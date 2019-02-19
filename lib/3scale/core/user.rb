@@ -10,6 +10,11 @@ module ThreeScale
       end
       private_class_method :base_uri
 
+      def self.users_base_uri(service_id)
+        "#{default_uri}#{service_id}/users"
+      end
+      private_class_method :users_base_uri
+
       def self.check_params(service_id, username)
         raise UserRequiresUsername if username.nil? || username == ''.freeze
         raise UserRequiresServiceId if service_id.nil? || service_id == ''.freeze
@@ -41,6 +46,12 @@ module ThreeScale
       def self.delete!(service_id, username)
         check_params service_id, username
         api_delete({}, uri: base_uri(service_id, username))
+      end
+
+      def self.delete_all_for_service(service_id)
+        raise UserRequiresServiceId if service_id.nil? || service_id == ''.freeze
+
+        api_delete({}, uri: users_base_uri(service_id))
       end
     end
   end
