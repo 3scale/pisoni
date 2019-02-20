@@ -1,4 +1,4 @@
-FROM quay.io/3scale/rbenv4ci-container:v0.2.1-centos
+FROM quay.io/3scale/rbenv4ci-container:v0.2.2-centos
 MAINTAINER Alejandro Martinez Ruiz <amr@redhat.com>
 
 RUN sudo yum upgrade -y \
