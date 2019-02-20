@@ -2,6 +2,13 @@
 
 Notable changes to Pisoni will be tracked in this document.
 
+## 1.25.0 - 2019-02-20
+
+### Added
+
+- Applications can now be activated/deactivated. [#12](https://github.com/3scale/pisoni/pull/12)
+- Users of a service can now be deleted. [#15](https://github.com/3scale/pisoni/pull/15)
+
 ## 1.24.0 - 2018-06-29
 
 ### Added
