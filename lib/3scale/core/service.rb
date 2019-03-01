@@ -46,6 +46,10 @@ module ThreeScale
           save! id: service_id, default_service: true
         end
 
+        def delete_stats(service_id, delete_job)
+          api_delete(delete_job, uri: "#{service_uri(service_id)}/stats", prefix: '')
+        end
+
         private
 
         def service_uri(id)
