@@ -220,6 +220,42 @@ module ThreeScale
           s.active?.must_equal false
         end
       end
+
+      describe '.delete_stats' do
+        let(:service_id) { default_service_id }
+        let(:applications) { %w[1 2 3] }
+        let(:metrics) { %w[10 20 30] }
+        let(:users) { %w[100 200 300] }
+        let(:from) { Time.new(2002, 10, 31).to_i }
+        let(:to) { Time.new(2003, 10, 31).to_i }
+        let(:delete_job) do
+          {
+            deletejobdef: {
+              applications: applications,
+              metrics: metrics,
+              users: users,
+              from: from,
+              to: to
+            }
+          }
+        end
+
+        describe 'with valid job' do
+          it 'does not raise error' do
+            Service.delete_stats(default_service_id, delete_job).must_equal true
+          end
+        end
+
+        describe 'with invalid job' do
+          # to < from
+          let(:to) { Time.new(2001, 10, 31).to_i }
+          it 'raises error' do
+            lambda {
+              Service.delete_stats(default_service_id, delete_job)
+            }.must_raise APIClient::APIError
+          end
+        end
+      end
     end
   end
 end
