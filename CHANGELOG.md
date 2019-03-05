@@ -2,6 +2,16 @@
 
 Notable changes to Pisoni will be tracked in this document.
 
+## 1.26.0 - 2019-03-05
+
+### Added
+
+- The stats of a service can now be deleted. [#19](https://github.com/3scale/pisoni/pull/19)
+
+### Changed
+
+- Ruby 2.2 is no longer supported. The minimum version is 2.3.0. [#18](https://github.com/3scale/pisoni/pull/18)
+
 ## 1.25.0 - 2019-02-20
 
 ### Added
