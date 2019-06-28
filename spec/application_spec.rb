@@ -44,6 +44,20 @@ module ThreeScale
             Application.load(1999, 7999).must_be_nil
           end
         end
+
+        describe 'with an app ID that contains special characters' do
+          let(:service_id) { 2001 }
+          let(:app_id) { '#$*' }
+
+          before do
+            Application.save service_id: service_id, id: app_id, state: 'suspended',
+                             plan_id: '3066', plan_name: 'crappy', redirect_url: 'blah'
+          end
+
+          it 'returns an app with the correct ID' do
+            Application.load(service_id, app_id).id.must_equal app_id
+          end
+        end
       end
 
       describe '.delete' do
@@ -71,6 +85,20 @@ module ThreeScale
 
           it 'returns false when deleting an application with missing service id' do
             Application.delete(1999, 8011).must_equal false
+          end
+        end
+
+        describe 'with an app ID that contains special characters' do
+          let(:service_id) { 2001 }
+          let(:app_id) { '#$*' }
+
+          before do
+            Application.save service_id: service_id, id: app_id, state: 'suspended',
+                             plan_id: '3066', plan_name: 'crappy', redirect_url: 'blah'
+          end
+
+          it 'returns true when deleting an existing app' do
+            Application.delete(service_id, app_id).must_equal true
           end
         end
       end
@@ -124,6 +152,22 @@ module ThreeScale
             lambda do
               Application.save(attrs)
             end.must_raise KeyError # minitest wont catch parent exceptions :/
+          end
+        end
+
+        describe 'with an app ID that contains special characters' do
+          let(:service_id) { 2001 }
+          let(:app_id) { '#$*' }
+
+          before do
+            Application.delete(service_id, app_id)
+          end
+
+          it 'returns an object with the correct ID' do
+            app = Application.save service_id: service_id, id: app_id, state: 'suspended',
+                                   plan_id: '3066', plan_name: 'crappy', redirect_url: 'blah'
+
+            app.id.must_equal app_id
           end
         end
       end
@@ -226,6 +270,8 @@ module ThreeScale
       end
 
       describe 'by_key' do
+        let(:key_with_special_chars) { '#$*' }
+
         before do
           Application.save_id_by_key(2001, 'a_key', 8011)
         end
@@ -233,6 +279,16 @@ module ThreeScale
         describe '.load_id_by_key' do
           it 'returns the app ID linked to the specified service and key' do
             Application.load_id_by_key(2001, 'a_key').must_equal '8011'
+          end
+
+          describe 'with a key that contains special chars (*, _, etc.)' do
+            before do
+              Application.save_id_by_key(2001, key_with_special_chars, 8011)
+            end
+
+            it 'returns the correct app ID' do
+              Application.load_id_by_key(2001, key_with_special_chars).must_equal '8011'
+            end
           end
         end
 
@@ -244,6 +300,17 @@ module ThreeScale
             # clean up this key
             Application.delete_id_by_key(2001, 'another_key')
           end
+
+          describe 'with a key that contains special chars (*, _, etc.)' do
+            after do
+              Application.delete_id_by_key(2001, key_with_special_chars)
+            end
+
+            it 'changes the key linked to the app ID and service' do
+              Application.save_id_by_key(2001, key_with_special_chars, 8011).must_equal true
+              Application.load_id_by_key(2001, key_with_special_chars).must_equal '8011'
+            end
+          end
         end
 
         describe '.delete_id_by_key' do
@@ -251,6 +318,17 @@ module ThreeScale
             Application.load_id_by_key(2001, 'a_key').must_equal '8011'
             Application.delete_id_by_key(2001, 'a_key')
             Application.load_id_by_key(2001, 'a_key').must_be_nil
+          end
+
+          describe 'with a key that contains special chars (*, _, etc.)' do
+            before do
+              Application.save_id_by_key(2001, key_with_special_chars, 8011)
+            end
+
+            it 'deletes the app' do
+              Application.delete_id_by_key(2001, key_with_special_chars)
+              Application.load_id_by_key(2001, key_with_special_chars).must_be_nil
+            end
           end
         end
       end
