@@ -245,16 +245,6 @@ module ThreeScale
             Service.delete_stats(default_service_id, delete_job).must_equal true
           end
         end
-
-        describe 'with invalid job' do
-          # to < from
-          let(:to) { Time.new(2001, 10, 31).to_i }
-          it 'raises error' do
-            lambda {
-              Service.delete_stats(default_service_id, delete_job)
-            }.must_raise APIClient::APIError
-          end
-        end
       end
     end
   end
