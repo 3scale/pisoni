@@ -2,6 +2,12 @@
 
 Notable changes to Pisoni will be tracked in this document.
 
+## 1.27.0 - 2019-06-28
+
+### Added
+
+- Support for app credentials with special characters ('*', '$', etc.). [#22](https://github.com/3scale/pisoni/pull/22)
+
 ## 1.26.0 - 2019-03-05
 
 ### Added
