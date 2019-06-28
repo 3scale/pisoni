@@ -1,3 +1,5 @@
+require 'cgi'
+
 module ThreeScale
   module Core
     class Application < APIClient::Resource
@@ -16,12 +18,16 @@ module ThreeScale
       private_class_method :base_uri
 
       def self.app_uri(service_id, id)
-        "#{base_uri(service_id)}#{id}"
+        escaped_id = CGI::escape(id.to_s)
+
+        "#{base_uri(service_id)}#{escaped_id}"
       end
       private_class_method :app_uri
 
       def self.key_uri(service_id, key)
-        "#{base_uri(service_id)}key/#{key}"
+        escaped_key = CGI::escape(key)
+
+        "#{base_uri(service_id)}key/#{escaped_key}"
       end
       private_class_method :key_uri
 
@@ -71,7 +77,8 @@ module ThreeScale
 
       def self.save_id_by_key(service_id, user_key, id)
         raise ApplicationHasInconsistentData.new(id, user_key) if (service_id.nil? || id.nil? || user_key.nil? || service_id=="" || id=="" || user_key=="")
-        ret = api_do_put({}, uri: "#{app_uri(service_id, id)}/key/#{user_key}")
+        escaped_key = CGI::escape(user_key)
+        ret = api_do_put({}, uri: "#{app_uri(service_id, id)}/key/#{escaped_key}")
         ret[:ok]
       end
 
