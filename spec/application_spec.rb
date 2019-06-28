@@ -270,64 +270,69 @@ module ThreeScale
       end
 
       describe 'by_key' do
+        let(:key) { 'a_key' }
         let(:key_with_special_chars) { '#$*' }
+        let(:service_id) { 2001 }
+        let(:app_id) { 8011 }
 
         before do
-          Application.save_id_by_key(2001, 'a_key', 8011)
+          Application.save_id_by_key(service_id, key, app_id)
         end
 
         describe '.load_id_by_key' do
           it 'returns the app ID linked to the specified service and key' do
-            Application.load_id_by_key(2001, 'a_key').must_equal '8011'
+            Application.load_id_by_key(service_id, key).must_equal app_id.to_s
           end
 
           describe 'with a key that contains special chars (*, _, etc.)' do
             before do
-              Application.save_id_by_key(2001, key_with_special_chars, 8011)
+              Application.save_id_by_key(service_id, key_with_special_chars, app_id)
             end
 
             it 'returns the correct app ID' do
-              Application.load_id_by_key(2001, key_with_special_chars).must_equal '8011'
+              Application.load_id_by_key(service_id, key_with_special_chars).must_equal app_id.to_s
             end
           end
         end
 
         describe '.save_id_by_key' do
+          let(:another_key) { key.succ }
+
           it 'changes the key linked to the app ID and service' do
-            Application.load_id_by_key(2001, 'another_key').must_be_nil
-            Application.save_id_by_key(2001, 'another_key', 8011).must_equal true
-            Application.load_id_by_key(2001, 'another_key').must_equal '8011'
+            Application.load_id_by_key(service_id, another_key).must_be_nil
+            Application.save_id_by_key(service_id, another_key, app_id).must_equal true
+            Application.load_id_by_key(service_id, another_key).must_equal app_id.to_s
             # clean up this key
-            Application.delete_id_by_key(2001, 'another_key')
+            Application.delete_id_by_key(service_id, another_key)
           end
 
           describe 'with a key that contains special chars (*, _, etc.)' do
             after do
-              Application.delete_id_by_key(2001, key_with_special_chars)
+              Application.delete_id_by_key(service_id, key_with_special_chars)
             end
 
             it 'changes the key linked to the app ID and service' do
-              Application.save_id_by_key(2001, key_with_special_chars, 8011).must_equal true
-              Application.load_id_by_key(2001, key_with_special_chars).must_equal '8011'
+              Application.save_id_by_key(service_id, key_with_special_chars, app_id).must_equal true
+              Application.load_id_by_key(service_id, key_with_special_chars).must_equal app_id.to_s
             end
           end
         end
 
         describe '.delete_id_by_key' do
           it 'deletes the key linked to the app ID and service' do
-            Application.load_id_by_key(2001, 'a_key').must_equal '8011'
-            Application.delete_id_by_key(2001, 'a_key')
-            Application.load_id_by_key(2001, 'a_key').must_be_nil
+            Application.load_id_by_key(service_id, key).must_equal app_id.to_s
+            Application.delete_id_by_key(service_id, key)
+            Application.load_id_by_key(service_id, key).must_be_nil
           end
 
           describe 'with a key that contains special chars (*, _, etc.)' do
             before do
-              Application.save_id_by_key(2001, key_with_special_chars, 8011)
+              Application.save_id_by_key(service_id, key_with_special_chars, app_id)
             end
 
             it 'deletes the app' do
-              Application.delete_id_by_key(2001, key_with_special_chars)
-              Application.load_id_by_key(2001, key_with_special_chars).must_be_nil
+              Application.delete_id_by_key(service_id, key_with_special_chars)
+              Application.load_id_by_key(service_id, key_with_special_chars).must_be_nil
             end
           end
         end
