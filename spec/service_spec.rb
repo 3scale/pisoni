@@ -97,14 +97,6 @@ module ThreeScale
           service.provider_key.must_equal default_provider_key
         end
 
-        it 'raises an exception when missing a default user plan' do
-          @service_params.merge! user_registration_required: false
-
-          lambda do
-            Service.save!(@service_params)
-          end.must_raise ServiceRequiresDefaultUserPlan
-        end
-
         it 'save active service' do
           service = Service.new(@service_params)
           service.wont_be_nil

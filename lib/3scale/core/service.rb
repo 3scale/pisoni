@@ -20,12 +20,7 @@ module ThreeScale
 
         def save!(attributes)
           id = attributes.fetch(:id)
-          api_update(attributes, uri: service_uri(id)) do |result|
-            if result[:response].status == 400
-              raise ServiceRequiresDefaultUserPlan
-            end
-            true
-          end
+          api_update(attributes, uri: service_uri(id))
         end
 
         def change_provider_key!(old_key, new_key)

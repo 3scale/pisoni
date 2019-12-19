@@ -37,12 +37,6 @@ module ThreeScale
       end
     end
 
-    class ServiceRequiresDefaultUserPlan < Error
-      def initialize
-        super %(Services without the need for registered users require a default user plan)
-      end
-    end
-
     class ServiceIsDefaultService < Error
       def initialize(id = nil)
         super %(Service id="#{id}" is the default service, must be removed forcefully or make it not default before removal)
