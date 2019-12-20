@@ -232,8 +232,14 @@ module ThreeScale
           }
         end
 
-        describe 'with valid job' do
+        describe 'with a service ID' do
           it 'does not raise error' do
+            Service.delete_stats(default_service_id, nil).must_equal true
+          end
+        end
+
+        describe 'with a deprecated delete_job param' do
+          it 'ignores it without raising error' do
             Service.delete_stats(default_service_id, delete_job).must_equal true
           end
         end
