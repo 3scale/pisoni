@@ -37,12 +37,6 @@ module ThreeScale
       end
     end
 
-    class ServiceRequiresDefaultUserPlan < Error
-      def initialize
-        super %(Services without the need for registered users require a default user plan)
-      end
-    end
-
     class ServiceIsDefaultService < Error
       def initialize(id = nil)
         super %(Service id="#{id}" is the default service, must be removed forcefully or make it not default before removal)
@@ -52,30 +46,6 @@ module ThreeScale
     class ServiceRequiresRegisteredUser < Error
       def initialize(id = nil)
         super %(Service id="#{id}" requires users to be registered before hand)
-      end
-    end
-
-    class UserRequiresUsername < Error
-      def initialize
-        super %(User requires username)
-      end
-    end
-
-    class UserRequiresServiceId < Error
-      def initialize
-        super %(User requires a service id)
-      end
-    end
-
-    class UserRequiresValidServiceId < Error
-      def initialize(id)
-        super %(Service id #{id} is invalid, user requires a valid id)
-      end
-    end
-
-    class UserRequiresDefinedPlan < Error
-      def initialize(plan_id, plan_name)
-        super %(User requires a defined plan, plan id: #{plan_id} plan name: #{plan_name})
       end
     end
 
