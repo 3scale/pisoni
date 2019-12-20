@@ -2,6 +2,20 @@
 
 Notable changes to Pisoni will be tracked in this document.
 
+## 1.28.0 - 2019-12-20
+
+### Changed
+
+- `Service.delete_stats` has been adapted to the changes in Apisonator. Now it
+only needs to receive the service ID as a param and deletes all the stats for
+that service. The second param of the function, "delete_job" is ignored now.
+[#24](https://github.com/3scale/pisoni/pull/24)
+
+### Removed
+
+- Support for end-users, a feature that's no longer supported in recent
+Apisonator. [#25](https://github.com/3scale/pisoni/pull/25)
+
 ## 1.27.0 - 2019-06-28
 
 ### Added
