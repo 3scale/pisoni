@@ -53,8 +53,6 @@ module ThreeScale
             end
           end
           usage_limits.each { |limit| UsageLimit.save(limit) }
-
-          Transaction.delete_all(service_id)
         end
 
         # This is a basic test that only checks the structure of the response.
