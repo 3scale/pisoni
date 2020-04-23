@@ -7,7 +7,7 @@ Notable changes to Pisoni will be tracked in this document.
 ### Removed
 
 - "Latest transactions" functionality
-[#26](https://github.com/3scale/pisoni/pull/26)
+[#27](https://github.com/3scale/pisoni/pull/27)
 
 ## 1.28.0 - 2019-12-20
 
