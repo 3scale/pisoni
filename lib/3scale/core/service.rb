@@ -2,8 +2,7 @@ module ThreeScale
   module Core
     class Service < APIClient::Resource
       attributes :provider_key, :id, :backend_version, :referrer_filters_required,
-                 :user_registration_required, :default_user_plan_id,
-                 :default_user_plan_name, :default_service, :state
+                 :default_service, :state
 
       class << self
         def load_by_id(service_id)
@@ -83,10 +82,6 @@ module ThreeScale
 
       def referrer_filters_required?
         @referrer_filters_required
-      end
-
-      def user_registration_required?
-        @user_registration_required
       end
 
       def active?

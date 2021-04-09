@@ -26,8 +26,6 @@ module ThreeScale
                                 id: default_service_id,
                                 referrer_filters_required: true,
                                 backend_version: 'oauth',
-                                default_user_plan_id: 15,
-                                default_user_plan_name: 'test name',
                                 default_service: true
         raise unless service.default_service
 
@@ -47,10 +45,7 @@ module ThreeScale
             service.provider_key.must_equal default_provider_key
             service.id.must_equal default_service_id.to_s
             service.referrer_filters_required?.must_equal true
-            service.user_registration_required?.must_equal true
             service.backend_version.must_equal 'oauth'
-            service.default_user_plan_id.must_equal '15'
-            service.default_user_plan_name.must_equal 'test name'
           end
         end
 
