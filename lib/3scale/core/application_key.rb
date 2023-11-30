@@ -23,14 +23,12 @@ module ThreeScale
       end
 
       def self.base_uri(service_id, application_id)
-        "#{default_uri}#{service_id}/applications/#{application_id}/keys/"
+        "#{default_uri}#{service_id}/applications/#{CGI::escape(application_id.to_s)}/keys/"
       end
       private_class_method :base_uri
 
       def self.application_key_uri(service_id, application_id, value = '')
-        escaped_value = CGI::escape(value)
-
-        "#{base_uri(service_id, application_id)}#{escaped_value}"
+        "#{base_uri(service_id, application_id)}#{CGI::escape(value.to_s)}"
       end
       private_class_method :application_key_uri
     end
