@@ -8,3 +8,6 @@ Gemfile.lock
 vendor/
 coverage/
 .ruby-version
+.tool-versions
+.idea
+
