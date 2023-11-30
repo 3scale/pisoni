@@ -2,6 +2,13 @@
 
 Notable changes to Pisoni will be tracked in this document.
 
+## 1.29.1 - 2023-11-30
+
+### Changed
+
+- Fixed the issue with updating/deleting keys for applications with special characters in the
+application IDs by escaping them. [#31](https://github.com/3scale/pisoni/pull/31)
+
 ## 1.29.0 - 2020-03-17
 
 ### Removed
