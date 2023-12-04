@@ -72,6 +72,22 @@ module ThreeScale
             application_key.value.must_equal key
           end
         end
+
+        describe 'with app ID that contains special characters ({, $, ? etc.)' do
+          let(:app_id) { 'abc{1}$3?' }
+          let(:key) { 'z#$*' }
+
+          before do
+            ApplicationKey.delete(service_id, app_id, key)
+          end
+
+          it 'saves it correctly' do
+            application_key = ApplicationKey.save(service_id, app_id, key)
+
+            application_key.must_be_kind_of ApplicationKey
+            application_key.value.must_equal key
+          end
+        end
       end
 
       describe '.delete' do

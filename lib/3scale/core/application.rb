@@ -25,7 +25,7 @@ module ThreeScale
       private_class_method :app_uri
 
       def self.key_uri(service_id, key)
-        escaped_key = CGI::escape(key)
+        escaped_key = CGI::escape(key.to_s)
 
         "#{base_uri(service_id)}key/#{escaped_key}"
       end
