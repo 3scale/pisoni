@@ -6,21 +6,21 @@ module ThreeScale
         describe 'when there are application keys' do
           let(:service_id) { 100 }
           let(:app_id)     { 2001 }
-          let(:values)     { ["foo", "bar"] }
+          let(:keys)     { %w[foo bar] }
           before do
-            values.map { |value| ApplicationKey.delete(service_id, app_id, value) }
+            keys.map { |key| ApplicationKey.delete(service_id, app_id, key) }
 
             Application.save service_id: service_id, id: app_id, state: 'suspended',
                              plan_id: '3066', plan_name: 'crappy', redirect_url: 'blah'
 
-            values.map { |value| ApplicationKey.save(service_id, app_id, value) }
+            keys.map { |key| ApplicationKey.save(service_id, app_id, key) }
           end
 
           it 'returns a list of application keys' do
             application_keys = ApplicationKey.load_all(service_id, app_id)
 
             application_keys.size.must_equal 2
-            application_keys.map(&:value).sort.must_equal values.sort
+            application_keys.map(&:value).sort.must_equal keys.sort
           end
         end
 
@@ -42,20 +42,20 @@ module ThreeScale
       describe '.save' do
         let(:service_id) { 500 }
         let(:app_id)     { 500 }
-        let(:value)      { "foobar" }
+        let(:key)      { "foobar" }
 
         before do
-          ApplicationKey.delete(service_id, app_id, value)
+          ApplicationKey.delete(service_id, app_id, key)
 
           Application.save service_id: service_id, id: app_id, state: 'suspended',
                            plan_id: '3066', plan_name: 'crappy', redirect_url: 'blah'
         end
 
         it 'returns an ApplicationKey object' do
-          application_key = ApplicationKey.save(service_id, app_id, value)
+          application_key = ApplicationKey.save(service_id, app_id, key)
 
           application_key.must_be_kind_of ApplicationKey
-          application_key.value.must_equal value
+          application_key.value.must_equal key
         end
 
         describe 'with a key that contains special chars (*, _, etc.)' do

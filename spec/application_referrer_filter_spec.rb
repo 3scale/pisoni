@@ -25,15 +25,15 @@ module ThreeScale
 
       describe '.load_all' do
         describe 'Getting all referrer filters' do
-          let(:values)     { %w(foo bar) }
+          let(:ref_filters)     { %w(foo bar) }
 
           before do
-            values.map { |value| ApplicationReferrerFilter.save(service_id, app_id, value) }
+            ref_filters.map { |value| ApplicationReferrerFilter.save(service_id, app_id, value) }
           end
 
           it 'returns a sorted list of filters' do
             filters = ApplicationReferrerFilter.load_all(service_id, app_id)
-            filters.must_equal values.sort
+            filters.must_equal ref_filters.sort
           end
         end
 
