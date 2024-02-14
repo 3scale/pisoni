@@ -13,3 +13,5 @@ $:.unshift(File.dirname(__FILE__) + '/../lib')
 require 'minitest/autorun'
 require 'bundler/setup'
 Bundler.require(:default, :development, :test)
+
+SPECIAL_CHARACTERS = "! \"#$%&'()*+,-.:;<=>?@[]^_`{|}~\\/".freeze

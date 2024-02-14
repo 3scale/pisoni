@@ -105,6 +105,16 @@ module ThreeScale
             Utilization.load(service_id, non_existing_app_id).must_be_nil
           end
         end
+
+        describe 'with an application ID with special characters' do
+          let(:app_id) { SPECIAL_CHARACTERS }
+
+          subject { Utilization.load(service_id, app_id) }
+
+          it 'gets expected results' do
+            subject.wont_be_empty
+          end
+        end
       end
     end
   end

@@ -6,7 +6,7 @@ module ThreeScale
       default_uri '/internal/services/'
 
       def self.utilization_uri(service_id, app_id)
-        "#{default_uri}#{service_id}/applications/#{app_id}/utilization/"
+        "#{default_uri}#{service_id}/applications/#{url_encode(app_id)}/utilization/"
       end
       private_class_method :utilization_uri
 

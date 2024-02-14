@@ -3,7 +3,7 @@ module ThreeScale
   module Core
     describe ApplicationReferrerFilter do
       let(:service_id) { 10 }
-      let(:app_id)     { 100 }
+      let(:app_id)     { SPECIAL_CHARACTERS }
       let(:filters) { %w(foo bar doopah) }
       let(:application) do
         { service_id: service_id,
@@ -24,6 +24,8 @@ module ThreeScale
       end
 
       describe '.load_all' do
+        subject { ApplicationReferrerFilter.load_all(service_id, app_id) }
+
         describe 'Getting all referrer filters' do
           let(:ref_filters)     { %w(foo bar) }
 
@@ -32,14 +34,13 @@ module ThreeScale
           end
 
           it 'returns a sorted list of filters' do
-            filters = ApplicationReferrerFilter.load_all(service_id, app_id)
-            filters.must_equal ref_filters.sort
+            subject.must_equal ref_filters.sort
           end
         end
 
         describe 'when there are no referrer filters' do
           it 'returns an empty list' do
-            ApplicationReferrerFilter.load_all(service_id, app_id).must_equal []
+            subject.must_equal []
           end
         end
       end

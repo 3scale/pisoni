@@ -1,3 +1,5 @@
+require 'erb'
+
 module ThreeScale
   module Core
     module APIClient
@@ -36,6 +38,10 @@ module ThreeScale
           def default_prefix(prefix = nil)
             return @default_prefix ||= self.to_s.split(':').last.downcase.to_sym unless prefix
             @default_prefix = prefix
+          end
+
+          def url_encode(str)
+            ERB::Util.url_encode(str)
           end
 
           private

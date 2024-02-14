@@ -59,7 +59,7 @@ module ThreeScale
         end
 
         describe 'with a key that contains special chars (*, _, etc.)' do
-          let(:key) { '#$*' }
+          let(:key) { SPECIAL_CHARACTERS }
 
           before do
             ApplicationKey.delete(service_id, app_id, key)
@@ -74,8 +74,8 @@ module ThreeScale
         end
 
         describe 'with app ID that contains special characters ({, $, ? etc.)' do
-          let(:app_id) { 'abc{1}$3?' }
-          let(:key) { 'z#$*' }
+          let(:app_id) { SPECIAL_CHARACTERS }
+          let(:key) { SPECIAL_CHARACTERS }
 
           before do
             ApplicationKey.delete(service_id, app_id, key)
@@ -119,7 +119,7 @@ module ThreeScale
         end
 
         describe 'with a key that contains special chars (*, _, etc.)' do
-          let(:key_with_special_chars) { '#$*' }
+          let(:key_with_special_chars) { SPECIAL_CHARACTERS }
 
           before do
             ApplicationKey.save(service_id, app_id, key)
