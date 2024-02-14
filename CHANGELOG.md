@@ -2,6 +2,13 @@
 
 Notable changes to Pisoni will be tracked in this document.
 
+## [Unreleased]
+
+### Changed
+
+- Fixed the issue with fetching utilization and managing referrer filters for applications with special characters in the
+  application IDs by escaping them. [#33](https://github.com/3scale/pisoni/pull/33)
+
 ## 1.29.1 - 2023-11-30
 
 ### Changed
