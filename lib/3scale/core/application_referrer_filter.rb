@@ -25,7 +25,7 @@ module ThreeScale
       end
 
       def self.base_uri(service_id, application_id)
-        "#{default_uri}#{service_id}/applications/#{application_id}/referrer_filters"
+        "#{default_uri}#{service_id}/applications/#{url_encode(application_id)}/referrer_filters"
       end
       private_class_method :base_uri
     end

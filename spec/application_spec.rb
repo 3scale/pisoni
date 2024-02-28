@@ -47,7 +47,7 @@ module ThreeScale
 
         describe 'with an app ID that contains special characters' do
           let(:service_id) { 2001 }
-          let(:app_id) { '#$*' }
+          let(:app_id) { SPECIAL_CHARACTERS }
 
           before do
             Application.save service_id: service_id, id: app_id, state: 'suspended',
@@ -90,7 +90,7 @@ module ThreeScale
 
         describe 'with an app ID that contains special characters' do
           let(:service_id) { 2001 }
-          let(:app_id) { '#$*' }
+          let(:app_id) { SPECIAL_CHARACTERS }
 
           before do
             Application.save service_id: service_id, id: app_id, state: 'suspended',
@@ -157,7 +157,7 @@ module ThreeScale
 
         describe 'with an app ID that contains special characters' do
           let(:service_id) { 2001 }
-          let(:app_id) { '#$*' }
+          let(:app_id) { SPECIAL_CHARACTERS }
 
           before do
             Application.delete(service_id, app_id)
@@ -271,7 +271,7 @@ module ThreeScale
 
       describe 'by_key' do
         let(:key) { 'a_key' }
-        let(:key_with_special_chars) { '#$*' }
+        let(:key_with_special_chars) { SPECIAL_CHARACTERS }
         let(:service_id) { 2001 }
         let(:app_id) { 8011 }
 

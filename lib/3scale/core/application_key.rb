@@ -1,5 +1,3 @@
-require 'cgi'
-
 module ThreeScale
   module Core
     class ApplicationKey < APIClient::Resource
@@ -23,12 +21,12 @@ module ThreeScale
       end
 
       def self.base_uri(service_id, application_id)
-        "#{default_uri}#{service_id}/applications/#{CGI::escape(application_id.to_s)}/keys/"
+        "#{default_uri}#{service_id}/applications/#{url_encode(application_id)}/keys/"
       end
       private_class_method :base_uri
 
       def self.application_key_uri(service_id, application_id, value = '')
-        "#{base_uri(service_id, application_id)}#{CGI::escape(value.to_s)}"
+        "#{base_uri(service_id, application_id)}#{url_encode(value)}"
       end
       private_class_method :application_key_uri
     end
