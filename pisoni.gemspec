@@ -40,5 +40,5 @@ Gem::Specification.new do |s|
 
   s.rdoc_options = ["--charset=UTF-8"]
 
-  s.required_ruby_version = '>= 2.3.0'
+  s.required_ruby_version = '>= 2.6.0'
 end
