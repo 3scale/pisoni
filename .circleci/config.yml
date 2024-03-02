@@ -1,38 +1,34 @@
-version: 2
+version: 2.1
+
 jobs:
   build:
-    branches:
-      #only:
-      #  # This is where pull requests from "bors r+" are built.
-      #  - staging
-      #  # This is where pull requests from "bors try" are built.
-      #  - trying
-      #  # Uncomment this to enable building pull requests.
-      #  - master
-      ignore:
-        # never run CI on staging.tmp
-        - staging.tmp
-        # or any other tmp branch
-        - /.*\.tmp/
-
-    machine: true
+    docker:
+      - image: cimg/ruby:2.7
+      - image: redis:6.2-alpine
+      - image: quay.io/3scale/apisonator:latest
+        environment:
+          CONFIG_INTERNAL_API_USER: user
+          CONFIG_INTERNAL_API_PASSWORD: password
+          CONFIG_QUEUES_MASTER_NAME: redis://localhost:6379
+          CONFIG_REDIS_PROXY: redis://localhost:6379
+          RACK_ENV: test
+        command: 3scale_backend start -p 3000
 
     steps:
       - checkout
 
       - run:
-          name: make compose
-          command: |
-            make compose
+          name: bundle install
+          command: bundle install
 
       - run:
-          name: make ci-pull
-          command: |
-            make ci-pull
+          name: Run tests
+          environment:
+            THREESCALE_CORE_INTERNAL_API: http://user:password@localhost:3000
+          command:  bundle exec rake test
 
-      - run:
-          name: make ci-test
-          command: |
-            # make the checkout directory writable by us
-            sudo chown -R 1000:1000 .
-            make ci-test
+workflows:
+  version: 2
+  workflow:
+    jobs:
+      - build
