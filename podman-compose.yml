@@ -1,0 +1,26 @@
+version: '3'
+services:
+
+  redis:
+    image: redis:6.2-alpine
+
+  apisonator:
+    image: quay.io/3scale/apisonator:latest
+    environment:
+      CONFIG_INTERNAL_API_USER: user
+      CONFIG_INTERNAL_API_PASSWORD: password
+      CONFIG_QUEUES_MASTER_NAME: redis://redis:6379
+      CONFIG_REDIS_PROXY: redis://redis:6379
+      RACK_ENV: test
+    command: 3scale_backend start -p 3000
+    depends_on:
+      - redis
+
+  pisoni:
+    image: pisoni
+    build:
+      context: ./
+    environment:
+      THREESCALE_CORE_INTERNAL_API: http://user:password@apisonator:3000
+    depends_on:
+      - apisonator
