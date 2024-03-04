@@ -18,12 +18,13 @@ Gem::Specification.new do |s|
   s.description = 'Client for the Apisonator internal API for model data.'
   s.license     = 'Apache-2.0'
 
-  s.add_dependency 'faraday', '>= 0.9.1'
-  s.add_dependency 'json', '>= 1.8.1'
-  s.add_dependency 'injectedlogger', '>= 0.0.13'
-  s.add_dependency 'net-http-persistent'
+  # faraday v2.9.0 removes support for Ruby 2.7, see https://github.com/lostisland/faraday/releases/tag/v2.9.0
+  s.add_runtime_dependency 'faraday', '~> 2.0', '<= 2.9'
+  s.add_runtime_dependency 'json', '~> 2.7', '>= 2.7.1'
+  s.add_runtime_dependency 'injectedlogger', '0.0.13'
+  s.add_runtime_dependency 'faraday-net_http_persistent', '~> 2.1'
 
-  s.add_development_dependency 'rake'
+  s.add_development_dependency 'rake', '~> 13.1'
 
   s.files         = `git ls-files`.split($/).reject do |f| [
                         %r{^\.[^\/]},
@@ -39,5 +40,5 @@ Gem::Specification.new do |s|
 
   s.rdoc_options = ["--charset=UTF-8"]
 
-  s.required_ruby_version = '>= 2.3.0'
+  s.required_ruby_version = '>= 2.6.0'
 end
