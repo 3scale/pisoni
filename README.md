@@ -23,22 +23,16 @@ where x.y.z is the version you aim for.
 
 ## Development
 
-### Environment set up
+### Running tests with `make` and `podman-compose`
 
-We are using [Docker Compose](https://docs.docker.com/compose/) to run the tests
-in an isolated environment.
+We are using [podman-compose](https://github.com/containers/podman-compose) to run the dependencies (redis and apisonator) for the tests.
+You need to have it installed locally.
 
-You should first `make pull build` to download the needed images and build the
-one used for actual testing and development.
+You can run the test suite (with the required dependencies) by executing `make test`.
 
-You can then run `make test` to run the test suite, and `make dev` to enter
-a container in which the code is sync'ed back to your host.
+For cleaning up the dependencies containers, you can run `make deps_down`.
 
-For cleaning up containers, volumes and networks you can run `make clean` and
-`make destroy`. If you want to also get rid of pulled images, run `make
-destroy-all`.
-
-### Running tests
+### Running tests locally
 
 You can run both tests & specs with:
 
