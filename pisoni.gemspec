@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.license     = 'Apache-2.0'
 
   # faraday v2.9.0 removes support for Ruby 2.7, see https://github.com/lostisland/faraday/releases/tag/v2.9.0
-  s.add_runtime_dependency 'faraday', '~> 2.0', '<= 2.20'
+  s.add_runtime_dependency 'faraday', '~> 2.0', '>= 2.14.3'
   s.add_runtime_dependency 'json', '~> 2.7', '>= 2.7.1'
   s.add_runtime_dependency 'injectedlogger', '0.0.13'
   s.add_runtime_dependency 'faraday-net_http_persistent', '~> 2.1'
