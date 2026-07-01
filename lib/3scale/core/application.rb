@@ -38,6 +38,12 @@ module ThreeScale
         api_delete({}, uri: app_uri(service_id, id))
       end
 
+      def self.save_batch(service_id, applications)
+        uri = "#{base_uri(service_id)}batch"
+        ret = api_do_put({ applications: applications }, uri: uri, prefix: '')
+        ret[:response_json]
+      end
+
       def initialize(attributes = {})
         @state = :active
         super(attributes)
