@@ -31,4 +31,8 @@ workflows:
   version: 2
   workflow:
     jobs:
-      - build
+      - manual_approval:
+          type: approval
+      - build:
+          requires:
+            - manual_approval
