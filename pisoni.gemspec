@@ -18,7 +18,6 @@ Gem::Specification.new do |s|
   s.description = 'Client for the Apisonator internal API for model data.'
   s.license     = 'Apache-2.0'
 
-  # faraday v2.9.0 removes support for Ruby 2.7, see https://github.com/lostisland/faraday/releases/tag/v2.9.0
   s.add_runtime_dependency 'faraday', '~> 2.0', '>= 2.14.3'
   s.add_runtime_dependency 'json', '~> 2.7', '>= 2.7.1'
   s.add_runtime_dependency 'injectedlogger', '0.0.13'
@@ -40,5 +39,5 @@ Gem::Specification.new do |s|
 
   s.rdoc_options = ["--charset=UTF-8"]
 
-  s.required_ruby_version = '>= 2.6.0'
+  s.required_ruby_version = '>= 3.0.0'
 end
