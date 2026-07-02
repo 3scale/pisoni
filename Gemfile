@@ -3,7 +3,7 @@ source "https://rubygems.org"
 gemspec
 
 group :test do
-  gem 'minitest'
+  gem 'minitest', '~> 5.0'
   gem "codeclimate-test-reporter", require: nil
 end
 
