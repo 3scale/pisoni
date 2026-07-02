@@ -39,10 +39,13 @@ module ThreeScale
       end
 
       def self.save_batch(service_id, applications)
-        uri = "#{base_uri(service_id)}batch"
-        ret = api_do_put({ applications: applications }, uri: uri, prefix: '')
-        ret[:response_json]
+        api_update_batch({ applications: applications }, uri: batch_uri(service_id))
       end
+
+      def self.batch_uri(service_id)
+        "#{base_uri(service_id)}batch"
+      end
+      private_class_method :batch_uri
 
       def initialize(attributes = {})
         @state = :active
