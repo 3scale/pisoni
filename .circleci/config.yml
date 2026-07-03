@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: cimg/ruby:2.7
+      - image: cimg/ruby:3.3
       - image: redis:6.2-alpine
       - image: quay.io/3scale/apisonator:latest
         environment:
