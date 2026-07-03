@@ -1,0 +1,21 @@
+config_version = "0"
+
+exclude_patterns = [
+  "**/vendor/**",
+]
+
+test_patterns = [
+  "spec"
+]
+
+[[source]]
+default = true
+name = "default"
+
+[[plugin]]
+name = "rubocop"
+package_file = "Gemfile"
+package_filters = ["rubocop"]
+
+[[plugin]]
+name = "shellcheck"

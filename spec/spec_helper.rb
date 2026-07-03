@@ -1,9 +1,6 @@
 if ENV['COVERAGE'] && !ENV['COVERAGE'].empty?
-  require 'codeclimate-test-reporter'
+  require 'simplecov'
   SimpleCov.start do
-    formatter ENV['CODECLIMATE_REPO_TOKEN'] ?
-      CodeClimate::TestReporter::Formatter :
-      SimpleCov::Formatter::HTMLFormatter
     add_filter '/spec/'
   end
 end
