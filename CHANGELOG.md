@@ -2,6 +2,20 @@
 
 Notable changes to Pisoni will be tracked in this document.
 
+## 1.31.0 - 2026-07-03
+
+### Added
+
+- Batch update support for applications via `Application.save_batch`. [#37](https://github.com/3scale/pisoni/pull/37)
+- Qlty integration for code quality and coverage reporting, replacing codeclimate. [#39](https://github.com/3scale/pisoni/pull/39)
+
+### Changed
+
+- Updated Faraday dependency to allow >= 2.14.3 (removed <= 2.9 cap). [#36](https://github.com/3scale/pisoni/pull/36)
+- Minimum Ruby version bumped from 2.6 to 3.0 (required by Faraday >= 2.9). [#36](https://github.com/3scale/pisoni/pull/36)
+- CircleCI now requires manual approval before running builds. [#38](https://github.com/3scale/pisoni/pull/38)
+- Pinned minitest to ~> 5.0 to prevent breakage from minitest 6. [#36](https://github.com/3scale/pisoni/pull/36)
+
 ## 1.30.0 - 2024-02-29
 
 ### Changed
