@@ -32,7 +32,7 @@ jobs:
           name: Upload coverage to Qlty
           command: |
             curl -sL https://qlty.sh | bash
-            qlty coverage publish coverage/.resultset.json
+            ~/.qlty/bin/qlty coverage publish coverage/.resultset.json
 
 workflows:
   version: 2
