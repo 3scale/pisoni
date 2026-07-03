@@ -13,9 +13,9 @@ default = true
 name = "default"
 
 [[plugin]]
+name = "reek"
+
+[[plugin]]
 name = "rubocop"
 package_file = "Gemfile"
 package_filters = ["rubocop"]
-
-[[plugin]]
-name = "shellcheck"
