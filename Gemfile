@@ -4,7 +4,8 @@ gemspec
 
 group :test do
   gem 'minitest', '~> 5.0'
-  gem "codeclimate-test-reporter", require: nil
+  gem 'simplecov', require: false
+  gem 'simplecov_json_formatter', require: false
 end
 
 group :development, :test do

@@ -25,7 +25,14 @@ jobs:
           name: Run tests
           environment:
             THREESCALE_CORE_INTERNAL_API: http://user:password@localhost:3000
-          command:  bundle exec rake test
+            COVERAGE: 1
+          command: bundle exec rake test
+
+      - run:
+          name: Upload coverage to Qlty
+          command: |
+            curl -sL https://qlty.sh | bash
+            ~/.qlty/bin/qlty coverage publish coverage/.resultset.json
 
 workflows:
   version: 2
