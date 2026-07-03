@@ -25,6 +25,11 @@ module ThreeScale
       end
       private_class_method :key_uri
 
+      def self.batch_uri(service_id)
+        "#{base_uri(service_id)}batch"
+      end
+      private_class_method :batch_uri
+
       def self.load(service_id, id)
         api_read({}, uri: app_uri(service_id, id))
       end
@@ -36,6 +41,10 @@ module ThreeScale
 
       def self.delete(service_id, id)
         api_delete({}, uri: app_uri(service_id, id))
+      end
+
+      def self.save_batch(service_id, applications)
+        api_update_batch({ applications: applications }, uri: batch_uri(service_id))
       end
 
       def initialize(attributes = {})

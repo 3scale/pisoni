@@ -63,6 +63,11 @@ module ThreeScale
             api_do_delete(attributes, api_options, &blk)[:ok]
           end
 
+          def api_update_batch(attributes, api_options = {}, &blk)
+            ret = api_do_put(attributes, api_options.merge(prefix: ''), &blk)
+            ret[:response_json]
+          end
+
           # Helpers
 
           def api_do_get(attributes, api_options = {}, &blk)

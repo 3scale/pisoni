@@ -269,6 +269,99 @@ module ThreeScale
         end
       end
 
+      describe '.save_batch' do
+        let(:service_id) { 2001 }
+
+        before do
+          Application.delete(service_id, 'batch_app_1')
+          Application.delete(service_id, 'batch_app_2')
+          Application.delete(service_id, 'batch_app_3')
+        end
+
+        it 'creates multiple applications in a single request' do
+          apps = [
+            { id: 'batch_app_1', state: 'active', plan_id: '100', plan_name: 'Gold',
+              redirect_url: 'http://example.com', user_key: 'uk_batch_1' },
+            { id: 'batch_app_2', state: 'suspended', plan_id: '101', plan_name: 'Silver' }
+          ]
+
+          result = Application.save_batch(service_id, apps)
+
+          result[:status].must_equal 'completed'
+          result[:total].must_equal 2
+          result[:successful].must_equal 2
+          result[:failed].must_equal 0
+
+          app1 = Application.load(service_id, 'batch_app_1')
+          app1.wont_be_nil
+          app1.plan_name.must_equal 'Gold'
+
+          app2 = Application.load(service_id, 'batch_app_2')
+          app2.wont_be_nil
+          app2.plan_name.must_equal 'Silver'
+        end
+
+        it 'reports failures for invalid applications without blocking valid ones' do
+          apps = [
+            { id: 'batch_app_1', state: 'active', plan_id: '100', plan_name: 'Gold' },
+            { id: 'batch_app_3', plan_id: '102', plan_name: 'Bronze' }
+          ]
+
+          result = Application.save_batch(service_id, apps)
+
+          result[:status].must_equal 'completed'
+          result[:total].must_equal 2
+          result[:successful].must_equal 1
+          result[:failed].must_equal 1
+
+          result[:failures].wont_be_nil
+          result[:failures].size.must_equal 1
+          result[:failures][0][:id].must_equal 'batch_app_3'
+
+          Application.load(service_id, 'batch_app_1').wont_be_nil
+        end
+
+        it 'returns modified status for existing applications' do
+          Application.save(service_id: service_id, id: 'batch_app_1',
+                           state: 'active', plan_id: '100', plan_name: 'Old')
+
+          apps = [
+            { id: 'batch_app_1', state: 'active', plan_id: '200', plan_name: 'New' }
+          ]
+
+          result = Application.save_batch(service_id, apps)
+
+          result[:successful].must_equal 1
+          result[:applications][0][:status].must_equal 'modified'
+
+          app = Application.load(service_id, 'batch_app_1')
+          app.plan_name.must_equal 'New'
+        end
+
+        it 'handles empty applications array' do
+          result = Application.save_batch(service_id, [])
+
+          result[:status].must_equal 'completed'
+          result[:total].must_equal 0
+          result[:successful].must_equal 0
+          result[:failed].must_equal 0
+        end
+
+        it 'saves user keys and application keys' do
+          apps = [
+            { id: 'batch_app_1', state: 'active', plan_id: '100', plan_name: 'Gold',
+              user_key: 'uk_batch_test', application_keys: ['ak1', 'ak2'] }
+          ]
+
+          result = Application.save_batch(service_id, apps)
+
+          result[:successful].must_equal 1
+          result[:applications][0][:application][:user_key].must_equal 'uk_batch_test'
+          result[:applications][0][:application][:application_keys].must_include 'ak1'
+          result[:applications][0][:application][:application_keys].must_include 'ak2'
+        end
+      end
+
       describe 'by_key' do
         let(:key) { 'a_key' }
         let(:key_with_special_chars) { SPECIAL_CHARACTERS }
