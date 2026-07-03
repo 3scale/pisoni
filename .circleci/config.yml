@@ -36,10 +36,18 @@ jobs:
 
 workflows:
   version: 2
-  workflow:
+  pr:
+    when:
+      not:
+        equal: [ master, << pipeline.git.branch >> ]
     jobs:
       - manual_approval:
           type: approval
       - build:
           requires:
             - manual_approval
+  main:
+    when:
+      equal: [ master, << pipeline.git.branch >> ]
+    jobs:
+      - build
