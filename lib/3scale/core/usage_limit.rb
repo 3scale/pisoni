@@ -18,18 +18,25 @@ module ThreeScale
       end
 
       def self.save(attributes)
-        # save currently DOES NOT support multiple periods at the same time,
-        # since it would mean multiple API calls per call to this method.
-        periodlst = PERIODS & attributes.keys
-        raise UsageLimitInvalidPeriods.new(periodlst) unless periodlst.one?
+        period = validate_single_period!(attributes)
+        service_id = attributes.fetch(:service_id)
+        plan_id = attributes.fetch(:plan_id)
+        metric_id = attributes.fetch(:metric_id)
+        value = attributes.fetch(period)
 
-        service_id, plan_id, metric_id = attributes.fetch(:service_id), attributes.fetch(:plan_id), attributes.fetch(:metric_id)
-        period = periodlst.shift
-        value = attributes[period]
-        fixed_fields = { service_id: service_id, plan_id: plan_id, metric_id: metric_id }.freeze
-
-        api_update(fixed_fields.merge({period => value}), uri: base_uri(service_id, plan_id, metric_id, period))
+        api_update(
+          { service_id: service_id, plan_id: plan_id, metric_id: metric_id, period => value },
+          uri: base_uri(service_id, plan_id, metric_id, period)
+        )
       end
+
+      def self.validate_single_period!(attributes)
+        periods = PERIODS & attributes.keys
+        raise UsageLimitInvalidPeriods.new(periods) unless periods.one?
+
+        periods.first
+      end
+      private_class_method :validate_single_period!
 
       def self.delete(service_id, plan_id, metric_id, period)
         api_delete({}, uri: base_uri(service_id, plan_id, metric_id, period))
