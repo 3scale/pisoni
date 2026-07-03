@@ -35,7 +35,6 @@ jobs:
             ~/.qlty/bin/qlty coverage publish coverage/.resultset.json
 
 workflows:
-  version: 2
   pr:
     when:
       not:
