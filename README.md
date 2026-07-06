@@ -1,5 +1,6 @@
 [![CircleCI](https://circleci.com/gh/3scale/pisoni.svg?style=shield)](https://circleci.com/gh/3scale/pisoni)
-[![Maintainability](https://api.codeclimate.com/v1/badges/4b18ae93abefdba17e0b/maintainability)](https://codeclimate.com/github/3scale/pisoni/maintainability)
+[![Maintainability](https://qlty.sh/gh/3scale/projects/pisoni/maintainability.svg)](https://qlty.sh/gh/3scale/projects/pisoni)
+[![Code Coverage](https://qlty.sh/gh/3scale/projects/pisoni/coverage.svg)](https://qlty.sh/gh/3scale/projects/pisoni)
 [![Gem Version](https://badge.fury.io/rb/pisoni.svg)](https://badge.fury.io/rb/pisoni)
 
 # Pisoni
