@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  qlty: qltysh/qlty-orb@0.1.2
+
 jobs:
   build:
     docker:
@@ -28,11 +31,8 @@ jobs:
             COVERAGE: 1
           command: bundle exec rake test
 
-      - run:
-          name: Upload coverage to Qlty
-          command: |
-            curl -sL https://qlty.sh | bash
-            ~/.qlty/bin/qlty coverage publish coverage/.resultset.json
+      - qlty/coverage_publish:
+          files: coverage/.resultset.json
 
 workflows:
   pr:
